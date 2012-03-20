@@ -1,0 +1,20 @@
+---
+layout: layout
+---
+<table class="pageview">
+	<tr>
+		<th>.:[{{ page.title }}]:.</th>
+	</tr>
+	<tr>
+		<td>
+			<div class="content">
+  			<div id="post">
+					<br/>
+					Topic: {{page.topic}}<br/>
+					Date:&nbsp  {{page.date | date: "%d %b %Y"}}
+    			{{ content }}
+  			</div>
+			</div>
+		</td>
+	</tr>
+</table>
