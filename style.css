@@ -26,6 +26,10 @@ th {
 	color: #FFFFFF;
 }
 
+th.codeblock {
+	background-color: #006BB3;
+}
+
 .content {
 	margin-left: auto;
 	margin-right: auto;
