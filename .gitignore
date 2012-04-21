@@ -5,4 +5,8 @@
 *~
 \#*
 
+# editor temp files
+*.swp
+*~
+
 _site/
