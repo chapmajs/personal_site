@@ -1,35 +1,37 @@
----
-layout: listing
-title: Vintage Computer Hardware and Software
----
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
 
-<div class="content">
-  <div class="related">
-		<h1 align="center">Vintage Computing</h1>
-    <table class="directory">
-     	<tr height="128px">
-				<td width="50px"><img src="images/s100/s100-icon.jpg"/></td>
-				<td>
-					<div style="width: 95%; margin-left: auto;">
-						<a href="/s100.html">Playing with S-100 Computers</a><br/><br/>
-						<span>
-							Links to entries for my various S-100 projects, including DIY boards, assembly of S100Computer.com/N8VEM hobby boards, and the restoration of my Cromemco Z-2D and CompuPro 8/16 systems.
-						</span>
-					</div>
-     		</td>
-			</tr>
-			{% for post in site.categories.vintage-misc %}
-      	<tr height="128px">
-					<td width="50px"><img src="images/vintage-misc/{{ post.image }}"/></td>
-					<td>
-						<div style="width: 95%; margin-left: auto;">
-							<a href="{{ post.url }}">{{ post.title }}</a><br/><br/>
-							<span>{{ post.description }}</span>
-						</div>
-      		</td>
-				</tr>
-			{% endfor %}
-    </table>
-		<br/>
-  </div>
-</div>
+<html>
+  <head>
+  	<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+  	<title>The Glitch Works</title>
+  	<link type="text/css" rel="stylesheet" href="/style.css">
+  </head>
+
+  <body>
+  	<br>
+  	<center><h1><strong>The Glitch Works</strong></h1>
+    	<h2>http://www.glitchwrks.com</h2>
+	    <br><br>Welcome to the Glitch Works, my personal webspace for sharing my interests with others.<br><br>
+	  </center>
+
+    <!--Begin Navigation-->
+    <br>
+		<div class="navigation" align="center">
+			<a href="/updates.html">What's New</a> |
+			<a href="/8085projects.html">8085 Projects</a> |
+			<a href="/vintage.html">Vintage Computers</a> |
+			<a href="/coding.html">Coding</a> |
+			<a href="/4sale.html">For Sale</a> |
+			<a href="mailto:glitchAATglitchwrksDDOTTcom">Contact</a>
+		</div>
+    <br>
+    <!--End Navigation-->
+	
+    <center>
+	    You are visitor # <script language="Javascript" src="http://www.glitchwrks.com/counter/counter.php?page=main"></script> since 12 October 2010.<br>
+	    Copyright (c) 2012 The Glitch Works.
+    </center>
+
+</body>
+</html>
