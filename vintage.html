@@ -1,0 +1,35 @@
+---
+layout: listing
+title: Vintage Computer Hardware and Software
+---
+
+<div class="content">
+  <div class="related">
+		<h1 align="center">Vintage Computing</h1>
+    <table class="directory">
+     	<tr height="128px">
+				<td width="50px"><img src="images/s100/s100-icon.jpg"/></td>
+				<td>
+					<div style="width: 95%; margin-left: auto;">
+						<a href="/s100.html">Playing with S-100 Computers</a><br/><br/>
+						<span>
+							Links to entries for my various S-100 projects, including DIY boards, assembly of S100Computer.com/N8VEM hobby boards, and the restoration of my Cromemco Z-2D and CompuPro 8/16 systems.
+						</span>
+					</div>
+     		</td>
+			</tr>
+			{% for post in site.categories.vintage-misc %}
+      	<tr height="128px">
+					<td width="50px"><img src="images/vintage-misc/{{ post.image }}"/></td>
+					<td>
+						<div style="width: 95%; margin-left: auto;">
+							<a href="{{ post.url }}">{{ post.title }}</a><br/><br/>
+							<span>{{ post.description }}</span>
+						</div>
+      		</td>
+				</tr>
+			{% endfor %}
+    </table>
+		<br/>
+  </div>
+</div>
