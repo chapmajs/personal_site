@@ -41,7 +41,7 @@ Preliminary testing was done via minicom under Linux. Connecting to the USB UART
 
 		[0x78 0x00 0x10 0x40 0x81 0x7F 0xA1 0xA6 0xA8 0x0F 0xD3 0x00 0xD5 0xF0 0xD9 0x22 0xDA 0x02 0xDB 0x49 0x8D 0x14 0xAF]
 
-As per the usual Bus Pirate I2C syntax, open bracket ([) places the I2C bus in the I2C start condition. 0x78 specifies the I2C write address. After that, we send a series of commands to set things like the contrast, DC-DC converter, internal oscillator and display offset to sane values. A very detailed description of the SSD1306 OLED controller is available from [Adafruit Industries](http://www.adafruit.com) at [this link](www.adafruit.com/datasheets/SSD1306.pdf).
+As per the usual Bus Pirate I2C syntax, open bracket ([) places the I2C bus in the I2C start condition. 0x78 specifies the I2C write address. After that, we send a series of commands to set things like the contrast, DC-DC converter, internal oscillator and display offset to sane values. A very detailed description of the SSD1306 OLED controller is available from [Adafruit Industries](http://www.adafruit.com) at [this link](http://www.adafruit.com/datasheets/SSD1306.pdf).
 
 At this point, we can begin writing bytes into the display's RAM. We've initialized the display in non-inverse mode, so a 1 at a location in a byte will correspond to an "on" pixel. Since display RAM has not been initialized, there will be a random scattering of lit pixels across the display. The following Bus Pirate command will create a 5x8 glyph of alternating on and off pixels:
 
