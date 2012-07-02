@@ -63,7 +63,7 @@ Scripting the commands to the Bus Pirate requires talking to the USB UART. Since
  * If using a UNIX-like OS, you can "tail -f /dev/ttyUSB0" and get a read-only view of what's going to the USB UART
  * The display is bitmapped, sending it ASCII will only result in the binary representation being displayed
 
-I threw together a quick script to dump two bitmaps to the two available RAM pages. That script is available from the [Glitch Works File Dump](http://filedump.glitchwrks.com/projects/sabernetics_oled/). I've tested it under Arch Linux x86_64 and i686 with Python 3.2.3 and pySerial 2.6-2 from the Arch Linux pacman repositories. The two bitmaps align to render the [Enable Labs](http://www.enablelabs.com) logo and a message. Here's the output:
+I threw together a quick script to dump two bitmaps to the two available RAM pages. That script is available from my [GitHub Examples repository](https://github.com/chapmajs/Examples/blob/master/display_test.py). I've tested it under Arch Linux x86_64 and i686 with Python 3.2.3 and pySerial 2.6-2 from the Arch Linux pacman repositories. The two bitmaps align to render the [Enable Labs](http://www.enablelabs.com) logo and a message. Here's the output:
 
 ->[![Bus Pirate and Display after running Python script](/images/general/oled/scaled/buspiratedisplay.jpg)](/images/general/oled/buspiratedisplay.jpg) [![Hello from Troy NY!](/images/general/oled/scaled/hello.jpg)](/images/general/oled/hello.jpg)<-
 
