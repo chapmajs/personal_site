@@ -1,5 +1,5 @@
 # Gemfile for building static sites with Jekyll and Markdown
-source :rubygems
+source "https://rubygems.org"
 
 gem 'jekyll'
 gem 'rdiscount'
