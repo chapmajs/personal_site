@@ -1,0 +1,34 @@
+---
+layout: post
+title: Isolated 24V Relay Controller
+topic: Isolated 24V Relay Controller
+category: news
+description: Anyone else have a pile of relays in the parts bin with 24V coils? I do, so I've designed an isolated controller board that includes the power supply, current loop drive circuit, and a DIP16 footprint relay. Now I can make use of my large stock of relays without building a point-to-point power supply and controller every time.
+image: glitch.jpg
+---
+
+Over the years, I've collected quite the pile of high-quality relays with 24V coils. Many of these relays came from telecommunications equipment and have "voice grade" contacts, but are capable of switching a reasonable load at 120 VAC.
+
+A few of my vintage machines require 5.25" disks, but either don't have space for disks internally, or don't have enough space for enough drives internally. I'd been casually keeping an eye out for a drive box with a self-contained power supply that held two 5.25" drives and used either a 37-pin D-SUB connector or a straight ribbon cable for the drives' data connections. I finally found one, through an online auction listing link from [The Vintage Computer Forums](http://www.vintage-computer.com/vcforum/forum.php) -- it supported two full-height 5.25" drives (not included) and supplied only a slot in the case for the drives' ribbon cable to exit. The power supplies were not load tested, but linear supplies are easy to fix and the price was less than $20.
+
+On arrival, I discovered that the power supply consisted of a standard 12.6V center-tapped filament transformer and two rectifier/filter/regulator boards, one for each drive. Unfortunately, the boards were loose in the chassis and there was no clear way of attaching the boards directly to the drives:
+
+->[![Power supply boards](/images/vintage-misc/disk_box/scaled/supplies_front.jpg)](/images/vintage-misc/disk_box/supplies_front.jpg) [![North Star copyright](/images/vintage-misc/disk_box/scaled/northstar.jpg)](/images/vintage-misc/disk_box/northstar.jpg)<-
+
+I suspect these boards were not originally intended for this enclosure, but rather for the single-drive enclosure supplied with the North Star Micro-Disk System, a complete control board, disk drive and operating system package for the S-100 bus. One of the boards even bears a North Star copyright, the other appears to be a close-to-identical clone of the North Star board.
+
+I wanted to keep the boards with the enclosure, partly because that's how the enclosure came, and partly because they both tested good and I had no other use for them outside of the enclosure. They appeared to have the same dimensions as a full-height 5.25" drive's faceplate, so it would seem they were intended to mount behind their respective drive, heatsinks facing away from the motor control board. Since the mounting holes on the power supply boards didn't line up with any of the holes on my Tandon TM-100 drives, I decided to fabricate a mounting bracket. The material of choice is 1/4" thick Lexan, which was purchased from [McMaster-Carr](http://www.mcmaster.com), along with all of the other required hardware.
+
+->[![Lexan mouting bracket](/images/vintage-misc/disk_box/scaled/lexan.jpg)](/images/vintage-misc/disk_box/lexan.jpg)<-
+
+A 6" x 6" sheet of Lexan was purchased, which required trimming only 3/8" from the top edge. Since this is 1/4" thick Lexan and the waste bit was small, I opted to saw the material rather than scoring it and snapping it on the edge of a table. I purchased a [Bosch Plexiglass blade](http://www.boschtools.com/Products/Accessories/Pages/BoschAccessoryDetail.aspx?pid=T102BF#specs) for my handheld jigsaw. It did a fantastic job, with no melting even at a fairly fast cutting rate. Holes were drilled and tapped in the face of the Lexan to match the two holes in each power supply board. This is where Lexan really excels for building brackets -- simply lay the boards solder-side up, place the Lexan on top, and mark the holes by sight. Two additional holes were drilled and tapped in the bottom edge to accept 4-40 thread machine screws through two of the bottom ventillation slots. The boards are held away from the Lexan a bit with a stack of washers.
+
+->[![Boards mounted](/images/vintage-misc/disk_box/scaled/boards_installed_back.jpg)](/images/vintage-misc/disk_box/boards_installed_back.jpg) [![Boards installed](/images/vintage-misc/disk_box/scaled/boards_installed_side.jpg)](/images/vintage-misc/disk_box/boards_installed_side.jpg)<-
+
+The boards fit well, and allow plenty of bottom-to-top airflow through the ventillation slots and across the large upper heatsinks. The two 4-40 machine screws with washers provide solid mounting for the Lexan, more than enough for an internal assembly that shouldn't receive any mechanical stress. Orienting the boards with the heatsinks near the top should increase convection and help ensure the regulators don't cook themselves. After several hours of operation with normal levels of disk access, they're warm to the touch but not hot. Here's a few more pictures of the enclosure with everything mounted but the cover:
+
+->[![Drives from the front](/images/vintage-misc/disk_box/scaled/drives_front.jpg)](/images/vintage-misc/disk_box/drives_front.jpg) [![Drives from the back](/images/vintage-misc/disk_box/scaled/drives_cables.jpg)](/images/vintage-misc/disk_box/drives_cables.jpg)<-
+
+The top cover is tight, but fits over two Tandon TM-100 drives. I crimped a custom data cable with two 34-pin edge connectors spaced just wide enough for the enclosure, since there was little room between the Lexan and drives for extra cable. The portion of the cable leaving the enclosure is around 5 feet long, and should be sufficient for all of the machines I plan to use with this enclosure. It is terminated in a 34-pin female dual-row IDC connector at the moment, but may be replaced with a 37-pin D-SUB connector in the future. Here's a couple of pictures of the enclosure fully assembled and cleaned up:
+
+->[![Finished enclosure front](/images/vintage-misc/disk_box/scaled/finished_front.jpg)](/images/vintage-misc/disk_box/finished_front.jpg) [![Finished enclosure back](/images/vintage-misc/disk_box/scaled/finished_back.jpg)](/images/vintage-misc/disk_box/finished_back.jpg)<-
