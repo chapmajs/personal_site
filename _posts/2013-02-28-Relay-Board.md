@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Isolated 24V Relay Controller
-topic: Isolated 24V Relay Controller
+topic: Controlling relays with 24V coils
 category: news
 description: Anyone else have a pile of relays in the parts bin with 24V coils? I do, so I've designed an isolated controller board that includes the power supply, current loop drive circuit, and a DIP16 footprint relay. Now I can make use of my large stock of relays without building a point-to-point power supply and controller every time.
 image: glitch.jpg
@@ -43,6 +43,6 @@ The board was brought up on a variac and the 24V supply checked before further t
 
 The final corrected board accomplishes everything I wanted from this design. It provides greater than 500 V isolation between the power source, control source, and the device being controlled. The traces that parallel the primaries of the power supply transformer can be cut and the primaries connected in series for 240 VAC supply operation. While there is a footprint for DIP style relays, the boards are also usable with external relays. Best of all, the individual boards cost less than $5 USD in prototype quantities and the components that had to be ordered cost less than $1 USD per board! Not a significant cost over plain pad-per-hole protoboard and certainly a lot faster to assemble.
 
-This project is an [Open Hardware](http://www.openhardware.org/) project; as such, the EAGLE schematic and board files are available INSERT LINK HERE. Please contact me if you are interested in taking part in a bulk production-size order of these boards. As of the date of writing, all components necessary to build these boards are readily available from several suppliers.
+This project is an [Open Hardware](http://www.openhardware.org/) project; as such, the EAGLE schematic, board, and custom parts files are available INSERT LINK HERE, along with documentation. Please contact me if you are interested in taking part in a bulk production-size order of these boards. As of the date of writing, all components necessary to build these boards are readily available from several suppliers.
 
 -><script language="Javascript" src="http://www.glitchwrks.com/counter/counter.php?page=relay_board"></script> output ports fried<-
