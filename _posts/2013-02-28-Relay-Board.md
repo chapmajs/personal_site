@@ -13,7 +13,7 @@ I've got a lot of relays in the parts bin with 24V coils. This is a common contr
 
 Even so, one can easily control them with a separate supply and [optoisolator](http://en.wikipedia.org/wiki/Opto-isolator). An optoisolator uses the illumination of a (mostly infared) LED to trigger a photosenitive resistor or transistor. This provides galvanic isolation between the control circuit and the device being switched, which also means that the power supplies don't have to be the same voltage, or even share a common ground. Additionally, transistor-type optoisolators in DIP packages are extremely common and cheaply available if you don't have a few in the parts bin. They also provide an easy method to control devices using a current loop. Using a current loop and a control current rather than a control voltage makes interfacing with a wide range of control voltages easy.
 
--> Image of schematic here <-
+-> ![Current loop control schematic](/images/general/relay_board/schematic.png) <-
 
 I came across a few things that made this project possible and/or necessary. First, I had a large supply of 24V relays sitting around. Second, I had a few trays of Prem board-mount transformers with dual primaries (120/240 VAC operation) and dual secondaries that could be series-wired for 24 VAC output. Finally, I came across a bunch of 24V coil relays that could handle 5 Amps @ 125 VAC and came with sockets that could be board or panel mounted. I used one of them and a point-to-point controller in this relay-controlled receptacle project:
 
@@ -21,7 +21,7 @@ I came across a few things that made this project possible and/or necessary. Fir
 
 The controller worked fine and could be driven by 3.3/5/12 Volt control circuits without modification, since the controller included only a protection resistor and relied on an external current-limiting resistor. Driving the optoisolator's source is literally as simple as driving an LED. The onboard Prem transformer has high enough rectified output to require a regulator, but still made for a fairly compact combined supply and control board. Small enough to be integrated into existing line-operated devices. A few friends were interested in control boards, so I decided to lay out a proper PCB and have a few produced. This would make the device a bit smaller and reduce assembly time.
 
--> Image of the Eagle layout <-
+-> ![EAGLE Layout](/images/general/relay_board/layout.png) <-
 
 I laid out the board during my personal project time [at work](http://www.enablelabs.com) and sent it off to be fabricated. This was the first board to go off to the service that evolved from the [DorkbotPDX](http://dorkbotpdx.org/) prototype PC board service, [OSH Park](http://oshpark.com/). The price is the same, and the quality is every bit as good. 12 days later, I had nine 2.15" x 1.35" boards that cost around $4.95 USD each:
 
@@ -43,6 +43,6 @@ The board was brought up on a variac and the 24V supply checked before further t
 
 The final corrected board accomplishes everything I wanted from this design. It provides greater than 500 V isolation between the power source, control source, and the device being controlled. The traces that parallel the primaries of the power supply transformer can be cut and the primaries connected in series for 240 VAC supply operation. While there is a footprint for DIP style relays, the boards are also usable with external relays. Best of all, the individual boards cost less than $5 USD in prototype quantities and the components that had to be ordered cost less than $1 USD per board! Not a significant cost over plain pad-per-hole protoboard and certainly a lot faster to assemble.
 
-This project is an [Open Hardware](http://www.openhardware.org/) project; as such, the EAGLE schematic, board, and custom parts files are available INSERT LINK HERE, along with documentation. Please contact me if you are interested in taking part in a bulk production-size order of these boards. As of the date of writing, all components necessary to build these boards are readily available from several suppliers.
+This project is an [Open Hardware](http://www.openhardware.org/) project; as such, the EAGLE schematic, board, and custom parts files are available [on GitHub](https://github.com/chapmajs/hardware/tree/master/relay_board), along with documentation. Please contact me if you are interested in taking part in a bulk production-size order of these boards. As of the date of writing, all components necessary to build these boards are readily available from several suppliers.
 
 -><script language="Javascript" src="http://www.glitchwrks.com/counter/counter.php?page=relay_board"></script> output ports fried<-
