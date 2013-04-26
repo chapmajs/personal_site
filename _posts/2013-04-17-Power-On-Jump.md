@@ -4,15 +4,37 @@ title: Power On Jump Board for the S-100 Bus
 topic: Building a standalone power-on jump circuit
 category: s100
 description: One of my S-100 systems uses a CPU board that doesn't have a power-on jump function. The ROM board doesn't have it either. It's a turnkey system with no front panel, so I had to come up with a way to get the CPU to jump into the ROM board's address space without starting the ROMs at 0x0000.
-image: poj-icon.jpg
+image: jump_icon.jpg
 ---
 
 Power-on jump is one of those features I've gotten used to having in S-100 systems. Usually it's present either on the CPU card or whichever board provides the ROM monitor or bootstrap code. This allows the system to be configured with RAM at 0x0000 during normal use, but have the bootstrap code switched in on power-on reset and/or system reset. While it's a nice feature with front panel systems like the IMSAI, it's absolutely crucial on turnkey systems with no front panel, unless you can handle ROM at 0x0000.
 
 Power-on jump can be accomplished in several ways, depending on the hardware and processor architecture. Processors like the 6502 or 6800 are hardwired to look for a reset vector in high memory and often just use banked memory to switch out ROMs after the bootstrap process is complete. The 8080 and compatibles (8085, Z80, NSC800, et c.) have no such feature and begin execution at 0x0000 upon restart. For some systems, there's no problem with placing ROM right at 0x0000, either permanently or in a switched configuration.
 
-So what's the problem with ROM at 0x0000 anyway? Well, if it's permanently mapped, some software (CP/M, for example) can't be loaded as they depend on RAM at 0x0000. You're also stuck with the contents of ROM for interrupt/restart routines. If it's switchable, you can't use common code such as console or I/O driver routines from ROM with software that requires RAM at 0x0000. You potentially end up with code duplication and an overall less flexible system.
+So what's the problem with ROM at 0x0000 anyway? Well, if it's permanently mapped, some software (CP/M, for example) can't be loaded as RAM is expected at 0x0000. You're also stuck with the contents of ROM for interrupt/restart routines. If it's switchable, you can't use common code such as console or I/O driver routines from ROM with software that requires RAM at 0x0000. You potentially end up with code duplication and an overall less flexible system.
 
-[NOP Sled](http://en.wikipedia.org/wiki/NOP_slide)
+Implementing Power-On Jump
+--------------------------
 
-->[![24V Relays](/images/general/relay_board/scaled/relays.jpg)](/images/general/relay_board/relays.jpg)<-
+Fortunately, the S-100 bus allows one to construct a power-on jump circuit on a board external to both the CPU and ROM circuits. This is accomplished through synchronizing instruction jams on pSYNC and using the /PHANTOM line to disable memory present at 0x0000 after the jump circuit is activated. Of course, I chose to build the circuit on none other than the Solid State Music IO-2. While I've used the IO-2 to build both a [debug board](/2011/09/01/Debug-Board/) and a [ROM/RAM board](/2012/01/30/IO2-ROM-RAM/), this function will only utilize prototype space (don't worry, the actual I/O function of the board will be used in a later project!).
+
+There are a few common/popular ways to achieve power-on jump with 8080-compatible processors. Many of them depend on integration with either the CPU or ROM board (switching the ROM address, for instance) and aren't applicable to this situation unless the ROM board is to be modified extensively. Of the common methods, instruction jamming and [NOP sleds](http://en.wikipedia.org/wiki/NOP_slide) seemed the most appealing. I chose to use a method of instruction jamming based on the power-on jump circuit of the [Cromemco ZPU](http://www.s100computers.com/Hardware%20Folder/Cromemco/Z80/ZPU.htm), adapted for use on an external board. This would require fewer components when using "old" TTL, which was a goal for this project. Here's the circuit I came up with:
+
+->Insert schematic scan here<-
+
+When system /PRESET goes low, the 74LS164 shift register gets reset, forcing all outputs to off. Its inputs are tied to +5V, and the shift register is clocked by pSYNC, meaning that every 8080 data fetch shifts a logic 1 into the shift register. Output 4 of the shift register both enables the output buffers that drive the Data In bus and the open-collector /PHANTOM driver, which prevents other memory boards from responding while the circuit is active. This output remains low for three data fetches (an 8080 JMP instruction is 3 bytes long), going high on the fourth data fetch, which should be our bootstrap code.
+
+Forming the bytes that make up an 8080 JMP is handled by a 74LS157 multiplexer and one section of a 74LS04 inverter. Since this circuit jumps on 4K boundaries, two of the bits in all three bytes will always be zero and can be tied to ground at the 74LS387.
+
+Board Construction
+------------------
+
+->[![Front of boards](/images/s100/jump_board/scaled/original_front.jpg)](/images/s100/jump_board/original_front.jpg) [![Back of boards](/images/s100/jump_board/scaled/original_back.jpg)](/images/s100/jump_board/original_back.jpg)<-
+
+I purchased two IO-2 boards from [Herb Johnson](http://retrotechnology.com/) a while back, one in basically unused condition, the other...well, fairly hacked up. Before starting, everything except the sockets was stripped from the board. It took several applications of concentrated dish soap and 91% isopropyl alcohol to get the board to the point at which it could be repopulated. Here's how it looked after its cleaning:
+
+->[![Stripped and cleaned board](/images/s100/jump_board/scaled/stripped_down.jpg)](/images/s100/jump_board/stripped_down.jpg) [![Solid State Music markings](/images/s100/jump_board/scaled/old_ssm_logo.jpg)](/images/s100/jump_board/old_ssm_logo.jpg)<-
+
+Part of the reason I went through the trouble of cleaning this board is that it appears to be older than the other IO-2 boards I have. It includes an etch in the regulator area that doesn't appear on the other IO-2s, there's no solder mask, and the only other markings are "BY M.T. WRIGHT" and "IO-2". In any case, it was time to start rebuilding, which of course starts with power regulation. The jump circuit requires only +5V, so only the 7805 regulator is populated:
+
+->[![Regulator and capacitors](/images/s100/jump_board/scaled/regulator.jpg)](/images/s100/jump_board/regulator.jpg)<-
