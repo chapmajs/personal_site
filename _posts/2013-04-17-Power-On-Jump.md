@@ -24,7 +24,11 @@ There are a few common/popular ways to achieve power-on jump with 8080-compatibl
 
 When system /PRESET goes low, the 74LS164 shift register gets reset, forcing all outputs to off. Its inputs are tied to +5V, and the shift register is clocked by pSYNC, meaning that every 8080 data fetch shifts a logic 1 into the shift register. Output 4 of the shift register both enables the output buffers that drive the Data In bus and the open-collector /PHANTOM driver, which prevents other memory boards from responding while the circuit is active. This output remains low for three data fetches (an 8080 JMP instruction is 3 bytes long), going high on the fourth data fetch, which should be our bootstrap code.
 
-Forming the bytes that make up an 8080 JMP is handled by a 74LS157 multiplexer and one section of a 74LS04 inverter. Since this circuit jumps on 4K boundaries, two of the bits in all three bytes will always be zero and can be tied to ground at the 74LS387.
+The three lowest outputs of the shift register can be used to select three separate byte patterns to jam onto the data bus. There are several ways to accomplish this, including the use of ROM, but the Cromemco ZPU achieves the necessary functionality with combinational logic. I chose to replicate that design in my circuit. The goal is to force `JMP 0x?000` onto the bus, or `C2 00 ?0` where ? is the nybble selected via DIP switch:
+
+* Since this circuit jumps on 4K boundaries, bits 2 and 3 in all three bytes will always be zero and can be tied to ground at the 74LS367
+* Bits 0 and 1 are only true for the first byte, and can be controlled with an inverter from shift register output 0
+* The upper nybble is either 0xC, 0 or the state of the four-position DIP switch
 
 Board Construction
 ------------------
