@@ -20,7 +20,7 @@ Fortunately, the S-100 bus allows one to construct a power-on jump circuit on a 
 
 There are a few common/popular ways to achieve power-on jump with 8080-compatible processors. Many of them depend on integration with either the CPU or ROM board (switching the ROM address, for instance) and aren't applicable to this situation unless the ROM board is to be modified extensively. Of the common methods, instruction jamming and [NOP sleds](http://en.wikipedia.org/wiki/NOP_slide) seemed the most appealing. I chose to use a method of instruction jamming based on the power-on jump circuit of the [Cromemco ZPU](http://www.s100computers.com/Hardware%20Folder/Cromemco/Z80/ZPU.htm), adapted for use on an external board. This would require fewer components when using "old" TTL, which was a goal for this project. Here's the circuit I came up with:
 
-Insert schematic scan here
+->[![Schematic](/images/s100/jump_board/scaled/schematic.png)](/images/s100/jump_board/schematic.png)<-
 
 When system /PRESET goes low, the 74LS164 shift register gets reset, forcing all outputs to off. Its inputs are tied to +5V, and the shift register is clocked by pSYNC, meaning that every 8080 data fetch shifts a logic 1 into the shift register. Output 4 of the shift register both enables the output buffers that drive the Data In bus and the open-collector /PHANTOM driver, which prevents other memory boards from responding while the circuit is active. This output remains low for three data fetches (an 8080 JMP instruction is 3 bytes long), going high on the fourth data fetch, which should be our bootstrap code. Output 3 selects a set of inputs from a 74LS157 quad 2-to-1 multiplexer.
 
