@@ -27,9 +27,18 @@ Floppy Drives and Data Separators
 
 One of the most popular arguments against the 4FDC is incompatibility with standard floppy drives. There's some truth in this: the 4FDC was indeed designed for operation with 8" Persci 277 voice coil drives. Persci drives are expensive and unreliable, so they're less than optimal for a practical, useable system. The 4FDC manual specifies Wangco Model 82 5.25" drives as an option as well. This particular model is somewhat uncommon, and certainly more expensive than a Shugart-compatible 5.25" drive. It's commonly believed that these particular drives are required because the 4FDC requires a drive with an external data separator since the WD1771 doesn't include a data separator...well, not quite!
 
-The Western Digital WD1771 disk controller does in fact include a FM (single-density) data separator on-chip. Being an early design, the data separator is not particularly high-performance. As a result, Cromemco decided to use the data separator present on Persci 277 drives. This turns out to be less of an issue than expected, as many early 8" floppy drives (the Shugart SA-800, for example) include a FM data separator. But that still leaves the requirement for 5.25" drives that include a data separator...right?
+The Western Digital WD1771 disk controller does in fact include a FM (single-density) data separator on-chip. Being an early design, the data separator is not particularly high-performance. This is referenced in the WD1771 datasheet, page 17:
+
+> NOTE: Internal data separation may work for some applications. However, for applications requiring high data recover reliability, WDC recommends external data separation be used.
+
+As a result, Cromemco decided to use the data separator present on Persci 277 drives. This turns out to be less of an issue than expected, as many early 8" floppy drives (the Shugart SA-800, for example) include a FM data separator. But that still leaves the requirement for 5.25" drives that include a data separator...right?
 
 This one is flat out incorrect -- while the WD1771's onboard data separator is indeed disabled for 8" disk access, the *MINI/MAXI* select line enables it for 5.25" disks. Any standard 40-track 5.25" floppy drive will indeed work perfectly with the 4FDC, provided that it is strapped appropriately. I'm currently using [a pair of Tandon TM-100 drives](http://www.glitchwrks.com/2013/01/11/5.25-Disk-Box) with my 4FDC, which successfully formats, reads, writes and boots floppy disks. Perhaps the lower data rate of the 5.25" drives makes the onboard WD1771 data separator acceptable; in any case, it seems to work.
+
+RDOS Differences
+----------------
+
+The 4FDC shipped with RDOS 1. There are some subtle differences between RDOS 1 and 2.x -- if you're attempting to use [Dave Dunfield's RT](http://www.classiccmp.org/dunfield/img/index.htm), the first you're going to discover is that **SM** (Substitute Memory) terminates with a CR in RDOS 1, whereas it progresses to the next memory address with RDOS 2. Entry is terminated with a period in RDOS 2. This breaks syntax compatibility between the two versions.
 
 ->[![DBM-1 S100 card](/images/s100/eprom_sim/scaled/front.jpg)](/images/s100/eprom_sim/front.jpg)<-
 
