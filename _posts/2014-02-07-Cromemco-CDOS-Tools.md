@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Cromemco CDOS Tools
-topic: Bare-metal Boostrapping CDOS 2.58
+topic: Bare-metal Bootstrapping CDOS 2.58
 category: vintage-misc
 description: With a Cromemco 4FDC and no boot media, getting a functional system was not entirely straightforward. Tools exist for bare-metal bootstrapping CDOS with a 16FDC, but they're incompatible with the 4FDC. Fortunately, there was enough existing work and experience in the area to hack together a solution!
 image: cdos-icon.jpg
@@ -39,7 +39,7 @@ Since the 4FDC can't format disks by itself, CDOS must be loaded. Not so easy wh
 - Start editing memory at 0x0000 (`E 0000` with the Dajen monitor)
 - Paste the converted in-memory image
 
-The above proceedure works because the Dajen monitor accepts a continuous string of hex characters as input once the initial edit command is given. The terminal emulator will likely require a pacing delay (150 mS was sufficient with the Dajen SCI at 9600 bps). Converting the image from binary to ASCII-coded hex will effectively double the number of bytes that have to travel over the serial link, so at 9600 bps with a 150 mS delay, the image takes more than 2.5 HOURS to transfer! Later work will include a high-speed, native binary image loader that doesn't require a separate monitor board.
+The above procedure works because the Dajen monitor accepts a continuous string of hex characters as input once the initial edit command is given. The terminal emulator will likely require a pacing delay (150 ms was sufficient with the Dajen SCI at 9600 bps). Converting the image from binary to ASCII-coded hex will effectively double the number of bytes that have to travel over the serial link, so at 9600 bps with a 150 ms delay, the image takes more than 2.5 HOURS to transfer! Later work will include a high-speed, native binary image loader that doesn't require a separate monitor board.
 
 Providing that all goes well, jump to location 0x0100 after the image is loaded. CDOS INIT should sign on using the 4FDC's console port. Format SEVERAL 5.25" disks as single-sided, single-density using the default INIT options otherwise. Once a disk has formatted, press the RESET switch and jump to 0x0100 again to format another. With formatted disks in hand, it should now be possible to use the RDOS disk commands (WD, RD, et c.) to manipulate sectors.
 
