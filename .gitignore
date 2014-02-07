@@ -8,5 +8,6 @@
 # editor temp files
 *.swp
 *~
+*.bak
 
 _site/
