@@ -1,5 +1,3 @@
-markdown: rdiscount
+markdown: kramdown
 permalink: /:year/:month/:day/:title
 highlighter: pygments
-rdiscount:
-  extensions: [smart]

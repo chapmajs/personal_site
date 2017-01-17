@@ -2,32 +2,44 @@
 
 body {
 	font-family: monospace;
-	color: #CCCCCC; background: black;
+	color: #CCCCCC; 
+	background: black;
 	font-size: 1em;
 }
 
-table {
+.pageview {
 	width: 95%;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-table.pageview {
 	border-width: 1px;
 	border-spacing: 0px;
 	border-style: solid;
 	border-color: #6B6B6B;
 }
 
-th {
+.pageview-header {
 	text-align: center;
+	width: 100%;
 	padding: 1px;
+	padding-right: 0px;
 	background-color: #6B6B6B;
 	color: #FFFFFF;
+	font-weight: bold;
 }
 
-th.codeblock {
+.codeblock-header {
 	background-color: #006BB3;
+}
+
+code {
+	background-color: #282828;
+	color: #FFFFFF;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+code[class^="language"] {
+	background-color: black;
 }
 
 .content {
@@ -55,3 +67,59 @@ a:link { color: #00FF00; }
 a:visited { color: green; }
 a:hover { color: #00FF00; }
 a:active { color: #00FF00; }
+
+.center { text-align: center; }
+
+.glitchworks-form {
+	font-family: monospace;
+	font-size: 1em;
+	color: #CCCCCC; 
+	background-color: #111;
+	border-width: 1px;
+	border-spacing: 0px;
+	border-style: solid;
+	border-color: #6B6B6B;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.navlink {
+	font-family: monospace;
+	font-size: 1em;
+	font-weight: normal;
+	color: LightGray;
+	background-color: #020;
+	border: 1px solid;
+	border-color: #0A0;
+	padding: 2px;
+}
+
+.navlink:hover {
+	background-color: #040;
+	color: white;
+	border-color: #0F0;
+}
+
+.error_explanation {
+	color: white;
+	background-color: #200;
+	border: 1px solid;
+	border-color: red;
+}
+
+.error_explanation_content {
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.error_explanation_header {
+	font-weight: bold;
+}
+
+.error_explanation a:link { color: white; }
+.error_explanation a:visited { color: #CCCCCC; }
+.error_explanation a:hover { color: white; }
+.error_explanation a:active { color: white; }

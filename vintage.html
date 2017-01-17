@@ -4,32 +4,69 @@ title: Vintage Computer Hardware and Software
 ---
 
 <div class="content">
-  <div class="related">
-		<h1 align="center">Vintage Computing</h1>
-    <table class="directory">
-     	<tr height="128px">
-				<td width="50px"><img src="images/s100/s100-icon.jpg"/></td>
-				<td>
-					<div style="width: 95%; margin-left: auto;">
-						<a href="/s100.html">Playing with S-100 Computers</a><br/><br/>
-						<span>
-							Links to entries for my various S-100 projects, including DIY boards, assembly of S100Computer.com/N8VEM hobby boards, and the restoration of my Cromemco Z-2D and CompuPro 8/16 systems.
-						</span>
-					</div>
-     		</td>
-			</tr>
-			{% for post in site.categories.vintage-misc %}
-      	<tr height="128px">
-					<td width="50px"><img src="images/vintage-misc/{{ post.image }}"/></td>
-					<td>
-						<div style="width: 95%; margin-left: auto;">
-							<a href="{{ post.url }}">{{ post.title }}</a><br/><br/>
-							<span>{{ post.description }}</span>
-						</div>
-      		</td>
-				</tr>
-			{% endfor %}
-    </table>
-		<br/>
-  </div>
+    <div class="related">
+        <h1 align="center">Vintage Computing</h1>
+        <table class="directory">
+            <tr height="128px">
+                <td width="50px"><img src="images/s100/s100-icon.jpg"/></td>
+                <td>
+                    <div style="width: 95%; margin-left: auto;">
+                        <a href="/s100.html">Playing with S-100 Computers</a><br/><br/>
+                        <span>
+                            Links to entries for my various S-100 projects, including DIY boards, assembly of S100Computer.com/N8VEM hobby boards, and the restoration of my Cromemco Z-2D and CompuPro 8/16 systems.
+                        </span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr height="128px">
+                <td width="50px"><img src="images/dec/dec_logo.png"/></td>
+                <td>
+                    <div style="width: 95%; margin-left: auto;">
+                        <a href="/dec.html">Digital Equipment Corporation Systems</a><br/><br/>
+                        <span>
+                            Operating and maintaing DEC computer systems, big and small. Ranging from embedded LSI-11/2 based systems to computationally "large" multiuser UNIX systems and physically large systems with core memory and a separate rack worth of external storage.
+                        </span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr height="128px">
+                <td width="50px"><img src="images/osi/osi_logo.png"/></td>
+                <td>
+                    <div style="width: 95%; margin-left: auto;">
+                        <a href="/osi.html">Ohio Scientific Systems</a><br/><br/>
+                        <span>
+                            Started by a husband and wife team and ended by their divorce, Ohio Scientific produced interesting home and business computers in the 1970s and early 1980s. Restoration, maintenance, and related projects for my Challenger III triple-processor system.
+                        </span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr height="128px">
+                <td width="50px"><img src="/images/xtide/xtide-icon.jpg"/></td>
+                <td>
+                    <div style="width: 95%; margin-left: auto;">
+                        <a href="/xt-ide/index.html">XT-IDE Information and Projects</a><br/><br/>
+                        <span>
+                            The XT-IDE began as a VC Forums/N8VEM project to build an open source 8-bit ISA IDE controller and has progressed through several major developments. Here you'll find information on past XT-IDE runs as well as the new rev 3 board we're working on.
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            
+            {% for post in site.categories.vintage-misc %}
+            <tr height="128px">
+                <td width="50px"><img src="images/vintage-misc/{{ post.image }}"/></td>
+                <td>
+                    <div style="width: 95%; margin-left: auto;">
+                        <a href="{{ post.url }}">{{ post.title }}</a><br/><br/>
+                        <span>{{ post.description }}</span>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br/>
+    </div>
 </div>

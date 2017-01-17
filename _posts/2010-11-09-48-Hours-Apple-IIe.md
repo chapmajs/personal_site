@@ -9,17 +9,20 @@ image: a2cpm-icon.jpg
 
 Several months ago, I picked up a complete Apple IIe setup close enough to make shipping reasonable. It included everything but the IIe cover and the 6 key! The purchase consisted of a standard IIe, a DuoDisk and the Apple green phosphor composite monitor, along with a number of expansion boards. These included two Super Serial cards, a 64K 80-column card, the DuoDisk controller board, a Grappler+ printer board, and some sort of analog/digital interface board with an external breakout box. There was a floppy in the drive when I received it, which contained some engineering analysis routines. That, and the presence of the A/D I/O card suggest the machine was used in an industrial environment, rather than an educational or home environment.
 
-->[![Apple IIe with top open](/images/vintage-misc/a2cpm/scaled/opencase.jpg)](/images/vintage-misc/a2cpm/opencase.jpg) [![Final CP/M card arrangement](/images/vintage-misc/a2cpm/scaled/cards.jpg)](/images/vintage-misc/a2cpm/cards.jpg)<-
+{:.center}
+[![Apple IIe with top open](/images/vintage-misc/a2cpm/scaled/opencase.jpg)](/images/vintage-misc/a2cpm/opencase.jpg) [![Final CP/M card arrangement](/images/vintage-misc/a2cpm/scaled/cards.jpg)](/images/vintage-misc/a2cpm/cards.jpg)
 
 Over the weekend, I finally got some time to set the machine up and play with it. I removed all of the cards except for the 80-column card and DuoDisk controller to confirm the core system worked: it booted the floppy included with the IIe first-time. After that, I re-jumpered a Super Serial Card and plugged it into slot #2 and [bare metal bootstrapped ADTPro](http://adtpro.sourceforge.net). If you have an Apple II system and don't know about ADTPro, you're missing out -- it allows the transfer of disk images to physical Apple II floppies using the serial port, Ethernet, or audio ports. All you need is the Apple II machine and another computer capable of running their Java server application.
 
 After connecting the IIe with my disk imaging machine using a [SC821 PLUS Smart Cable](http://www.smart-cable.com/catalog?action=display&key=102) I bootstrapped ProDOS and then sent the ADTPro serial client over. I formatted a few floppies, made a floppy copy of ADTPro to avoid the slow serial bootstrap, and transferred a few CP/M images over, available through the [Asimov FTP Archive](ftp://ftp.apple.asimov.com/pub/apple_II/images/cpm/). I then installed my CP/M card: a no-name 1:1 copy of the Microsoft SoftCard.
 
-->[![Microsoft SoftCard Clone](/images/vintage-misc/a2cpm/scaled/cpmcard.jpg)](/images/vintage-misc/a2cpm/cpmcard.jpg)<-
+{:.center}
+[![Microsoft SoftCard Clone](/images/vintage-misc/a2cpm/scaled/cpmcard.jpg)](/images/vintage-misc/a2cpm/cpmcard.jpg)
 
 Being a 1:1 copy, this card works just fine with everything intended to run with the authentic SoftCard. Of the several versions of CP/M available from the Asimov archive, I ended up choosing the CP/M 2.23B release from DATASOFT, which supports 63K RAM. After cleaning the Z80 card's intermittent connector, the machine boots quickly and consistently to CP/M:
 
-->[![Apple IIe booting CP/M](/images/vintage-misc/a2cpm/scaled/cpmboot.jpg)](/images/vintage-misc/a2cpm/cpmboot.jpg) [![DATASOFT CP/M 2.23B Prompt](/images/vintage-misc/a2cpm/scaled/cpmprompt.jpg)](/images/vintage-misc/a2cpm/cpmprompt.jpg)<-
+{:.center}
+[![Apple IIe booting CP/M](/images/vintage-misc/a2cpm/scaled/cpmboot.jpg)](/images/vintage-misc/a2cpm/cpmboot.jpg) [![DATASOFT CP/M 2.23B Prompt](/images/vintage-misc/a2cpm/scaled/cpmprompt.jpg)](/images/vintage-misc/a2cpm/cpmprompt.jpg)
 
 Up to this point, getting CP/M working with the IIe had been smooth sailing. Now that I'd formatted a few floppies in the Apple 16-sector CP/M format, I was ready to get some serial file transfer software moved over to the IIe. But how? No other machine I owned could read or write the Apple CP/M format. CiderPress can read CP/M images, but can't create or write them. I first tried to follow Bill Buckels' [PDF Guide](http://www.aztecmuseum.ca/applecpm/AztecCPMToApple.pdf) to transferring files between Apple DOS 3.3 floppies and Apple CP/M floppies. It worked, to a degree. I was trying to transfer the generic hex file for Kermit-80 over, as well as an Apple-specific overlay and MLOAD.HEX. The Apple overlay and MLOAD transferred, but the Microsoft-provided transfer utility for DOS 3.3 and CP/M failed with the larger generic Kermit-80 hex file. After hours of hacking away at this method, trying it both with real hardware and the A2 Oasis emulator, I decided to give up around 2:00 AM. Unfortunately for sleep, I stumbled across an Apple CP/M disk image containing Modem7, the ever-popular CP/M terminal software! The disk image even contained the Apple-specific overlays for Modem7. While it wasn't the final solution in file transfer, being limited to 1200 baud, it would allow me to get the Kermit-80 files over to the IIe.
 
@@ -29,7 +32,8 @@ By now it's 3:30 AM, and I'm reading through the CP/M 2.2 reference manual that 
 
 Being after 4:00 AM, it was time for bed. Transferring and building Kermit-80 would have to wait. After too little sleep and completing the day's tasks, I sat down to finally get Kermit-80 running under CP/M on the Apple IIe. [Here's a good guide](http://www.z80.eu/kermit.html) as to what you'll need to get Kermit-80 put together for your CP/M machine. I used Modem7 to transfer copies of the generic Kermit-80 hex file, MLOAD.COM, and the Apple-specific overlay to a new floppy. For my setup, I used the CPVAPL.HEX overlay -- Apple II, Z80 Softcard, and 6551 ACIA. After the slowish transfer of more than 70K at 1200 baud, I built the Kermit-80 COM file:
 
-->[![Kermit-80 running on the IIe](/images/vintage-misc/a2cpm/scaled/kermit.jpg)](/images/vintage-misc/a2cpm/kermit.jpg)<-
+{:.center}
+[![Kermit-80 running on the IIe](/images/vintage-misc/a2cpm/scaled/kermit.jpg)](/images/vintage-misc/a2cpm/kermit.jpg)
 
 Unsurprisingly, it works! Now I can transfer files between my Apple IIe running CP/M and any other serial-equipped machine.
 

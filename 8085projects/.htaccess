@@ -1,7 +1,0 @@
-Options +FollowSymlinks
-RewriteEngine On
-RewriteBase /
-RewriteRule ^index\.html$ http://www.glitchwrks.com/8085projects.html [R=permanent,L]
-RewriteRule ^sbcv2\.html$ http://www.glitchwrks.com/2011/10/29/SBC-Rev-2/index.html [R=permanent,L]
-RewriteRule ^scroller\.html$ http://www.glitchwrks.com/2010/09/19/Scrolling-Display/index.html [R=permanent,L]
-RewriteRule ^sbcbuild\.html$ http://www.glitchwrks.com/2010/09/02/8085-SBC/index.html [R=permanent,L]

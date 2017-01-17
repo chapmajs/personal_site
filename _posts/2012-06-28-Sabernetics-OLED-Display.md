@@ -21,7 +21,8 @@ Making the Connections
 
 Fortunately, due to the flexible designs of both the OLED module and the Bus Pirate, no additional hardware is required to interface the two. Both devices use standard 0.1" spaced square pins for interface headers, so I chose to make the connections between the two using wire wrap. I've got the tools and wire on hand, so wire wrap tends to be quicker for these interfaces, and doesn't require dragging the soldering station to work!
 
-->[![Bus Pirate connected to OLED Display](/images/general/oled/scaled/connections.jpg)](/images/general/oled/connections.jpg)<-
+{:.center}
+[![Bus Pirate connected to OLED Display](/images/general/oled/scaled/connections.jpg)](/images/general/oled/connections.jpg)
 
 Connections between the OLED module and Bus Pirate are pretty straightforward:
 
@@ -49,7 +50,8 @@ At this point, we can begin writing bytes into the display's RAM. We've initiali
 
 Again, this follows standard Bus Pirate I2C syntax. Command 0x40 tells the SSD1306 controller that we want to write to display RAM. The following bytes are written to sequential addresses in the active Page of RAM, as the RAM pointer is automatically incremented on writes. Here's the result:
 
-->[![Initialized Display with Test Pattern](/images/general/oled/scaled/inittest.jpg)](/images/general/oled/inittest.jpg)<-
+{:.center}
+[![Initialized Display with Test Pattern](/images/general/oled/scaled/inittest.jpg)](/images/general/oled/inittest.jpg)
 
 At this point, we can be pretty certain that our display actually works. However, since it's easy to interface to the Bus Pirate with a scripting language, why not push a few more bytes to the display?
 
@@ -65,11 +67,13 @@ Scripting the commands to the Bus Pirate requires talking to the USB UART. Since
 
 I threw together a quick script to dump two bitmaps to the two available RAM pages. That script is available from my [GitHub Examples repository](https://github.com/chapmajs/Examples/blob/master/display_test.py). I've tested it under Arch Linux x86_64 and i686 with Python 3.2.3 and pySerial 2.6-2 from the Arch Linux pacman repositories. The two bitmaps align to render the [Enable Labs](http://www.enablelabs.com) logo and a message. Here's the output:
 
-->[![Bus Pirate and Display after running Python script](/images/general/oled/scaled/buspiratedisplay.jpg)](/images/general/oled/buspiratedisplay.jpg) [![Hello from Troy NY!](/images/general/oled/scaled/hello.jpg)](/images/general/oled/hello.jpg)<-
+{:.center}
+[![Bus Pirate and Display after running Python script](/images/general/oled/scaled/buspiratedisplay.jpg)](/images/general/oled/buspiratedisplay.jpg) [![Hello from Troy NY!](/images/general/oled/scaled/hello.jpg)](/images/general/oled/hello.jpg)
 
 Final Thoughts
 --------------
 
 The Sabernetics OLED module was definitely worth the $24.95 and just goes to show that funding for neat electronics projects is possible for hobbyists. The display module chosen seems to be of high quality, and produces a sharp, sunlight-readable image with minimal external hardware (by the way, the display is similar to the blue Kynar wrapping wire, but it comes out white in pictures!). Testing with the Bus Pirate is easy and scriptable, and allows one to verify complete display operation before committing it to a project. For integration into projects with a larger production quantity, the bare display modules can be purchased separately and interfaced directly with the project, reducing cost and overall board size. The choice of I2C protocol is a definite win if the OLED module is to be used with a modern microcontroller.
 
--><script language="Javascript" src="http://www.glitchwrks.com/counter/counter.php?page=oled"></script> happy Kickstarter backers<-
+{:.center}
+<span><script language="javascript" src="https://services.theglitchworks.net/counters/oled"></script> happy Kickstarter backers</span>

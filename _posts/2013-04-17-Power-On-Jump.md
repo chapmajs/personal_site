@@ -20,7 +20,8 @@ Fortunately, the S-100 bus allows one to construct a power-on jump circuit on a 
 
 There are a few common/popular ways to achieve power-on jump with 8080-compatible processors. Many of them depend on integration with either the CPU or ROM board (switching the ROM address, for instance) and aren't applicable to this situation unless the ROM board is to be modified extensively. Of the common methods, instruction jamming and [NOP sleds](http://en.wikipedia.org/wiki/NOP_slide) seemed the most appealing. I chose to use a method of instruction jamming based on the power-on jump circuit of the [Cromemco ZPU](http://www.s100computers.com/Hardware%20Folder/Cromemco/Z80/ZPU.htm), adapted for use on an external board. This would require fewer components when using "old" TTL, which was a goal for this project. Here's the circuit I came up with:
 
-->[![Schematic](/images/s100/jump_board/scaled/schematic.png)](/images/s100/jump_board/schematic.png)<-
+{:.center}
+[![Schematic](/images/s100/jump_board/scaled/schematic.png)](/images/s100/jump_board/schematic.png)
 
 When system /PRESET goes low, the 74LS164 shift register gets reset, forcing all outputs to off. Its inputs are tied to +5V, and the shift register is clocked by pSYNC, meaning that every 8080 data fetch shifts a logic 1 into the shift register. Output 4 of the shift register both enables the output buffers that drive the Data In bus and the open-collector /PHANTOM driver, which prevents other memory boards from responding while the circuit is active. This output remains low for three data fetches (an 8080 JMP instruction is 3 bytes long), going high on the fourth data fetch, which should be our bootstrap code. Output 3 selects a set of inputs from a 74LS157 quad 2-to-1 multiplexer.
 
@@ -35,18 +36,22 @@ The last point is accomplished with the 74LS157 multiplexer. Its select pin is t
 Board Construction
 ------------------
 
-->[![Front of boards](/images/s100/jump_board/scaled/original_front.jpg)](/images/s100/jump_board/original_front.jpg) [![Back of boards](/images/s100/jump_board/scaled/original_back.jpg)](/images/s100/jump_board/original_back.jpg)<-
+{:.center}
+[![Front of boards](/images/s100/jump_board/scaled/original_front.jpg)](/images/s100/jump_board/original_front.jpg) [![Back of boards](/images/s100/jump_board/scaled/original_back.jpg)](/images/s100/jump_board/original_back.jpg)
 
 I purchased two IO-2 boards from [Herb Johnson](http://retrotechnology.com/) a while back, one in basically unused condition, the other...well, fairly hacked up. Before starting, everything that wasn't a socket was stripped from the board. It took several applications of concentrated dish soap and 91% isopropyl alcohol to get the board to the point at which it could be repopulated. Here's how it looked after its cleaning:
 
-->[![Stripped and cleaned board](/images/s100/jump_board/scaled/stripped_down.jpg)](/images/s100/jump_board/stripped_down.jpg) [![Solid State Music markings](/images/s100/jump_board/scaled/old_ssm_logo.jpg)](/images/s100/jump_board/old_ssm_logo.jpg)<-
+{:.center}
+[![Stripped and cleaned board](/images/s100/jump_board/scaled/stripped_down.jpg)](/images/s100/jump_board/stripped_down.jpg) [![Solid State Music markings](/images/s100/jump_board/scaled/old_ssm_logo.jpg)](/images/s100/jump_board/old_ssm_logo.jpg)
 
 Part of the reason I went through the trouble of cleaning this board is that it appears to be older than the other IO-2 boards I have. It includes an etch in the regulator area that doesn't appear on the other IO-2s, there's no solder mask, and the only other markings are "BY M.T. WRIGHT" and "IO-2". In any case, it was time to start rebuilding, which of course starts with power regulation. The jump circuit requires only +5V, so only the 7805 regulator is populated:
 
-->[![Regulator and capacitors](/images/s100/jump_board/scaled/regulator.jpg)](/images/s100/jump_board/regulator.jpg)<-
+{:.center}
+[![Regulator and capacitors](/images/s100/jump_board/scaled/regulator.jpg)](/images/s100/jump_board/regulator.jpg)
 
 The rest of the board is populated according to the schematic. I was able to reuse the existing sockets with the addition of one more 16-pin socket for a 74LS367. A 2N2222 transistor was used for an open-collector /PHANTOM driver to avoid the inclusion of another DIP device when only a single driver was required. All wiring was done using 30 gauge Kynar-insulated wrapping wire. The connection between the shift register and the enable pins of the 74LS367 drivers was made with two machine pin sockets and a jumper to allow easy disabling of power-on-jump.
 
-->[![Finished jump circuit](/images/s100/jump_board/scaled/circuit_closeup.jpg)](/images/s100/jump_board/circuit_closeup.jpg) [![Finished wiring](/images/s100/jump_board/scaled/back.jpg)](/images/s100/jump_board/back.jpg)<-
+{:.center}
+[![Finished jump circuit](/images/s100/jump_board/scaled/circuit_closeup.jpg)](/images/s100/jump_board/circuit_closeup.jpg) [![Finished wiring](/images/s100/jump_board/scaled/back.jpg)](/images/s100/jump_board/back.jpg)
 
 Success! The board disables my system RAM at 0x0000 and jams opcodes onto the data bus! If you have a system with a front panel, you can single-step after a reset and observe the opcodes pushed onto the data bus. While observing the last byte in the 3-byte JMP instruction, the DIP switches can be changed with the results showing up immediately on the data bus. So far, I've tested this circuit with 2 MHz 8080 CPU boards as well as 4 MHz Z80 CPU boards with no problems. Combinational logic should be fast enough for systems above 4 MHz as well. Just be sure your processor board supplies pSYNC and that your RAM board(s) respond to the /PHANTOM line.

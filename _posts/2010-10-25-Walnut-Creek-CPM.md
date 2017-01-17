@@ -11,12 +11,9 @@ Today's the 16th anniversary of the last CD-ROM release of the Walnut Creek CP/M
 
 UPDATE: The archive is now being hosted at the [Glitch Works File Dump](http://filedump.glitchwrks.com/software/vintage/cpm/walnut_creek/) as well as being available via BitTorrent.
 
-<table class="pageview">
-	<tr>
-		<th class="codeblock">.:[Torrent Info]:.</th>
-	</tr>
-	<tr>
-		<td><pre>
+<div class="pageview">
+  <div class="pageview-header codeblock-header">.:[Torrent Info]:.</div>
+  <pre>
     ._____ __   __  __          __
    /  ___/|  | |  |/  |_  .___ |  |__                                    *
   /  /  __|  | |  \   __\/  __\|  |  \  THIS TORRENT RELEASED BY   |
@@ -75,8 +72,8 @@ Also many thanks to Binary Revolution/the DDP, 2600, and 300 Baud Magazine!
 This is free software, and as far as we know it's perfectly legitimate to
 redistribute it in its whole, unmodified, original state. Keep your share ratio
 high by leaving this in your seed queue!
-		</pre></td>
-	</tr>
-</table>
+	</pre>
+</div>
 
-->Please help keep old software available!<-
+{:.center}
+Please help keep old software available!
