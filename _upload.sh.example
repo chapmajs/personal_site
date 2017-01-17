@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Example upload script -- send files to server via RSYNC over SSH
+
+user_name="deploy_user"
+host_name="your.site.com"
+root_dir="/var/www/htdocs"
+subdir="yoursite"
+
+rsync -e ssh -avzP --delete _site/ $user_name@$host_name:$root_dir/$subdir/

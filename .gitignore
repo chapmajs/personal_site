@@ -11,3 +11,5 @@
 *.bak
 
 _site/
+
+_upload.sh
