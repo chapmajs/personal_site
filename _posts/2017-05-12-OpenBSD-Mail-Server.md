@@ -45,6 +45,8 @@ If you have accounts that will not ever receive email (an account for your site'
 
 Dovecot's configuration is complicated by the fact that it is spread across many files in a `conf.d` directory. In particular, I couldn't immediately figure out where to put the configuration for the shared `passwd` file. I ended up putting it in `10-auth.conf`, at the very end, and commenting out all of the other authentication options. At some point I will probably compact the Dovecot configuration directory down into a single file, since my configuration is rather simple.
 
+After starting Dovecot for the first time with SSL/TLS enabled, generation of the Diffie-Hellman parameters (dhparams) takes quite some time, especially if you've set it to a large value. This caused SSL/TLS connections to fail at first with no clear error message from the Dovecot logs. `tail` the log file and wait for a message indicating completion of dhparams generation before trying to connect over SSL/TLS.
+
 When connecting with [Sylpheed email client](http://sylpheed.sraoss.jp/en/) I had to check the option to use non-blocking SSL. Apparently Dovecot doesn't support it. I didn't test with only sending through OpenSMTPd, though it's hardly relevant since you can't enable it for SMTP and not for IMAP. Of course, if you're connecting on SSL/TLS specific ports (`587` for SMTP, `993` for IMAP) then you want to connect with SSL, not STARTTLS.
 
 ## Future Improvements
