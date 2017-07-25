@@ -61,5 +61,4 @@ While one could use battery backed low-power CMOS flip flops, a default-to-prote
 
 This feature is not yet implemented, but will be included in the current prototype. Wait for Part 2!
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/feram_part1"></script> BASIC reloads averted</span>
+{% counter :id => 'feram_part1', :text => 'BASIC reloads averted' %}

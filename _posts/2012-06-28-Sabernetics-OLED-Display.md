@@ -75,5 +75,4 @@ Final Thoughts
 
 The Sabernetics OLED module was definitely worth the $24.95 and just goes to show that funding for neat electronics projects is possible for hobbyists. The display module chosen seems to be of high quality, and produces a sharp, sunlight-readable image with minimal external hardware (by the way, the display is similar to the blue Kynar wrapping wire, but it comes out white in pictures!). Testing with the Bus Pirate is easy and scriptable, and allows one to verify complete display operation before committing it to a project. For integration into projects with a larger production quantity, the bare display modules can be purchased separately and interfaced directly with the project, reducing cost and overall board size. The choice of I2C protocol is a definite win if the OLED module is to be used with a modern microcontroller.
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/oled"></script> happy Kickstarter backers</span>
+{% counter :id => 'oled', :text => 'happy Kickstarter backers' %}

@@ -46,5 +46,4 @@ Currently the switchmode supply is wired directly to the AC switch and fuse. Its
 {:.center}
 [![Racked](/images/hardware/rack_dc_supply/scaled/installed.jpg)](/images/hardware/rack_dc_supply/installed.jpg)
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/rackmount_supply"></script> wall warts replaced</span>
+{% counter :id => 'rackmount_supply', :text => 'wall warts replaced' %}

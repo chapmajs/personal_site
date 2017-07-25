@@ -114,5 +114,4 @@ Notes on Users
 
 It appears MariaDB replication requires that any users who execute some SQL commands to which the user is associated also exist on the slave server. This issue popped up when configuring replication for a [Ruby on Rails](http://rubyonrails.org/) -- it appears that Rails migrations will cause an error if the Rails application connects as a user other than root if that user does not exist on the slave and have adequate GRANT permissions on the replicated database.
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/replication"></script> tables dropped</span>
+{% counter :id => 'replication', :text => 'tables dropped' %}

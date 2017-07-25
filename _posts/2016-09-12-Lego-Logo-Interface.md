@@ -47,5 +47,4 @@ I wrote out a copy of Lego TC Logo using [ADTPro](http://adtpro.sourceforge.net/
 
 Success! The board worked on the first try! Expect to see this board in action at the VCF booth at the [New York Maker Faire](http://makerfaire.com/new-york/) this year!
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/lego_logo"></script> Lego kits revived</span>
+{% counter :id => 'lego_logo', :text => 'Lego kits revived' %}

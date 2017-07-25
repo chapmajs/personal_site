@@ -51,5 +51,4 @@ Route `TP1` from the Slot 8 Support module through the remaining two pins of K3,
 
 That's it! If you performed the K3 modification, put a jumper shunt on K3 to enable Slot 8 support, and remove it for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please [use the contact form](https://services.theglitchworks.net/ng/messages/new) to make your order. If you have an XT-IDE rev 3 card, here's the [installation writeup](/2017/02/03/slot-8-support).
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/slot_8_support"></script> XT Slot 8s Utilized</span>
+{% counter :id => 'slot_8_support', :text => 'XT Slot 8s Utilized' %}

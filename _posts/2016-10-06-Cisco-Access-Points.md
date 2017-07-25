@@ -139,5 +139,4 @@ So how do we actually know these are untagged, when everything is pointing to th
 
 Just for completeness, the same setup was tried with the same AP running IOS 12 and the above configuration tricks. `BVI1` traffic is indeed encapsulated with the proper VLAN headers under IOS 12.
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/cisco_aps"></script> WRT54Gs replaced</span>
+{% counter :id => 'cisco_aps', :text => 'WRT54Gs replaced' %}

@@ -53,5 +53,4 @@ The final corrected board accomplishes everything I wanted from this design. It 
 
 This project is an [Open Hardware](http://www.openhardware.org/) project; as such, the EAGLE schematic, board, and custom parts files are available [on GitHub](https://github.com/chapmajs/hardware/tree/master/relay_board), along with documentation. Please [contact me](https://services.theglitchworks.net/ng/messages/new) if you are interested in taking part in a bulk production-size order of these boards. As of the date of writing, all components necessary to build these boards are readily available from several suppliers.
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/relay_board"></script> output ports fried</span>
+{% counter :text => 'output ports fried' %}

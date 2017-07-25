@@ -57,5 +57,4 @@ Choices for quad port gigabit Ethernet adapters seem to be pretty open. Dependin
 
 This roundup only covers gigabit PCI-compatible quad port cards. There are a number of options available for the PCIe bus (careful, many of these use more than one PCIe lane and won't work in an x1 slot!), and if you don't need gigabit ports on your router, there are several good quad port fast Ethernet adapters available for the PCI and PCI-X bus. Our fallback, had the Sun GigaSwift card not worked out, would have been the Sun Quad Fast Ethernet PCI Adapter (501-4366), which is a [hme(4)](http://www.freebsd.org/cgi/man.cgi?query=hme&sektion=4) based card and has been supported since FreeBSD 5.0.
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/quadnic"></script> packets filtered</span>
+{% counter :id => 'quadnic', :text => 'packets filtered' %}

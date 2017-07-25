@@ -55,5 +55,4 @@ With basic configuration complete, I'm in the process of switching over to the n
 
 The overall experience with OpenSMTPd was very good, it will be replacing `postfix` as my MTA of choice for future projects.
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/opensmtpd"></script> emails bounced</span>
+{% counter :id => 'opensmtpd', :text => 'emails bounced' %}
