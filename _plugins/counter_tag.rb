@@ -10,7 +10,7 @@ module GlitchWorks
     def internal_render
       <<~COUNTER
       <p class="center">
-          <script language="javascript" src="https://services.theglitchworks.net/counters/#{self.id}"></script> #{@text}
+          <script language="javascript" src="https://services.theglitchworks.net/counters/#{id}"></script> #{@text}
       </p>
       COUNTER
     end
