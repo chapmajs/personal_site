@@ -16,3 +16,13 @@ There are a number of custom plugins found in [the _plugins directory](https://g
 * `linked_image` places one or more image thumbnails on the page, with links to high-res versions
 
 See some of the files in [the _posts directory](https://github.com/glitchwrks/glitchwrks.com/tree/master/_posts) for the usage of these plugins.
+
+### `_upload.sh.example`
+
+This is the short shell script that uses `rsync` to keep glitchwrks.com updated with the code Jekyll generates. It should work with most UNIX-like operating systems, and currently deploys to an OpenBSD machine.
+
+### Development Environment
+
+I mostly use this project under [Slackware Linux 14.2](http://www.slackware.com) with [RVM](https://rvm.io) for Ruby version management and [bundler](https://bundler.io) for gemset management. Current development Ruby is MRI `2.3.1p112`.
+
+Since the generated site is static, none of the development dependencies are required on the production server.
