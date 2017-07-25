@@ -86,6 +86,6 @@ The next test was to actually run some PDP-8 code in the RAM present on the GW-O
 
 <div class="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/0qyRsEWBsg8" frameborder="0" allowfullscreen></iframe></div>
 
-If you're interested in purchasing a GW-OSI-RAM1 Universal RAM board, parts kit, or assembled/tested unit, please use the [contact form](https://services.theglitchworks.net/ng/messages/new).
+If you're interested in purchasing a GW-OSI-RAM1 Universal RAM board, parts kit, or assembled/tested unit, please use the {% contact :text => 'contact form' %}.
 
 {% counter :id => 'gw_osi_ram1', :text => 'RAM boards replaced' %}

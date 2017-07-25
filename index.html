@@ -1,3 +1,7 @@
+---
+layout: null
+---
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 	"http://www.w3.org/TR/html4/loose.dtd">
 
@@ -23,14 +27,14 @@
 			<a href="/vintage.html">Vintage Computers</a> |
 			<a href="/coding.html">Coding</a> |
 			<a href="/services.html">Services</a> |
-			<a href="https://services.theglitchworks.net/ng/messages/new">Contact</a>
+			{% contact :text => 'Contact' %}
 		</div>
     <br>
     <!--End Navigation-->
 	
     <div class="center">
 	    There have been <script language='javascript' src="https://services.theglitchworks.net/counters/main?ipv6=true"></script> unique visits since 12 October 2010.<br>
-	    Copyright (c) 2017 The Glitch Works.
+	    Copyright (c) {{ 'now' | date: "%Y" }} The Glitch Works
     </div>
 
 </body>

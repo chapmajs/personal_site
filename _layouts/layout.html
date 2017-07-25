@@ -16,7 +16,7 @@
       <a href="/vintage.html">Vintage Computers</a> |
       <a href="/coding.html">Coding</a> |
       <a href="/services.html">Services</a> |
-      <a href="https://services.theglitchworks.net/ng/messages/new">Contact</a>
+      {% contact :text => 'Contact' %}
     </div>
     <br>
     <section>
@@ -24,7 +24,7 @@
     </section>
     <br/><br/>
     <div class="boilerplate", align="center">
-      Copyright (c) 2017 The Glitch Works
+      Copyright (c) {{ 'now' | date: "%Y" }} The Glitch Works
     </div>
   </body>
 </html>

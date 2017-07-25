@@ -65,6 +65,6 @@ With the `/CARDSEL` jumpers installed, make the jumper connections to `/ISA_IOR`
 {:.center}
 [![I/O Jumpers Installed](/images/xtide/slot_8_support/scaled/io_jumpers.jpg)](/images/xtide/slot_8_support/io_jumpers.jpg)
 
-That's it! If you routed `/CARDSEL` through a switch, close the switch to enable Slot 8 support, and open the switch for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please [use the contact form](https://services.theglitchworks.net/ng/messages/new) to make your order. If you have an XT-IDE rev 2 card, here's the [installation writeup](/2017/02/05/slot-8-xt-ide-rev2).
+That's it! If you routed `/CARDSEL` through a switch, close the switch to enable Slot 8 support, and open the switch for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please {% contact :text => 'use the contact form' %} to make your order. If you have an XT-IDE rev 2 card, here's the [installation writeup](/2017/02/05/slot-8-xt-ide-rev2).
 
 {% counter :text => 'XT Slot 8s Utilized' %}

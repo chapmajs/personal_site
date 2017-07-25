@@ -14,6 +14,7 @@ There are a number of custom plugins found in [the _plugins directory](https://g
 * `counter` generates a JavaScript include for counters from [site_services](https://github.com/chapmajs/site_services) -- Sinatra app that provides hit counter services
 * `danger` generates an attention-getting notice on the page
 * `linked_image` places one or more image thumbnails on the page, with links to high-res versions
+* `contact` puts a contact form link in, defaulting to "contact us" for link text
 
 See some of the files in [the _posts directory](https://github.com/glitchwrks/glitchwrks.com/tree/master/_posts) for the usage of these plugins.
 

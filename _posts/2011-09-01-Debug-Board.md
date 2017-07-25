@@ -44,5 +44,5 @@ The IO-2 provides etched traces for two Intel 8212 8-bit Input/Output ports. The
 Future Features
 There are several features I'd like to add to my debug board. I've considered adding 256 bytes of RAM in two 2101 static RAMs, as this would also allow me to test the small quantity of 2101s I have before using them in other projects. I would also like to add a socket for a 1702A EPROM, since I don't currently have any S-100 boards capable of reading 1702As. Both of these tasks should prove trivial, but have not been implemented as they're not urgent.
 
-I'm also keeping an eye out for another IO-2 board, in any condition. I'd like to build one up as a full-time 1702A PROM board. If you've got one you'd like to donate or sell, please [contact me](https://services.theglitchworks.net/ng/messages/new) using the link above!
+I'm also keeping an eye out for another IO-2 board, in any condition. I'd like to build one up as a full-time 1702A PROM board. If you've got one you'd like to donate or sell, please {% contact %} using the link above!
 
