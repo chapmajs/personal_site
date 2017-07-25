@@ -7,16 +7,13 @@ description: I was erasing a pile of UV EPROMs today and got tired of interrupti
 image: ruby.png
 ---
 
-&nbsp;
-<div class='error_explanation'>
-  <div class='error_explanation_content'>
-    <p>We're going to control something mains powered with a computer! In the case of my old, low-feature EPROM eraser, this means that if a <a href='http://www.catb.org/jargon/html/B/Bad-Thing.html'>Bad Thing</a> happens, the UV lamp could turn on which is potentially damaging to eyes and skin! Always unplug whatever you're controlling before working on it, <b>DO NOT DEPEND ON THE SOFTWARE/COMPUTER TO DO THE RIGHT THING!</b></p>
-  </div>
-</div>
+{% danger :add_break => true %}
+We're going to control something mains powered with a computer! In the case of my old, low-feature EPROM eraser, this means that if a [Bad Thing](http://www.catb.org/jargon/html/B/Bad-Thing.html) happens, the UV lamp could turn on which is potentially damaging to eyes and skin! Always unplug whatever you're controlling before working on it, **DO NOT DEPEND ON THE SOFTWARE/COMPUTER TO DO THE RIGHT THING!**
+{% enddanger %}
 
 I've got a cheap old EPROM eraser which simply turns on when you plug it in, and turns off when you unplug it (no safety interlocks, even!). Erasing EPROMs usually involves filling it up, plugging it in, and setting a kitchen timer or something for 20 minutes. The trouble is, you have to remember to unplug it when the timer goes off, which involves stopping what you're currently doing or forgetting about the EPROMs and overerasing them into uselessness. I've already built a number of [optoisolated relay switched outlets](/2013/02/28/relay-board) for various projects, but didn't currently have a timer to control them. Enter Ruby!
 
-{% highlight ruby %}
+{% codeblock :language => 'ruby', :title => 'eprom_timer.rb' %}
 require 'serialport'
 require 'ruby-progressbar'
 
@@ -41,7 +38,7 @@ ensure
   puts '...done!'
   exit
 end
-{% endhighlight %}
+{% endcodeblock %}
 
 (View [on GitHub](https://github.com/chapmajs/Examples/blob/master/eprom_timer.rb) for direct download)
 
@@ -61,5 +58,4 @@ The control of the relay is wrapped in a `begin-rescue-ensure-end` structure, wh
 
 For wiring, simply use pins 4 and 7 (RTS and GND) on a DB-25, or pins 7 and 5 on a DB-9. You can stick a LED directly across them (they're current limited) to test. Since the RS-232 port reverses polarity between mark and space, you can reverse the connections to invert the action on the LED. Use a two-color, two-pin LED and try toggling the RTS pin if you're unsure.
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/eprom_timer"></script> EPROMs ruined</span>
+{% counter :text => 'EPROMs ruined' %}
