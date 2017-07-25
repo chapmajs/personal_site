@@ -60,7 +60,7 @@ If you're on a non-GNU userland (Mac OS X, *BSD) you will probably need to use `
 
 The slave can now be started from the MariaDB console with `START SLAVE`, and its status viewed with `SHOW SLAVE STATUS`:
 
-{% highlight mysql %}
+{% codeblock :language => 'mysql', :title => 'MariaDB Slave Status' %}
 MariaDB [(none)]> START SLAVE;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -107,7 +107,7 @@ Master_SSL_Verify_Server_Cert: No
   Replicate_Ignore_Server_Ids: 
              Master_Server_Id: 4321
 1 row in set (0.00 sec)
-{% endhighlight %}
+{% endcodeblock %}
 
 Notes on Users
 --------------
