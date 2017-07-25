@@ -1,6 +1,5 @@
 module GlitchWorks
   class Tag < Liquid::Tag
-
     include GlitchWorks::Base
 
     def render (context)
