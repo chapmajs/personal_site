@@ -7,12 +7,9 @@ description: In transitioning from Sinatra to Rails for site services, I ended u
 image: rails.png
 ---
 
-&nbsp;
-<div class='error_explanation'>
-  <div class='error_explanation_content'>
-    <p>Stripping out part of Rails' security features is often a <a href='http://www.catb.org/jargon/html/B/Bad-Thing.html'>Bad Thing</a> and shouldn't be done unless you're really sure you don't need them. <i>Rails' default configuration is sane and promotes security for most uses.</i> Don't follow the advice in this article blindly!</p>
-  </div>
-</div>
+{% danger :add_break => true %}
+Stripping out part of Rails' security features is often a [Bad Thing](http://www.catb.org/jargon/html/B/Bad-Thing.html) and shouldn't be done unless you're really sure you don't need them. *Rails' default configuration is sane and promotes security for most uses.* Don't follow the advice in this article blindly!
+{% enddanger %}
 
 This site's dynamic functions started out as being provided by a small [Sinatra](http://www.sinatrarb.com/) application. You can view that project [on GitHub](https://github.com/chapmajs/site_services.git). It started out with counters, then got a `POST` endpoint for a contact form bolted on, and eventually ended up supporting part of my preorder system. I had included [ActiveRecord](https://rubygems.org/gems/activerecord) from the start, but as the application started needing email templates, better user-facing error reporting, et c. it became clear that I should just tranisition to [Ruby on Rails](http://rubyonrails.org/) rather than slowly bringing in all of the bits of Rails, one at a time.
 
@@ -71,5 +68,4 @@ As the warning at the top of the page notes, this isn't something that most peop
 
 Removing cookie and session support reduces the available attack surface of the application -- there is no persistent data between requests, except what's in the database and the temporary storage of the request's flash message(s).
 
-{:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/rails_cookies"></script> sessions hijacked</span>
+{% counter :id => 'rails_cookies', :text => 'sessions hijacked' %}
