@@ -1,20 +1,22 @@
 require_relative 'glitchworks_tag'
 
-module GlitchWorks
-  class CounterTag < GlitchWorks::Tag
-    
-    def bind_params (params)
-      @text = params[:text]
-    end
-
-    def internal_render
-      <<~COUNTER
-      <p class="center">
-          <script language="javascript" src="https://services.theglitchworks.net/counters/#{id}"></script> #{@text}
-      </p>
-      COUNTER
-    end
+class GlitchWorks::CounterTag < GlitchWorks::Tag
   
+  def bind_params (params)
+    @text = params[:text]
+    @id = params[:id]
+  end
+
+  def id
+    @id || super
+  end
+
+  def internal_render
+    <<~COUNTER
+    <p class="center">
+        <script language="javascript" src="https://services.theglitchworks.net/counters/#{id}"></script> #{@text}
+    </p>
+    COUNTER
   end
 end
 
