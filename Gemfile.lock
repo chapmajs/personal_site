@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/chapmajs/pygments.rb.git
+  revision: 6656a61270155ca640869bb1f1f20d5f4351069f
+  branch: ruby_squiggly_heredoc_fix
+  specs:
+    pygments.rb (1.1.2)
+      multi_json (>= 1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -27,13 +35,10 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
     mercenary (0.3.6)
+    multi_json (1.12.1)
     pathutil (0.14.0)
       forwardable-extended (~> 2.6)
-    posix-spawn (0.3.11)
     public_suffix (2.0.5)
-    pygments.rb (0.6.3)
-      posix-spawn (~> 0.3.6)
-      yajl-ruby (~> 1.2.0)
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -44,14 +49,13 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    yajl-ruby (1.2.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   jekyll
-  pygments.rb
+  pygments.rb!
 
 BUNDLED WITH
    1.13.7

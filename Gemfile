@@ -2,4 +2,4 @@
 source "https://rubygems.org"
 
 gem 'jekyll'
-gem 'pygments.rb'
+gem 'pygments.rb', :git => 'https://github.com/chapmajs/pygments.rb.git', :branch => 'ruby_squiggly_heredoc_fix'
