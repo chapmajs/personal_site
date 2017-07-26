@@ -19,9 +19,7 @@ class GlitchWorks::LinkedImageTag < GlitchWorks::Tag
   private
 
   def linked_image_string (file, alt_text)
-    <<~LINKED_IMAGE
-      <a href="/images/#{category}/#{id}/#{file}"><img src="/images/#{category}/#{id}/scaled/#{file}" alt="#{alt_text}"></a>
-    LINKED_IMAGE
+    "  <a href='/images/#{category}/#{id}/#{file}'><img src='/images/#{category}/#{id}/scaled/#{file}' alt='#{alt_text}'></a>"
   end
 end
 
