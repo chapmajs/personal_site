@@ -303,7 +303,7 @@ end
 Liquid::Template.register_tag('danger', GlitchWorks::DangerBlock)
 {% endcodeblock %}
 
-The danger block tag makes use of the LoD accessor `markdown_converter`, which is defined in `GlitchWorks::Base`. It passes the contents of the block, assigned to `@text`, into the generator and displays it in a styled `<div>` to draw caution to the warning it contains. There's an optional `:add_break` parameter, which just inserts an unstyled `<div>` with a non-breaking space. This is necessary to add a bit of space between the warning if it immediately follows the header in a writeup. Here's an example of its use:
+The danger block tag makes use of the LoD accessor `markdown_converter`, which is defined in `GlitchWorks::Base`. It passes the contents of the block, assigned to `@text`, into the generator and displays it in a styled `<div>` to draw attention to the warning it contains. There's an optional `:add_break` parameter, which just inserts an unstyled `<div>` with a non-breaking space. This is necessary to add a bit of space between the warning if it immediately follows the header in a writeup. Here's an example of its use:
 
 ```
 {% raw %}{% danger %}{% endraw %}
@@ -324,7 +324,7 @@ Code Block Tag: an Extension of Jekyll's Highlight Tag
 
 The codeblock tag is a direct extension of Jekyll's `highlight` tag, and as such it does not inherit from any of the parent classes or include the base module described above. In that sense, it's one of the more straightforward tag blocks to examine:
 
-{% codeblock :language => 'ruby', :title => '_plugins/danger_block.rb' %}
+{% codeblock :language => 'ruby', :title => '_plugins/code_block.rb' %}
 module GlitchWorks
   class CodeBlock < Jekyll::Tags::HighlightBlock
 
