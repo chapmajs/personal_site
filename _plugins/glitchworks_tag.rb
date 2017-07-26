@@ -1,3 +1,5 @@
+require_relative 'glitchworks_base'
+
 module GlitchWorks
   class Tag < Liquid::Tag
     include GlitchWorks::Base
