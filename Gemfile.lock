@@ -1,7 +1,6 @@
 GIT
-  remote: https://github.com/chapmajs/pygments.rb.git
-  revision: 6656a61270155ca640869bb1f1f20d5f4351069f
-  branch: ruby_squiggly_heredoc_fix
+  remote: https://github.com/tmm1/pygments.rb.git
+  revision: f432153626671a80e31b640fb598dffb9ac2f0d0
   specs:
     pygments.rb (1.1.2)
       multi_json (>= 1.0.0)
