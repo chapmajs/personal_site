@@ -1,3 +1,5 @@
+require_relative 'glitchworks_block'
+
 class GlitchWorks::DangerBlock < GlitchWorks::Block
 
   def bind_params (params)
