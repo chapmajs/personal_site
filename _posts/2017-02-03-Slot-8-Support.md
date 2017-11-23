@@ -12,6 +12,7 @@ image: slot_8_support_icon.png
 * [GitHub Repository](https://github.com/glitchwrks/xt_ide_slot_8_support/)
 * [Build Thread on VC Forums](http://www.vcfed.org/forum/showthread.php?54048)
 * [XT-IDE rev 2 Installation Writeup](/2017/02/05/slot-8-xt-ide-rev2)
+* [Slot 8 Support on Glitch Works Tindie Store](https://www.tindie.com/products/10590/)
 
 With the IBM 5160 PC/XT motherboard, ISA slot 8 is a special case. [modem7 provides an excellent write-up](http://www.minuszerodegrees.net/5160/misc/5160_slot_8.htm) on slot 8 and its requirements. Basically, there's a `/CARDSEL` line that needs to be pulled low when a card in slot 8 wants to respond to a read operation. Many cards don't support this feature. Those that do usually have a jumper to specifically enable slot 8 compatibility.
 

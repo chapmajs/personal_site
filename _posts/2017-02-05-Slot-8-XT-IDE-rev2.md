@@ -12,6 +12,7 @@ image: rev_2_slot_8_icon.png
 * [GitHub Repository](https://github.com/glitchwrks/xt_ide_slot_8_support/)
 * [Build Thread on VC Forums](http://www.vcfed.org/forum/showthread.php?54048)
 * [XT-IDE rev 3 Installation Writeup](/2017/02/03/slot-8-support)
+* [Slot 8 Support on Glitch Works Tindie Store](https://www.tindie.com/products/10590/)
 
 Part of the purpose in doing [XT-IDE Slot 8 Support](/2017/02/03/slot-8-support) as a daughterboard module was to make Slot 8 Support available for older revisions of the XT-IDE board. It's usable on any previous board that has ISA pin `B8` present on the edge connector. Many of the rev 1 production run boards had this pin removed to save on plating costs, so the Slot 8 Support board won't work there. It does, however, work with the XT-IDE rev 2 boards, and allows use of ROM, IDE, and even the onboard serial port when the board is installed in Slot 8.
 
