@@ -10,3 +10,4 @@ class GlitchWorks::LinkedImageTag < GlitchWorks::BaseImageTag
 end
 
 Liquid::Template.register_tag('linked_image', GlitchWorks::LinkedImageTag)
+Liquid::Template.register_tag('linked_images', GlitchWorks::LinkedImageTag)
