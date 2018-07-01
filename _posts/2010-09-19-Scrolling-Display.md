@@ -10,29 +10,29 @@ image: scroller-icon.jpg
 Now that the 8085 SBC had been converted to a printed circuit board and tested, it was time to build a perihiperal board! With the 2010 Maker Faire in NYC approaching, I decided something visual that could be shown off at the M.A.R.C.H. table. A LED scrolling sign seemed relevant, doubly so as I could reuse the output routines for future projects.
 
 {:.center}
-[![Close-up of LED display](/images/8085/scroller/scaled/closeupdisp.jpg)](/images/8085/scroller/closeupdisp.jpg)
+[![Close-up of LED display](/images/i8085/scroller/scaled/closeupdisp.jpg)](/images/i8085/scroller/closeupdisp.jpg)
 
 Recognize the display? It's the Siemens PDSP-1881 from the original point-to-point 8085 prototype! This one was pulled from the board, but I have several in the event that I should want to use the original again. The PDSP-1881 is a yellow 8-character LED display with full ASCII decoding. It's covered with a red filter in these images because the camera doesn't want to focus on the plain display, and when it does the brightness of the exposed LED dice washes out the rest of the image. It's an easy display to interface with, requiring /CS, /WR, address and data lines. I don't use any of it's advanced features like software-controlled brightness or Flash RAM, so the A3 and A4 lines are tied directly to +5 V (don't forget to do this if they're unusued -- I made that mistake, which will result in very erratic operation!).
 
 I originally breadboarded the display to the 8085 SBC using a 40-pin female IDC socket soldered to the SBC's 40-pin expansion connector. This allows one to insert breadboarding wire into the socket just as with a breadboard. It will also allow a stacking connector or IDC male header to plug into the SBC. I wanted to leave the pins accessible for further experimentation, so I built my own stacking connector using extra-long breakaway SIP sockets. These are meant as a "build your own" socket system, and are cheaply available over the Internet. They work perfectly in this application -- after being soldered to a piece of perfboard, you can plug the perfboard into the SBC's expansion connector and still connect wires to the SIP sockets.
 
 {:.center}
-[![Perfboard with long pins](/images/8085/scroller/scaled/perfboard.jpg)](/images/8085/scroller/perfboard.jpg)
+[![Perfboard with long pins](/images/i8085/scroller/scaled/perfboard.jpg)](/images/i8085/scroller/perfboard.jpg)
 
 I/O space address decoding was done using a 74LS138, which gives us 8 segments of 32 ports each. This is sufficient for our application; and besides, other boards on the bus are free to decode I/O space as they wish! The 8085's multiplexed bus is interesting in that during an I/O access, the 8-bit address is mirrored on the high address bits. This means that no address latch is needed for I/O with the 8085. That's why the 8085 SBC brings out the multiplexed address/data bus and the /ALE lines -- most perihiperal boards will never need address demultiplexing, as they should contain I/O devices rather than memory devices. Such is the case with this board, and the three high address bits are taken from the upper address byte of the 8085's bus -- A13, A14, and A15. One of the '138's /CE lines is connected to the 8085's IO/M line though an inverter. The inversion wasn't necessary, since the '138 has a CE (non-inverting enable) pin, but was done as to buffer the IO/M signal.
 
 {:.center}
-[![Display board components](/images/8085/scroller/scaled/displaybd-front.jpg)](/images/8085/scroller/displaybd-front.jpg) [![Display board wiring](/images/8085/scroller/scaled/displaybd-back.jpg)](/images/8085/scroller/displaybd-back.jpg)
+[![Display board components](/images/i8085/scroller/scaled/displaybd-front.jpg)](/images/i8085/scroller/displaybd-front.jpg) [![Display board wiring](/images/i8085/scroller/scaled/displaybd-back.jpg)](/images/i8085/scroller/displaybd-back.jpg)
 
 The '138's Y0 output drives the PDSP-1881's /CE line. The 8085's /WR line drives the /WR line of the display. All that's left is to handle resets: the PDSP-1881 requires a reset after power-on to restore it to a known state. Conveniently, this default state is the mode in which we want to operate, so resetting the device keeps us from having to send commands to the display! I soldered a wire between RESET OUT on the 8085 (pin 3) and pin 4 of the SBC's expansion connector, which is unusued. This gets inverted on the display board, and fed into the /RESET input of the display. I'll probably make an effort to bring the RESET OUT line down to the expansion connector on future revisions!
 
 {:.center}
-[![Bringing RESET OUT to the connector](/images/8085/scroller/scaled/resetfix.jpg)](/images/8085/scroller/resetfix.jpg)
+[![Bringing RESET OUT to the connector](/images/i8085/scroller/scaled/resetfix.jpg)](/images/i8085/scroller/resetfix.jpg)
 
 With the hardware done, it's time to write software to drive the display board. Of course, the software is the difficult part! Since my UV eraser was still in Virginia at the moment, I decided to make a "wedge" adapter socket to allow the use of a SEEQ DQ52B13 EEPROM in the 2764/27128 PROM socket on the SBC. The 52B13 is compatible with the 2816 (my iUP-201 will program it as such), and pin-compatible with the 2716. This made creating the wedge socket easy: just bend pins 24 and 21 up on a standard 24-pin DIP socket, solder a wire to them, and connect it to +5 V. Insert the EEPROM into this socket, and insert the socket against the back of the 28-pin PROM socket on the SBC:
 
 {:.center}
-[![2716 EPROM adapter](/images/8085/scroller/scaled/eeprommod.jpg)](/images/8085/scroller/eeprommod.jpg)
+[![2716 EPROM adapter](/images/i8085/scroller/scaled/eeprommod.jpg)](/images/i8085/scroller/eeprommod.jpg)
 
 This works just fine, and allows me to make revisions to the code without worrying about running out of blank EPROMs. In the next revision of the 8085 SBC, I'll add jumpers to allow the installation of 2716, 2732, 2764 or 27128 devices in the PROM socket without modification to the board. Just change a few jumper positions and you can use what you have on hand!
 
