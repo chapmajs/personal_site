@@ -47,6 +47,6 @@ For now, the Fairchild F8 Kit gets used with my Lambda triple-voltage bench supp
 
 {% linked_image :file => 'wired_up.jpg', :alt_text => 'F8 Kit Connected to Lambda Power Supply' %}
 
-I will likely build it a more permanent home with its own self-contained power supply, but for now, it lives on the benchtop!
+I will likely build it a more permanent home with its own self-contained power supply, but for now, it lives on the benchtop! I'd like to find a white ceramic 3853 SRAM interface to go with it, if anyone has one they'd like to part with, please {% contact %}.
 
 {% counter :text => 'F8 kits restored' %}
