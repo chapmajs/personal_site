@@ -7,7 +7,7 @@ description: The Processor Technology 3P+S is an early S-100 universal I/O board
 image: 3ps_imsai_sio-icon.jpg
 ---
 
-I was recently asked to repair a [Processor Technology 3P+S](http://s100computers.com/Hardware%20Folder/Processor%20Technology/3P+S/3P+S.htm) for the [Vintage Computer Federation](http://vcfed.org) [Museum at InfoAge Science Center](http://vcfed.org/wp/vcf-museum/). This particular 3P+S was destined to be used in an IMSAI 8080. As such, in addition to repairing the board, it was to be configured to mimic the first channel of an IMSAI SIO-2. While this is possible, it is not a configuration supported out of the box, and required some cut-and-jump fixes. Here's the repaired and modified board, note the small sticker (closeup in second image): this board was originally sold by Computer Mart of New Jersey:
+I was recently asked to repair a [Processor Technology 3P+S](http://s100computers.com/Hardware%20Folder/Processor%20Technology/3P+S/3P+S.htm) for the [Vintage Computer Federation](http://vcfed.org) [Museum at InfoAge Science Center](http://vcfed.org/wp/vcf-museum/). This particular 3P+S was destined to be used in an IMSAI 8080. As such, in addition to repairing the board, it was to be configured to mimic the first channel of an [IMSAI SIO-2](http://s100computers.com/Hardware%20Folder/IMSAI/SIO/SIO.htm). While this is possible, it is not a configuration supported out of the box, and required some cut-and-jump fixes. Here's the repaired and modified board, note the small sticker (closeup in second image): this board was originally sold by Computer Mart of New Jersey:
 
 {% linked_images :files => ['front.jpg', 'CMNJ_sticker.jpg'], :alt_texts => ['Completed 3P+S', 'Computer Mart of New Jersey Sticker'] %}
 
