@@ -60,11 +60,11 @@ Bits 0 and 2 of the 8251 USART status register are effectively the same signal o
 
 ### Serial I/O Jumpering
 
-For this project, I configured the 3P+S for RS-232 serial levels. The manual covers this and other options in detail, but we'll run through the jumpers for a three-wire connection with no handshake signals. First, connect the UART transmitted data output to one of the 1488 RS-232 transmitter inputs. I chose to use the first input. This is done in Area J:
+For this project, I configured the 3P+S for RS-232 serial levels. The manual covers this and other options in detail, but we'll run through the jumpers for a three-wire connection with no handshake signals. First, connect the UART transmitted data output to one of the 1488 RS-232 transmitter inputs. I chose to use the first input. This will cause transmitted data at RS-232 levels to be present on J1 pin M. This is done in Area J:
 
 {% linked_image :file => 'transmitter_area.jpg', :alt_text => 'Area J Jumpers' %}
 
-Likewise, one of the 1489 RS-232 receivers should be jumpered to the UART's received data input. This is done in Area G, where the status jumpers are located. I used the first element of the 1489, which is present on pad 1. Jumper pad 1 to R IN:
+Likewise, one of the 1489 RS-232 receivers should be jumpered to the UART's received data input. This is done in Area G, where the status jumpers are located. I used the first element of the 1489, which is present on pad 1. Received data at RS-232 levels will come in through J2 pin K. Jumper pad 1 to R IN:
 
 {% linked_image :file => 'status_jumpers.jpg', :alt_text => 'Area G Status Jumpers' %}
 
