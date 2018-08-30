@@ -112,4 +112,4 @@ Note that the ground trace going up the middle of the spare pad area was cut: if
 
 With this final modification, the 3P+S should now appear close enough to the first channel of an IMSAI SIO-2 for most software. If your software depends on hardware handshake lines you'll probably need to do additional work. I was able to swap out my IMSAI SIO-2 for this modified 3P+S and run my usual software without modification.
 
-{% counter :text => 'SMBs back in service' %}
+{% counter :text => '3P+S Boards Prenending to be IMSAI SIO-2s' %}
