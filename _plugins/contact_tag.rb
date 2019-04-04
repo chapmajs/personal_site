@@ -7,7 +7,7 @@ class GlitchWorks::ContactTag < GlitchWorks::Tag
   end
 
   def internal_render
-    "<a href='https://services.theglitchworks.net/ng/messages/new'>#{@text}</a>"
+    "<a href='https://services.glitchworks.net/ng/messages/new'>#{@text}</a>"
   end
 end
 

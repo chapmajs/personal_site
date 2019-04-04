@@ -33,4 +33,4 @@ Where did the green DEC handle come from? An EMM static RAM card that came in a 
 [![Green DEC Handle](/images/dec/dec_handles/scaled/green_handle.jpg)](/images/dec/dec_handles/green_handle.jpg)
 
 {:.center}
-<span><script language="javascript" src="https://services.theglitchworks.net/counters/dec_handles"></script> handles installed</span>
+<span><script language="javascript" src="https://services.glitchworks.net/counters/dec_handles"></script> handles installed</span>

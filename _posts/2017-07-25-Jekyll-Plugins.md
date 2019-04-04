@@ -95,7 +95,7 @@ class GlitchWorks::CounterTag < GlitchWorks::Tag
   def internal_render
     <<~COUNTER
     <p class="center">
-        <script language="javascript" src="https://services.theglitchworks.net/counters/#{id}"></script> #{@text}
+        <script language="javascript" src="https://services.glitchworks.net/counters/#{id}"></script> #{@text}
     </p>
     COUNTER
   end
@@ -187,7 +187,7 @@ class GlitchWorks::ContactTag < GlitchWorks::Tag
   end
 
   def internal_render
-    "<a href='https://services.theglitchworks.net/ng/messages/new'>#{@text}</a>"
+    "<a href='https://services.glitchworks.net/ng/messages/new'>#{@text}</a>"
   end
 end
 
