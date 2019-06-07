@@ -15,7 +15,7 @@ In the above picture, heavy corrosion is present on the regulator heatsinks, mor
 
 {% linked_images :files => ['closeup_slots_removed.jpg', 'sockets_removed.jpg'], :alt_texts => ['Closeup of Removed S-100 Slots', 'Closeup of Removed Sockets'] %}
 
-The motherboard was then cleaned several times with hot soapy water and died in the hot air drying cabinet. After drying, the damaged S-100 slots and IC sockets were replaced. I ordered new old stock S-100 slots from [Anchor Electronics](https://anchor-electronics.com/), a long-time favorite. Sockets were replaced with high quality machine pin sockets. North Star had populated the motherboard with good quality dual-wipe sockets, so only the damaged sockets were replaced.
+The motherboard was then cleaned several times with hot soapy water and dried in the hot air drying cabinet. After drying, the damaged S-100 slots and IC sockets were replaced. I ordered new old stock S-100 slots from [Anchor Electronics](https://anchor-electronics.com/), a long-time favorite. Sockets were replaced with high quality machine pin sockets. North Star had populated the motherboard with good quality dual-wipe sockets, so only the damaged sockets were replaced.
 
 {% linked_image :file => 'motherboard_repaired.jpg', :alt_text => 'Motherboard Cleaned and Repaired' %}
 
