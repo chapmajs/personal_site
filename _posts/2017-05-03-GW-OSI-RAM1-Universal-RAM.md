@@ -9,6 +9,8 @@ image: GW-OSI-RAM1_icon.jpg
 
 ## Quick Links
 
+* [Tindie Store Listing](https://www.tindie.com/products/glitchwrks/glitch-works-gw-osi-ram1-osi-universal-ram-board-2/) for bare boards, kits, assembled, etc.
+* [Mouser Project Page](https://www.mouser.com/ProjectManager/ProjectDetail.aspx?ProjectGUID=a7652d8e-56aa-4c82-981f-37940dad9818) for those wishing to buy their own parts
 * [osiweb.org Forum Build Thread](http://www.osiweb.org/osiforum/viewtopic.php?f=3&t=332&p=2130)
 * [32K Prototype Build](/2016/04/23/32k-ram-for-osi)
 * [32K -> 64K Prototype Expansion](/2016/05/17/64k-ram-for-osi)
@@ -86,6 +88,6 @@ The next test was to actually run some PDP-8 code in the RAM present on the GW-O
 
 <div class="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/0qyRsEWBsg8" frameborder="0" allowfullscreen></iframe></div>
 
-If you're interested in purchasing a GW-OSI-RAM1 Universal RAM board, parts kit, or assembled/tested unit, please use the {% contact :text => 'contact form' %}.
+If you're interested in purchasing a GW-OSI-RAM1 Universal RAM board, parts kit, or assembled/tested unit, they are now available [on our Tindie store](https://www.tindie.com/products/glitchwrks/glitch-works-gw-osi-ram1-osi-universal-ram-board-2/). The GW-OSI-RAM1 can be ordered as a bare board, board with parts kit, or fully assembled and tested.
 
 {% counter :id => 'gw_osi_ram1', :text => 'RAM boards replaced' %}
