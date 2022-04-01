@@ -25,8 +25,10 @@ The small heatsink, 7805, and PNP transistor were replaced with a single uA323 5
 
 The Wakefield heatsink is rated for around 10W dissipation without forced air cooling. With the board up on a S-100 extender, the heatsink gets hot, but not so hot that it can't be safely touched, which was the case with the previous arrangement. With even minimal airflow, it is more than adequate.
 
-The board was further modified to change its address decode: this board was being fixed up for an IMSAI that already contained 16K of SRAM adressed from `0x0000` - `0x3FFF`. The IMSAI's owner did not have a manual for the 16K card and didn't want to re-address it. A few cuts and jumps, and a piggybacked 74ACT00 changed the 32K board's addressing to `0x4000` - `0xBFFF`.
+The board was further modified to change its address decode: this board was being fixed up for an IMSAI that already contained 16K of SRAM addressed from `0x0000` - `0x3FFF`. The IMSAI's owner did not have a manual for the 16K card and didn't want to re-address it. A few cuts and jumps, and a piggybacked 74ACT00 changed the 32K board's addressing to `0x4000` - `0xBFFF`.
 
 {% linked_image :file => 'piggyback_chip.jpg', :alt_text => 'Piggyback 74ACT00 and modifications' %}
+
+This board was burned in in my test bench IMSAI with a Cromemco ZPU running at 4 MHz. We use the Lifeboat Associates' Rasmussen memory test program for final RAM testing, running under CP/M 2.2. We've found it to be very thorough at catching intermittent RAM faults.
 
 {% counter :text => 'RAM boards repaired' %}
