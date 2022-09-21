@@ -11,14 +11,14 @@ image: dropwizard.png
 
 We added the following to our YAML configuration file:
 
-{% highlight yaml %}
+{% codeblock :language => 'yaml', :title => 'DropWizard Configuration' %}
 server:
   requestLog:
     appenders:
       - type: file
         currentLogFilename: /var/log/our-app/access.log
         archivedLogFilenamePattern: /var/log/our-app/accedd-%d.log.gz
-{% endhighlight %}
+{% endcodeblock %}
 
 This will store [Common Log Format](http://en.wikipedia.org/wiki/Common_Log_Format) entries in `/var/log/our-app/access.log`, mirroring the entries you'd typically see in your console when running Dropwizard in development mode. Not difficult, just often incorrectly documented!
 
