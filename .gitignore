@@ -13,3 +13,6 @@
 _site/
 
 _upload.sh
+
+# Ignore Jekyll 4 cache
+.jekyll-cache/
