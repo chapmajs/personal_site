@@ -13,7 +13,7 @@ The go-to library for making HTTP requests in Groovy is [HTTPBuilder](http://gro
 
 After reading through examples, HttpClient API documentation, and several other blog posts ([this one](http://dmitrijs.artjomenko.com/2013/06/multipart-file-upload-in-groovy.html) being the most helpful), we now have a service that takes a few String parameters, a Map containing representations of the file components as key:value pairs, and returns a byte array after making a call to our RESTful backend service. Explanation below, code now:
 
-{% highlight groovy %}
+{% codeblock :language => 'groovy', :title => 'Groovy Multipart Post' %}
 import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.Method.POST
 
@@ -76,7 +76,7 @@ class MultipartPostService {
         }
     }
 }
-{% endhighlight %}
+{% endcodeblock %}
 
 Dependencies and Imports
 ------------------------
@@ -89,7 +89,7 @@ For a freshly bootstrapped Grails application, you're going to need to bring in 
 
 This gets your the minimum dependencies required to make the above service function. Note that newer versions of HttpClient deprecate classes like `MultipartEntity`. Once you have the required dependencies brought into your project, the following imports will resolve:
 
-{% highlight groovy %}
+{% codeblock :language => 'groovy', :title => 'Imports for Frontend' %}
 /* Groovy HTTPBuilder imports */
 import groovyx.net.http.HTTPBuilder /* bring in HTTPBuilder */
 import static groovyx.net.http.Method.POST /* bring in HTTP methods, we use POST */
@@ -99,37 +99,38 @@ import org.apache.commons.io.IOUtils /* we use IOUtils to convert the response s
 import org.apache.http.entity.mime.MultipartEntityBuilder /* we'll use the new builder strategy */
 import org.apache.http.entity.mime.content.ByteArrayBody /* this will encapsulate our file uploads */
 import org.apache.http.entity.mime.content.StringBody /* this will encapsulate string params */
-{% endhighlight %}
+{% endcodeblock %}
 
 Representing Our Inputs
 -----------------------
 
 The service we're POSTing to takes a variable number of files and transforms them into a single binary output. Our Grails frontend is only one of a number of sources that use the REST API, but all API clients typically build up a Map representing the file components before building a multipart request. This Map uses the filenames as keys, with the file's contents as an array of bytes as the value. For the frontend, these components can be processed as the result of a POST to the frontend, as shown below:
 
-{% highlight groovy %}
+{% codeblock :language => 'groovy', :title => 'Processing Multipart Results' %}
 def processedComponents = [:]
 
 request.multiFileMap['components'].each { file ->
     processedComponents[file.fileItem.name] = file.bytes
 }
-{% endhighlight %}
+{% endcodeblock %}
 
 Representing the file components in this way allows for a single form input accepting a variable number of files. It also makes them easy to rip through, building parts for our multipart POST:
 
-{% highlight groovy %}
+{% codeblock :language => 'groovy', :title => 'Preparing Multipart POST' %}
 components.each { name, contents ->
     proofRequestEntity.addPart('components', new ByteArrayBody(contents, name))
 }
-{% endhighlight %}
+{% endcodeblock %}
 
 Handling the Results
 --------------------
 
 Once the REST API has processed our files, the ID, and the version into a single binary file, it returns a 200 status code and the byte stream. HTTPBuilder handles this by calling a success closure. Providing a closure with an arity of two will result in the response and data stream being bound to the first and second arguments, respectively. The data argument arrives as an InputStream which must be read into a byte array:
 
-{% highlight groovy %}
+{% codeblock :language => 'groovy', :title => 'Handling Multipart Results' %}
 response.success = { resp, data ->
     result = IOUtils.toByteArray(data)
 }
-{% endhighlight %}
+{% endcodeblock %}
 
+Not too difficult!
