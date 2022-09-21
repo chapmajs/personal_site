@@ -22,7 +22,7 @@
 .gs { color: #d0d0d0; font-weight: bold } /* Generic.Strong */
 .gu { color: #ffffff; text-decoration: underline } /* Generic.Subheading */
 .gt { color: #d22323 } /* Generic.Traceback */
-.kc { color: #6ab825; font-weight: bold } /* Keyword.Constant */
+.kc { color: #ffa500; font-weight: bold } /* Keyword.Constant */
 .kd { color: #6ab825; font-weight: bold } /* Keyword.Declaration */
 .kn { color: #6ab825; font-weight: bold } /* Keyword.Namespace */
 .kp { color: #6ab825 } /* Keyword.Pseudo */
