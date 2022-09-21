@@ -26,12 +26,14 @@ Fortunately, due to the flexible designs of both the OLED module and the Bus Pir
 
 Connections between the OLED module and Bus Pirate are pretty straightforward:
 
-		 +5V pin on OLED module ->  +5V pin on Bus Pirate
-		   D pin on OLED module -> MOSI pin on Bus Pirate
-		   C pin on OLED module ->  CLK pin on Bus Pirate
-		/RST pin on OLED module ->  AUX pin on Bus Pirate
-		 GND pin on OLED module ->  GND pin on Bus Pirate
-		 VPU pin on Bus Pirate  ->  +5V pin on Bus Pirate
+{% codeblock :language => 'text', :title => 'Sabetnetics OLED to Bus Pirate Wiring' %}
+ +5V pin on OLED module ->  +5V pin on Bus Pirate
+   D pin on OLED module -> MOSI pin on Bus Pirate
+   C pin on OLED module ->  CLK pin on Bus Pirate
+/RST pin on OLED module ->  AUX pin on Bus Pirate
+ GND pin on OLED module ->  GND pin on Bus Pirate
+ VPU pin on Bus Pirate  ->  +5V pin on Bus Pirate
+{% endcodeblock %}
 
 VPU is tied to +5V for the internal pullups on the Bus Pirate. The AUX pin is being used to reset the OLED display module. The OLED module's /CS pin can be left floating if it isn't needed; otherwise, pull it low to activate the module.
 
