@@ -68,7 +68,7 @@ With Cisco IOS 12, you can coerce IOS into putting `BVI1` on a VLAN other than t
 
 If you don't want to associate `BVI1` with the native VLAN on the APs Ethernet interface, you can coerce IOS into using a VLAN with IOS 12. Configuration is a little unintuitive, and it seems that Cisco doesn't really want APs configured in this way. The following is an example configuration from the Catalyst 2940 switch on my test network, which provides the VLAN trunk port to the AP under test:
 
-{% highlight ios %}
+{% highlight cisco_ios %}
 interface FastEthernet0/5
  switchport trunk native vlan 99
  switchport trunk allowed vlan 11,20
@@ -80,7 +80,7 @@ Setting the native VLAN to 99 effectively blackholes any untagged traffic coming
 
 Basically, we want to assign `bridge-group 1` to something other than `FastEthernet0` or `GigabitEthernet0`, but IOS won't let you do
 
-{% highlight ios %}
+{% highlight cisco_ios %}
 conf ter
 inter fa0
 no bridge-group 1
@@ -88,7 +88,7 @@ no bridge-group 1
 
 And, you can't add a subinterface to `bridge-group 1` without removing the parent interface! The following snippet will force `FastEthernet0` out of `bridge-group 1`:
 
-{% highlight ios %}
+{% highlight cisco_ios %}
 conf ter
 inter fa0
 bridge-group 2
@@ -97,7 +97,7 @@ no bridge-group 2
 
 With that taken care of, you can now create a subinterface for VLAN 20 and assign it to `bridge-group 1`. The following configuration will put managment on VLAN 20:
 
-{% highlight ios %}
+{% highlight cisco_ios %}
 interface FastEthernet0
     no ip address
     no ip route-cache
@@ -122,7 +122,7 @@ From this point, configure the AP as you normally would. There are many good gui
 
 IOS 15 is quite resistant to having `BVI1` sit on anything other than the native VLAN. It'll lie to you about what's going on. You can't use the `bridge-group` swap as mentioned above to get `bridge-group 1` off of `GigabitEthernet0`. You can upload a configuration from e.g. TFTP with `bridge-group 1` assigned to a different interface, but you'll have to copy it to `startup-config` and reboot. You can also do the following:
 
-{% highlight ios %}
+{% highlight cisco_ios %}
 conf ter
 inter gi0.10
 encap dot1q 10 native
