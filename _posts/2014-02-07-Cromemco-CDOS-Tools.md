@@ -58,17 +58,17 @@ Once formatted disks are available, CDOS images can be written to them using RDO
 
 With RDOS, the commands would look a bit like this:
 
-{% highlight nasm %}
-  A;;;
-  S 0
-  SM 0200
-  ;... here track 0 is "typed" in ...
-  WD 0200 0AFF 1
-  S 1
-  SM 0200
-  ;... here track 1 is "typed" in ...
-  WD 0200 0AFF 1
-{% endhighlight %}
+{% codeblock :language => 'nasm', :title => 'Cromemco RDOS Commands' %}
+A;;;
+S 0
+SM 0200
+;... here track 0 is "typed" in ...
+WD 0200 0AFF 1
+S 1
+SM 0200
+;... here track 1 is "typed" in ...
+WD 0200 0AFF 1
+{% endcodeblock %}
 
 Following this workflow, it was easy to hack together a Perl script using the [Device::SerialPort](http://search.cpan.org/~cook/Device-SerialPort-1.04/SerialPort.pm) module. You can find the script [in my GitHub repositories](https://github.com/chapmajs/cromemco_utilities). This proof-of-concept worked, and now a bootable CDOS 2.58 5.25" SSSD disk has been created:
 
