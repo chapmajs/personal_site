@@ -1,0 +1,59 @@
+I"-<p>With another mystery increase in the monthly pricing for the paid email service that had been used for glitchwrks.com, I decided to switch back to managing my own mail server. In addition to becoming increasingly expensive, the paid service wasn’t providing SPF records I could delegate to, or DKIM signing. I had read about OpenBSD’s <a href="https://www.opensmtpd.org/">OpenSMTPd</a> project some time ago, but had never actually installed and configured OpenSMTPd myself, aside from forwarding system accounts via aliases on other OpenBSD projects.</p>
+
+<p>This is not something new or particularly hard to do, but I did find a few areas in which I was left searching through others’ documentation looking for answers. This writeup won’t be a step-by-step guide, but references to other resources and explanations of snags I hit. I used the following resources, and recommend a read through them first:</p>
+
+<ul>
+  <li><a href="https://www.opensmtpd.org/faq/example1.html">Official OpenSMTPd FAQ Example</a></li>
+  <li><a href="http://technoquarter.blogspot.com/2015/02/openbsd-mail-server-part-6-dovecot-and.html">technoquarter’s writeup on Dovecot configuration</a></li>
+  <li><a href="https://frozen-geek.net/openbsd-email-server-1/">frozen-geek.net’s writeup on Dovecot configuration</a></li>
+</ul>
+
+<p>If you will be using Let’s Encrypt for SSL/TLS certificates, read the following:</p>
+
+<ul>
+  <li><a href="http://man.openbsd.org/acme-client.1">acme-client Documentation, for SSL/TLS</a></li>
+  <li><a href="http://man.openbsd.org/httpd.conf.5">httpd manpage</a></li>
+  <li><a href="https://spin.atomicobject.com/2016/09/20/openbsd-acme-client-lets-encrypt/">atomicobject.com’s writeup on using acme-client</a></li>
+</ul>
+
+<h2 id="installing-the-required-packages">Installing the Required Packages</h2>
+
+<p>My use case is pretty simple, incoming SMTP, authenticated outbound SMTP relaying, and IMAP for client access. I don’t currently require virtuals or multiple domain support, but I followed the <a href="https://www.opensmtpd.org/faq/example1.html">Official OpenSMTPd FAQ Example</a> and planned for it anyway. OpenSMTPd is part of the base OpenBSD distribution, so that’s already present, but you’ll need to install the following:</p>
+
+<ul>
+  <li><code>opensmtpd-extras</code> for passwd file authentication (not necessary if you’re going to use system logins)</li>
+  <li><code>dovecot</code> for IMAP access</li>
+  <li><code>acme-client</code> if you are on OpenBSD &lt; 6.1 and plan on using Let’s Encrypt for SSL/TLS</li>
+</ul>
+
+<h2 id="ssltls-lets-encrypt-and-acme-client">SSL/TLS, Let’s Encrypt, and acme-client</h2>
+
+<p><a href="https://letsencrypt.org/">Let’s Encrypt</a> is a free, open, and automated SSL/TLS certificate authority formed with the goal of making SSL/TLS certificates free and so easy to obtain that everyone can secure any connection they’d like. No wildcard certs required when they’re free! In addition to being automated for certificate generation, certificates can be automatically renewed yearly with a simple <code>cron</code> job. There are many clients for handling creation and renewal of SSL/TLS certificates from Let’s Encrypt, but <code>acme-client</code> now ships with OpenBSD 6.1 and later. If you’re on an earlier version, follow the install instructions on the <a href="https://kristaps.bsd.lv/acme-client/">project’s site</a>. Once installed, follow the examples in the <a href="http://man.openbsd.org/acme-client.1">acme-client manpage</a> for configuring <code>httpd</code> to host the challenge files (don’t forget to open port 80 in <code>pf</code> and any external firewalls!).</p>
+
+<p><code>acme-client</code> will give two files, a <code>foo.com.fullchain.pem</code> file and <code>foo.com.key</code> in the directories you have configured in <a href="http://man.openbsd.org/acme-client.conf.5">acme-client.conf</a>. The PEM file is your public certificate with full chain, and the key file is your secret private key. When generating keys for OpenSMTPd and Dovecot, generate them for the address that your mail clients will be connecting to. For example, if clients connect to a <code>CNAME</code> of <code>mail.foo.com</code> which points to <code>realserver.foo.com</code>, generate the certificates for <code>mail.foo.com</code>.</p>
+
+<h2 id="shared-passwd-file-authentication">Shared Passwd File Authentication</h2>
+
+<p>The <a href="https://www.opensmtpd.org/faq/example1.html">Official OpenSMTPd FAQ Example</a> uses <code>passwd</code> file authentication, with a shared file between both OpenSMTPd and Dovecot. I found it unclear on how to generate entries for this file. They’re done by hand, with the encrypted password hash being generated with <code>smtpctl encrypt</code> – you can provide the string you wish to encrypt afterwards, but beware that this will be visible in the system process list! Invoking <code>smtpctl encrypt</code> with no other options will put you in an encryption shell where each line entered will be encrypted on hitting enter. Type <code>CTRL+C</code> to exit.</p>
+
+<p>If you have accounts that will not ever receive email (an account for your site’s contact form mailer, for example), you can provide a username in the <code>passwd</code> file that does not include the domain portion of an email. For instance, a contact mailer entry could use the username <code>contactmailer</code> rather than <code>contactmailer@foo.com</code>.</p>
+
+<h2 id="dovecot-configuration">Dovecot Configuration</h2>
+
+<p>Dovecot’s configuration is complicated by the fact that it is spread across many files in a <code>conf.d</code> directory. In particular, I couldn’t immediately figure out where to put the configuration for the shared <code>passwd</code> file. I ended up putting it in <code>10-auth.conf</code>, at the very end, and commenting out all of the other authentication options. At some point I will probably compact the Dovecot configuration directory down into a single file, since my configuration is rather simple.</p>
+
+<p>After starting Dovecot for the first time with SSL/TLS enabled, generation of the Diffie-Hellman parameters (dhparams) takes quite some time, especially if you’ve set it to a large value. This caused SSL/TLS connections to fail at first with no clear error message from the Dovecot logs. <code>tail</code> the log file and wait for a message indicating completion of dhparams generation before trying to connect over SSL/TLS.</p>
+
+<p>When connecting with <a href="http://sylpheed.sraoss.jp/en/">Sylpheed email client</a> I had to check the option to use non-blocking SSL. Apparently Dovecot doesn’t support it. I didn’t test with only sending through OpenSMTPd, though it’s hardly relevant since you can’t enable it for SMTP and not for IMAP. Of course, if you’re connecting on SSL/TLS specific ports (<code>587</code> for SMTP, <code>993</code> for IMAP) then you want to connect with SSL, not STARTTLS.</p>
+
+<h2 id="future-improvements">Future Improvements</h2>
+
+<p>With basic configuration complete, I’m in the process of switching over to the new server and getting everything checked out before my next monthly bill! Future plans for this mail server include adding DKIM support with <code>dkimproxy</code>, automatic filtering of listserv traffic with <code>dovecot-pigeonhole</code>, and spammer annoyance with <code>spamd</code>.</p>
+
+<p>The overall experience with OpenSMTPd was very good, it will be replacing <code>postfix</code> as my MTA of choice for future projects.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/opensmtpd"></script> emails bounced
+</p>
+
+:ET

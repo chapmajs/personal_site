@@ -1,0 +1,95 @@
+I"�/<p>Quick and Timely Systems (originally CompuTime) produced a Z80 based S-100 single-board computer called the SBC 2/4 (or SBC 880) in the early 80s. It is a typical Z80 SBC of the era, containing the CPU, boot ROM, scratchpad RAM, a serial console USART, and some parallel I/O. You can read John Monahan’s description <a href="http://s100computers.com/Hardware%20Folder/CompuTime/SBC-880/SBC-880.htm">on s100computers.com</a>, which includes links to the manual and schematics.</p>
+
+<p>I’d acquired two of these boards some time ago in a lot of industrial control equipment. One board was populated and complete, the other had only regulators, some capacitors, and some sockets installed. They sat for a while, until a fellow vintage computer hacker on the <a href="http://www.vcfed.org/forum/">Vintage Computer Forums</a> expressed interest in having a small S-100 system built up that could run CP/M Plus with banked memory. The Q&amp;T SBC 2/4 stood out as a good choice for a CPU board.</p>
+
+<h3 id="initial-check-out-and-repairs">Initial Check-Out and Repairs</h3>
+
+<p>I started with the populated SBC in an 8-slot Morrow Wunderbuss backplane, connected to my Lambda current limited triple voltage supply. The board was totally unresponsive and generated some weird serial signals. I plugged in a <a href="http://s100computers.com/Hardware%20Folder/Jade/Bus%20Probe/Bus_Probe.htm">Jade Bus Probe</a> and discovered the Z80 “running wild” through address space, not even responding to the <code>*PRESET</code> signal from the S-100 bus. This turned out to be an intermittent CPU socket. Below is the SBC with the socket removed, it was replaced with a high quality machine pin socket:</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/cpu_socket_removed.jpg"><img src="/images/s100/qt_sbc_24/scaled/cpu_socket_removed.jpg" alt="CPU socket removed" /></a>
+  <a href="/images/s100/qt_sbc_24/socket_removed_closeup.jpg"><img src="/images/s100/qt_sbc_24/scaled/socket_removed_closeup.jpg" alt="Closeup of CPU area" /></a>
+</div>
+
+<p>This was not to be the only socket with issues! I eventually removed all of the 14- and 16-pin sockets, as well as the 24-pin sockets for ROM and 8253 PIT, and the 28-pin USART socket. The sockets removed were cheap single-wipe types, similar to the type originally used for the CPU socket. The 18-pin RAM sockets and 20-pin buffer sockets seemed to be of acceptable quality and were gold-plated dual wipe types, so they were left in place.</p>
+
+<p>Replacement sockets were installed for the ROM, 8253 PIT, USART, RS-232 buffers, address comparators, and bus drivers. The 7400 series logic on the board was soldered directly. In the process of repairing the board, I switched from mostly straight 7400 series to 74LS series to reduce power consumption and get the heat dissipated by the 5V regulator down. Here’s the board with all socket rework completed:</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/other_sockets_removed.jpg"><img src="/images/s100/qt_sbc_24/scaled/other_sockets_removed.jpg" alt="Low quality sockets removed and replaced" /></a>
+</div>
+
+<h3 id="logic-problems-and-other-issues">Logic Problems and Other Issues</h3>
+
+<p>After replacing the CPU socket, the SBC would reliably reset, but still “ran wild” through address space. It was discovered that a bad 7402 in the ROM select circuit was preventing the boot ROM from being selected. With that replaced, the ROM started execution but hung up before generating any serial output. This turned out to be a dead 8253 PIT, which was not generating any clock for the USART.</p>
+
+<p>With ROM running and a good USART bitrate clock, there was still no serial output on the console terminal. It turned out that someone had stuck a 74LS08 in place of the 1489 RS-232 receiver chip! That explained the weird serial behavior shown on the lights box. With that replaced, the system came up and signed on with the <code>QT MONITOR</code>.</p>
+
+<p>There were still a few issues to sort out. As stated above, I ended up replacing most of the sockets on the board. I also replaced the 7805 5V regulator, though this was largely due to removing it to clean the heatsink and apply new thermal compound. The board was running hot, even with the +8V rail at 7.5V, Switching to 74LS series logic reduced +8V rail current consumption by around 250 mA, a significant reduction.</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/wire_wrap_jumpers.jpg"><img src="/images/s100/qt_sbc_24/scaled/wire_wrap_jumpers.jpg" alt="Wire wrap jumpers and new resistor pack" /></a>
+</div>
+
+<p>As seen above, the DIP resistor pack was removed in the socket removal process: there was a 14-pin socket installed, but a 16-pin resistor pack present. It was replaced with a proper 14-pin device. The jumpers near the resistor pack were a mess, and were replaced with wire wrap pins.</p>
+
+<p>The last repair item was to replace the serial console header that came with the board. Someone had soldered a small single-row header into the top row of the socket, and then soldered wires directly to the header pins to make up a short serial pigtail. The pin layout for the console connector is compatible with a 25-pin IDC D-SUB connector crimped onto a ribbon cable, so the old header was removed and replaced with a right-angle 26 pin shrouded header. A new console cable was made up:</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/old_serial_header.jpg"><img src="/images/s100/qt_sbc_24/scaled/old_serial_header.jpg" alt="Old serial header" /></a>
+  <a href="/images/s100/qt_sbc_24/new_serial_header.jpg"><img src="/images/s100/qt_sbc_24/scaled/new_serial_header.jpg" alt="New serial header and cable" /></a>
+</div>
+
+<p>Here’s a picture of the board with all repairs complete, ready for a few modifications:</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/before_mods.jpg"><img src="/images/s100/qt_sbc_24/scaled/before_mods.jpg" alt="Repaired SBC, before modifications" /></a>
+</div>
+
+<h3 id="adding-rom-switchout">Adding ROM Switchout</h3>
+
+<p>With the SBC functional, it was time to tackle a few modifications that would make the board more useful. First off, adding the ability to switch ROM out under software control. This allows for the use of a full 64K of RAM under operating systems like CP/M. There is parallel I/O on the SBC, but it’s implemented with a pair of 74LS374 latches, which do not have a reset pin and come up in a random state. For ROM switchout functionality to work, the ROM needs to be enabled when the system is reset.</p>
+
+<p>I achieved this by replacing the output latch at U16 with a 74LS273. The ‘273 pinout is identical, except that it has a <code>*CLEAR</code> input where the ‘374 has an <code>*OUTPUT_ENABLE</code> input. Both functions use pin 1. On the SBC, pin 1 is tied to ground, such that the ‘374 is always outputting. To use a 74LS273, simply cut the ground tie-up to U16 pin 1, and jumper pin 1 to Z80 pin 26 (<code>*RESET</code>). In this configuration, the output latch will reset to all outputs low whenever the Z80 is reset.</p>
+
+<p>Having an output that goes low on reset makes for simple modification to the ROM control circuit. The DS8131 comparator at U30 decodes the ROM’s address. This comparator has an active-high <code>STORE</code> input on pin 7, which causes address comparisons to stop when high, and allows comparisons when low. It is tied to ground on the SBC. Cut the ground tie-up and jumper pin 7 to an output on U16. I chose to use bit 7, which is U16 pin 12.</p>
+
+<p>To disable ROM, the code which sets U16 pin 12 high must execute from RAM, so that a ROM address compare is not selecting the ROM. Here’s a picture of the jumpers for disabling onboard ROM under software control – note that onboard RAM is also disabled when ROM is switched out (discussed below):</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/rom_ram_control.jpg"><img src="/images/s100/qt_sbc_24/scaled/rom_ram_control.jpg" alt="ROM/RAM switchout control modification" /></a>
+</div>
+
+<h3 id="ieee-696-memory-management">IEEE-696 Memory Management</h3>
+
+<p>It is easy to expand upon the above ROM switchout scheme to get (almost) full IEEE-696 memory management. The other data lines can be connected to the <code>A16</code> through <code>A22</code> lines of the S-100 bus. I chose to ground <code>A23</code> since connecting it to the bit shared by ROM disable would make for weird extended addressing. With the remaining 7 extended address lines, up to 8 MB of RAM can be addressed.</p>
+
+<p>When using IEEE-696 extended addressing, it is necessary to have a “global” or “common” area of RAM which ignores the extended address bits. Otherwise, switching the extended address would cause <em>all</em> current RAM to page out. Without exceedingly tedious efforts, the program would run away once the address switch happened. For small, simple systems, the 1K of static RAM on the SBC can be used for this purpose. If the onboard SRAM is not used for this purpose, I’d recommend cutting its address comparator’s ground tie-up on pin 7 of U29 and jumpering to pin 7 of U30, so that the SBC’s RAM and ROM are switched out together.</p>
+
+<p>A more common solution for “global” or “common” memory is to use a smaller RAM board that does not handle IEEE-696 extended addressing. This is an excellent use for those 8K and 16K SRAM boards that might not seem practical in a large, banked CP/M Plus system. For this particular system, this was the chosen solution. A <a href="http://s100computers.com/Hardware%20Folder/CompuPro/RAM%20Boards/CompuPro%20RAM%20Boards.htm">CompuPro/Godbout EconoRAM IV</a> was configured to occupy the 16K block from <code>0xC000</code> to <code>0xFFFF</code>. Any extended addressing RAM boards should be configured not to respond to this memory range, no matter what the upper address bits are.</p>
+
+<p>Here are two closeups of the extended addressing connections to the edge connector, and the ground tie-up for <code>A23</code>:</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/front_address_jumpers.jpg"><img src="/images/s100/qt_sbc_24/scaled/front_address_jumpers.jpg" alt="Front side address jumpers" /></a>
+  <a href="/images/s100/qt_sbc_24/back_address_jumpers.jpg"><img src="/images/s100/qt_sbc_24/scaled/back_address_jumpers.jpg" alt="Back side address jumpers" /></a>
+</div>
+
+<h3 id="final-thoughts">Final Thoughts</h3>
+
+<p>The Q&amp;T SBC 2/4 proved to be an excellent choice for this build. In addition to being a nice, simple 4 MHz Z80 SBC for the S-100 bus, it was easy to modify for added memory management needs. Additionally, this board will be used with a <a href="http://www.retrotechnology.com/herbs_stuff/s_sd_vfii.html">SD Systems Versafloppy II</a>, which requires a <code>PHI1</code> signal on the S-100 bus. Not all later Z80 boards provide this, but the Q&amp;T SBC 2/4 does.</p>
+
+<p>One shortcoming of the SBC is a lack of I/O address mirroring. On the 8080, the low and high bytes of the address bus contain the same byte during I/O instruction execution. With the Z80, the upper byte can be one of several values, depending on the I/O instruction being executed. This often results in the low and high address bytes being different, which is a problem for older S-100 boards that only use the high address byte for I/O addressing, like the <a href="/2018/07/02/reproducing-the-io2">Solid State Music IO-2</a>. For this reason, the <a href="http://s100computers.com/Hardware%20Folder/Vector%20Graphic/VG%20ZCB/VG%20ZCB.htm">Vector Graphic ZCB</a> remains my current favorite S-100 Z80 SBC.</p>
+
+<p>And, here are two pictures of the completed SBC project, from the front and back:</p>
+
+<div class="center">
+  <a href="/images/s100/qt_sbc_24/after_mods.jpg"><img src="/images/s100/qt_sbc_24/scaled/after_mods.jpg" alt="Front side after modifications" /></a>
+  <a href="/images/s100/qt_sbc_24/back_mods.jpg"><img src="/images/s100/qt_sbc_24/scaled/back_mods.jpg" alt="Back side after modifications" /></a>
+</div>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/qt_sbc_24"></script> CP/M machines running
+</p>
+
+:ET

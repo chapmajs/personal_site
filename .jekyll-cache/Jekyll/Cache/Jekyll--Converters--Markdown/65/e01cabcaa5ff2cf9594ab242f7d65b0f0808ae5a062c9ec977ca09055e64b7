@@ -1,0 +1,85 @@
+I"]!<p>The Alspa ACI-2 is an interesting integrated CP/M system. The chassis houses one 8” full height floppy drive (the ACI-1) or two half-height drives (making it an ACI-2). While the machine at first appears to be an external drive box, there’s a single-board Z80 computer mounted below the disk drive(s) that provides for a full, integrated CP/M system, similar in concept to the Ferguson Big Board or Ampro LittleBoard.</p>
+
+<p>The ACI-2 single-board computer includes a 4 MHz Z80, 64K of dynamic RAM, boot ROM, a double density floppy controller, three 8251A serial ports, and options for a parallel port, battery-backed RTC, and Corvus hard disk interface. My ACI-2 lacks the parallel port, RTC, and hard disk interface, and came with two single-sided Tandon half-height 8” floppy drives.</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/alspa_aci2/rom_monitor.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/rom_monitor.jpg" alt="Alspa ACI-2 and VT320 terminal" /></a>
+</div>
+
+<h3 id="system-cleanup-and-check-out">System Cleanup and Check Out</h3>
+
+<p>The ACI-2 is a little interesting to disassemble. Do <em>not</em> remove the large screws on the side, those hold the drives in place! Remove all of the small screws on the top of the cover, the place it upside-down on a work surface and remove the screws along the bottom edge of the U-shaped top cover. Then, lift the bottom up, being careful of the floppy power and data cables. Here’s my machine, with the two halves split:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/alspa_aci2/system_split.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/system_split.jpg" alt="Alspa ACI-2 chassis disassembled" /></a>
+</div>
+
+<p>If you want to remove the floppy drives, leave the upper part of the chassis upside-down on the work surface and remove the large screws on the side of the cover, then lift the drives out together. There are small mending plates that join the two drives together – I suspect this is how they use the same chassis for either one full-height drive or two half-height drives.</p>
+
+<p>The power supply is nice, it uses a step-down transformer and a small board that contains both the power supply and serial ports. I believe the supply is switchmode, or at least partially switchmode. The AC-powered fan provides adequate cooling for the little system. The power supply board in my ACI-2 says ACI-1 on it:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/alspa_aci2/power_supply.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/power_supply.jpg" alt="ACI-2 power supply and fan" /></a>
+</div>
+
+<p>The single-board computer is mounted “upside down” to the bottom of the chassis; that is, the components face the desk when it’s assembled and sitting as it normally would. The layout seems pretty clean and simple. It uses 4116 16k x 1 DRAMs. There was no UV sticker on the EPROM in my machine, so I added one, though it’s not likely to get a lot of UV exposure anyway! Here’s a picture of the SBC mounted, and one with it removed and flipped component side up:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/alspa_aci2/system_board_bottom.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/system_board_bottom.jpg" alt="ACI-2 System Board, Solder Side" /></a>
+  <a href="/images/vintage-misc/alspa_aci2/system_board.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/system_board.jpg" alt="ACI-2 System Board, Component Side" /></a>
+</div>
+
+<p>My ACI-2 was in good shape but had intermittent response on the console terminal. This turned out to be an issue with the programmable jumper plug for bitrate selection. The old one was a bit mangled, poorly done, and making intermittent contact. Here’s the original, and my replacement:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/alspa_aci2/mangled_jumper_plug.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/mangled_jumper_plug.jpg" alt="Broken bitrate jumper plug" /></a>
+  <a href="/images/vintage-misc/alspa_aci2/new_jumper_plug.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/new_jumper_plug.jpg" alt="New bitrate jumper plug" /></a>
+</div>
+
+<p>The new jumper plug wires the console, modem, and printer ports for 9600 bps. While I had the ACI-2 on the bench, I probed the bitrate jumper header and figured out what bitrates were present, and where the USART clock connections were. Here’s a little ASCII art to help out:</p>
+
+<div class="pageview">
+  <div class="pageview-header codeblock-header">.:[ACI-2 Bitrate Jumper]:.</div>
+    <pre>
+  Alspa ACI-2 bitrate selection jumper, U58:
+                          __  __ 
+                         |  \/  |
+       Port 2 (CONSOLE) -|      |- 19200 BPS
+       Port 0 (PRINTER) -|      |- 9600 BPS
+         Port 4 (MODEM) -| U58  |- 150 BPS
+               4800 BPS -|      |- 300 BPS
+                        -|      |- 600 BPS
+                        -|      |- 1200 BPS
+                        -|      |- 2400 BPS
+                         |______|
+
+  Connect the Port pin (1 - 3) to the desired bitrate. Multiple Port pins
+  can be connected to a single bitrate. All listed bitrates are for x16
+  clock input.
+</pre>
+</div>
+
+<p>With the bitrate jumper fixed, the system came up and operated reliably. I was able to make boot media from disk images found in the <a href="http://www.retroarchive.org/maslin/disks/alspa/index.html">Don Maslin Archive</a> on Gene Buckle’s <a href="http://www.retroarchive.org/">Retrocomputing Archive</a>. As seen in the screenshots below, the images were clearly of someone’s old working disk and had many extra programs on them:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/alspa_aci2/cpm_dir.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/cpm_dir.jpg" alt="CP/M Directory Listing" /></a>
+  <a href="/images/vintage-misc/alspa_aci2/aci_directory.jpg"><img src="/images/vintage-misc/alspa_aci2/scaled/aci_directory.jpg" alt="ACI Disk Directory Program" /></a>
+</div>
+
+<h3 id="pcput-and-pcget-for-the-aci-2">PCPUT and PCGET for the ACI-2</h3>
+
+<p>Usually the first non-DRI utility that I bring over to a new CP/M system is PCGET, followed by PCPUT. The versions I’ve been using and customizing were downloaded from <a href="http://deramp.com/">Mike Douglas</a>, who hacked them together from Ward Christensen’s <a href="https://en.wikipedia.org/wiki/XMODEM">XMODEM</a>. The ACI-2 was no exception. It came with an old copy of MODEM 7 on the disk, itself a Ward Christensen XMODEM program; however, that version only supported the MODEM port on the ACI-2 and seemed to be incompatible with XMODEM on my Linux system. It did however work fine with Procomm Plus under MS-DOS.</p>
+
+<p>I’ve started collecting my various customizations of PCPUT and PCGET into a git repository. They can be found <a href="https://github.com/glitchwrks/pcget_pcput/">here, on GitHub</a>. The version for the ACI-2 supports all three serial ports.</p>
+
+<h3 id="a-kermit-80-overlay-for-the-aci-2">A KERMIT-80 Overlay for the ACI-2</h3>
+
+<p>While PCPUT and PCGET are great, I really like to have KERMIT-80 available on a CP/M system. Its unattended multi-file transfers are extremely handy, especially for archiving the contents of disks without making a full image of the disk. I’ve customized KERMIT-80 v4.11 for several other systems, but I’ve always found the build system to be a bit of a mess. With the ACI-2 overlay, I started working toward a long-term goal of moving KERMIT-80 over to William Colley III’s A85 8080 cross-assembler. This is the assembler I use for most of my work under Linux. It is written in portable C.</p>
+
+<p>I was able to get an Aztec C II environment set up on the ACI-2, and managed to get an older version of A85 from the <a href="https://archive.org/details/C_Users_Group_Library_Walnut_Creek_January_1994">C User’s Group Library</a> to compile under CP/M. That allows me to use the same free, open source assembler on both Linux and CP/M! The ACI-2 overlay is the second to come over to a new restructuring of the KERMIT dependencies (an overlay for the MITS 88-2SIO was the first). This work can be found <a href="https://github.com/glitchwrks/kermit80">here, on GitHub</a>. Currently, all new work is on the <code>a85_restructure</code> branch and should be considered experimental, should you attempt to build it yourself!</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/alspa_aci2"></script> CP/M machines running
+</p>
+
+:ET

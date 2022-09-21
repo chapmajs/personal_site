@@ -1,0 +1,22 @@
+I":<p>DEC handles are little plastic extraction handles used on many DEC modules, cards, and assemblies. They should be familiar to all QBus, Unibus, and Omnibus hackers. DEC riveted them on for production cards, but some third-party manufacturers and most hobbyists use pop rivets or bolts. I’ve got a number of boards with bolted-on handles, some are DEC cards with damaged handles, some are prototype boards that never came with handles, and others, like this XYlogics Unibus grant continuity card, seemed to optionally come without handles:</p>
+
+<p class="center"><a href="/images/dec/dec_handles/xylogics_bolted.jpg"><img src="/images/dec/dec_handles/scaled/xylogics_bolted.jpg" alt="XYlogics Grant Card" /></a> <a href="/images/dec/dec_handles/xylogics_bolted_closeup.jpg"><img src="/images/dec/dec_handles/scaled/xylogics_bolted_closeup.jpg" alt="XYlogics Closeup" /></a></p>
+
+<p>This card came to me with no handle installed, though it did have holes for mounting one. I had originally bolted on a white handle, removed from a scrapped Sundstrand CNC control board, using 4-40 machine screws and nuts. On acquiring a larger lot of Sundstrand boards to salvage and rework, I decided to locate appropriate brass tubular hollow rivets to attach DEC handles. The originals are 1/8 inch, but it turns out that a metric M3 x 5mm rivet is close enough. These can be purchased cheaply in quantity on popular online auction sites. Mine came from China, 200 rivets for $6 USD, shipped:</p>
+
+<p class="center"><a href="/images/dec/dec_handles/rivets.jpg"><img src="/images/dec/dec_handles/scaled/rivets.jpg" alt="Pack of Rivets" /></a> <a href="/images/dec/dec_handles/rivets_closeup.jpg"><img src="/images/dec/dec_handles/scaled/rivets_closeup.jpg" alt="M3 x 5mm Rivets" /></a></p>
+
+<p>Tubular rivets are typically set with a rivet set. I didn’t have one, so for a while I used small steel ball bearings from a wrecked bearing. This worked fine. I eventually found the right tool, a small Indestro rivet set. This tool looks like a tiny arbor press, except you strike the tool with a small hammer rather than pressing down on a lever. This is the Indestro rivet set I’ve got, along with two M3 x 5mm rivets and a green DEC handle:</p>
+
+<p class="center"><a href="/images/dec/dec_handles/indestro_tool.jpg"><img src="/images/dec/dec_handles/scaled/indestro_tool.jpg" alt="Indestro Rivet Set" /></a></p>
+
+<p>The tool is itself vintage, and as luck would have it, it came with a setting tool close enough for M3 rivets! With the Indestro tool, hollow rivets, and a proper green handle for the XYlogics grant card, it was time to get rid of the 4-40 screws:</p>
+
+<p class="center"><a href="/images/dec/dec_handles/handle_installed.jpg"><img src="/images/dec/dec_handles/scaled/handle_installed.jpg" alt="XYlogics Riveted" /></a> <a href="/images/dec/dec_handles/handle_installed_closeup.jpg"><img src="/images/dec/dec_handles/scaled/handle_installed_closeup.jpg" alt="XYlogics Riveted Closeup" /></a></p>
+
+<p>Where did the green DEC handle come from? An EMM static RAM card that came in a pile of board scrap. Someone had already sheared off the edge connectors, so it was doomed to the parts heap anyway. Aside from SEMI4200 static RAMs, it had DEC bus tranceivers and four somewhat faded green DEC handles, like this one:</p>
+
+<p class="center"><a href="/images/dec/dec_handles/green_handle.jpg"><img src="/images/dec/dec_handles/scaled/green_handle.jpg" alt="Green DEC Handle" /></a></p>
+
+<p class="center"><span><script language="javascript" src="https://services.glitchworks.net/counters/dec_handles"></script> handles installed</span></p>
+:ET

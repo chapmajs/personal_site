@@ -1,0 +1,47 @@
+I"�<p>I use <a href="http://munin-monitoring.org">Munin</a> for monitoring several critical aspects of VMs, applications running in VMs, and the hypervisors themselves. Having historical time-series data helps in planning for hardware upgrades/expansion, gives warning before disks fill up, and helps target which parts of a complex application are causing the most end-user slowdown pain. Bandwidth utilization is monitored on every single VM, since my colocation ISP bills based on usage.</p>
+
+<p>This particular ISP bills on 95th percentile usage, meaning that the top 5% of traffic over a given period is ignored when calculating bandwidth utilization. This allows for large spikes in bandwidth utilization on a lower tier of service, without having to restrict the overall connection to the typical tier of service used. For example, one of my smaller VMs is on a 1 Mbit/s 95th percentile service, but can spike up to the actual interface cap on the ISPs router. Thus, events that require a large amount of bandwidth, like nightly backups, can saturate the connection without forcing the VM into a higher tier of service.</p>
+
+<p>Out of the box, Munin does not chart 95th percentile usage. <a href="http://munin-monitoring.org/ticket/443">This support ticket</a> requested the feature in 2006. A not-so-great patch was provided as an answer. Since then, Robin Johnson (robbat2) wrote <a href="http://robbat2.livejournal.com/240766.html">this writeup</a> on adding 95th percentile data to existing graphs using <code>graph_args_after</code> which allows for modifying graphs through configuration rather than source code change. This is the guide I followed; however, figuring out where to put the code and how to use it is an exercise left to the reader!</p>
+
+<p>Here’s a snippet from <code>/etc/munin/munin.conf</code> on one of my VMs that graphs 95th percentile bandwidth usage:</p>
+
+<div class="pageview">
+  <div class="pageview-header codeblock-header">.:[/etc/munin/munin.conf]:.</div>
+    
+<figure class="highlight"><pre><code class="language-squid" data-lang="squid">[testnode.example.com]
+    address [2001:DB8::1]
+    use_node_name yes
+    if_eth0.graph_args_after \
+        VDEF:totalpercdown=gcdefdown,95,PERCENT \
+        VDEF:ntotalpercdown=ngcdefdown,95,PERCENT \
+        VDEF:totalpercup=gcdefup,95,PERCENT \
+        COMMENT:\ \\n \
+        LINE1:totalpercup\#CC0000:95th\ Percentile\ Up\\: \
+        GPRINT:totalpercup:\ \ \%6.2lf\%s\\n \
+        LINE1:ntotalpercdown\#0000CC:95th\ Percentile\ Down\\: \
+        GPRINT:totalpercdown:\%6.2lf\%s\\n </code></pre></figure>
+
+</div>
+
+<p>As seen above, <code>graph_args_after</code> is called on the name of an existing graph inside a particular node’s definition. In this case, we’re using <code>graph_args_after</code> on <code>if_eth0</code> which is the standard interface statistics graph that comes with Munin. Any options that can be passed to <code>rrdtool graph</code> can be passed using this method. Whitespace and special characters must be escaped, and escaping rules for <code>rrdtool graph</code> need to be followed, too.</p>
+
+<p><code>VDEF</code> lines define a calculated variable. The format is <code>VDEF:newvar=oldvar,op1,op2,...opN</code> where <code>op1,op2,...opN</code> are operations that <code>rrdtool</code> support <em>in RPN format</em> – for example, the first <code>VDEF</code> calculates the 95th percentile value of <code>gcdefdown</code> (a variable previously assigned in the <code>if_</code> Munin plugin that counts interface bits coming into the interface).</p>
+
+<p>The <code>COMMENT</code> line simply inserts a space followed by a newline; this is one way to add vertical space to a graph’s legend. Note that both the space and the backslash for the newline must be escaped!</p>
+
+<p><code>LINE1</code> defines a horizontal line to be plotted across the entire width of the graph. The 1 in <code>LINE1</code> indicates that the line will be plotted as a single pixel width line. The second part of the statement defines the variable to be plotted (<code>totalpercup</code> in the first <code>LINE1</code> above), followed by the RGB color value. The third part is the legend label. Note that the colon must be double-escaped!</p>
+
+<p><code>GPRINT</code> will print a formatted string to the graph. Here, the <code>GRPINT</code> follows each <code>LINE1</code> so that the value will be next to the legend in the final graph. The second part is the variable to print, and the third part is a format string for how to print the variable. The conventions are covered <a href="https://oss.oetiker.ch/rrdtool/doc/rrdgraph_graph.en.html">in the rrdtool documentation</a>. Note the escaped spaces to align the value for <code>totalpercup</code>. Adding an escaped newline character to the <code>GPRINT</code> statements causes the legend swatches to be printed one below the other.</p>
+
+<p>Finally, here’s a sample graph produced with Munin 2.0.25 and the above configuration:</p>
+
+<div class="center">
+  <img src="/images/coding/95th_percentile_munin/if_eth0-day.png" alt="eth0 Daily Traffic with 95th Percentile" />
+</div>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/95th_percentile_munin"></script> bandwidth overcharges avoided
+</p>
+
+:ET

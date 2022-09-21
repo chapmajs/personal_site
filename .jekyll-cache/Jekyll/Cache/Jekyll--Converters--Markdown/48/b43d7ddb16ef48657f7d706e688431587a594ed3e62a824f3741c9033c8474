@@ -1,0 +1,46 @@
+I"c<p>While at the <a href="http://vcfed.org/wp/festivals/vintage-computer-festival-east/">Vintage Computer Festival East XI</a>, I picked up a TEI (Texas Electronic Instruments) MCS-CPU 8080 board. I happened to be exhibiting a number of S-100 boards, running in a small TEI MCS-112 chassis. I bought the board from Jeff Galinat, a fellow S-100 hacker, who had already tested it with an IMSAI front panel and found it working. I plugged it into the TEI chassis with a BYT-8 front panel, and it seemed to work!</p>
+
+<p class="center"><a href="/images/s100/tei_8080_cpu/mcs_cpu.jpg"><img src="/images/s100/tei_8080_cpu/scaled/mcs_cpu.jpg" alt="Initial Prototype" /></a></p>
+
+<h2 id="power-on-jump">Power-On Jump</h2>
+
+<p>The board had a pair of 8-position DIP switches, which according to old advertising material, were for setting a full 16-bit jump address. There’s a single jumper, J1, on the board, which looked like it probably enabled the power-on jump circuit. It in fact does, in a somewhat unique manner: when cut, the jumper removes input power to a 7805 regulator, completely powering down the jump logic. Turns out that, while this jumper <em>appeared</em> to be in, it wasn’t making solid contact: the end of the jumper was insulated from the pad by a coating of burned flux.</p>
+
+<p class="center"><a href="/images/s100/tei_8080_cpu/switches.jpg"><img src="/images/s100/tei_8080_cpu/scaled/switches.jpg" alt="Initial Prototype" /></a></p>
+
+<p>After replacing the jumper, the power-on jump “sort of” worked – the upper two bits of each jump byte behaved oddly, they seemed to be paired, either both were on or both bits read as 0. This turned out to be the result of a user modification to the board, someone had soldered jumper wires across the front panel connector, linking pins 1 and 16, and pins 8 and 9. Removing this modification returned the power-on jump option to full function. Switch 2 sets the high byte, switch 1 sets the low byte. The numbers of the paddles matches to the bit position in the address byte, such that:</p>
+
+<ul>
+  <li>S1-1 sets A0</li>
+  <li>S1-8 sets A7</li>
+  <li>S2-1 sets A8</li>
+  <li>S2-8 sets A15</li>
+</ul>
+
+<p>The switches are inverted, such that a closed switch position equals a logic 1 for that bit. Thus, to set your power-on jump address to <code>0xD000</code>, you’d set the switches as:</p>
+
+<ul>
+  <li>S1: 11111111</li>
+  <li>S2: 11110100</li>
+</ul>
+
+<p>Interestingly, the power-on reset and reset debounce signal appear to be provided by a NE556 dual timer. The initial power-on reset is held for around one second, as is the debounced reset. This is a nice feature, as it helps ensure the S-100 power supply is fully up to voltage on all rails.</p>
+
+<h2 id="mwrite-and-front-panels">MWRITE and Front Panels</h2>
+
+<p>This CPU board was obviously intended to work with front panels, hence the 16-pin IMSAI style front panel connector. It seems that TEI expected one to remove jumper J1 and completely disable power-on jump and <code>MWRITE</code> generation if using a front panel. While debugging the MCS-CPU with my BYT-8 front panel, I found that I could not deposit memory, usually a symptom of conflicting <code>MWRITE</code> signals. Sure enough, the MCS-CPU was driving <code>MWRITE</code> when the front panel should be. There is no separate jumper for disabling this behavior, so if you desire power-on jump capability while letting the front panel (or something else, such as a <a href="/2011/09/01/debug-board">debug board</a>) generate <code>MWRITE</code>, you can make the following simple trace cut:</p>
+
+<p class="center"><a href="/images/s100/tei_8080_cpu/jumper_area.jpg"><img src="/images/s100/tei_8080_cpu/scaled/jumper_area.jpg" alt="Initial Prototype" /></a></p>
+
+<p>The <code>MWRITE</code> signal makes its way down to the edge connector by a horizontal component side trace just below J1 and above C5, C6, and C8. As you can see in the above picture, I cut the trace just above C5. This prevents the generated <code>MWRITE</code> signal from reaching the front panel. Conveniently, there are two vias in which one can place machine pin socket pins to allow for a removable <code>MWRITE</code> jumper. Install socket pins in the via directly above C19 and the via between C7 and C8.</p>
+
+<h2 id="ground-on-pin-2070">Ground on Pin 20/70</h2>
+
+<p>As <a href="http://www.retrotechnology.com/herbs_stuff/s100_pin20.html">Herb Johnson discusses</a>, S-100 pins 20 and 70 were originally intended for a hardware memory protect scheme with the Altair 8800, and later chosen as extra ground pins in the IEEE-696 standard. Aside from interfering with hardware memory protect, a grounded pin 20 will disable IMSAI front panels. IMSAI used pin 20, when grounded, to disable the one-shot circuits for a number of front panel circuits. It’s not clear why this was done, as no IMSAI products seem to make use of this feature.</p>
+
+<p>Typically I cut pin 20 on the IMSAI front panel board, as it doesn’t remove any useful features and prevents headaches when swapping boards into a chassis. The TEI MCS-CPU provides a jumper for this purpose, labeled R33, above pins 1-10 on the S-100 connector. Cutting the jumper ungrounds pins 20 and 70, but it does leave them connected together. Cutting R33 is sufficient for using the MCS-CPU with an unmodified IMSAI front panel, but you’ll also need to cut the trace linking pin 20 to pin 70 if you wish to use hardware memory protect.</p>
+
+<h2 id="similarity-to-imsai-mpu-a">Similarity to IMSAI MPU-A</h2>
+
+<p>In working on the TEI MCS-CPU I noticed it shares a number of features with the <a href="http://s100computers.com/Hardware%20Folder/IMSAI/8080%20CPU/8080.htm">IMSAI MPU-A</a>. Excluding the power-on jump, power-on reset, and <code>MWRITE</code> generation features, the component choices are identical. Placement of these base components are very similar, and even trace routing to them is similar enough to invite speculation. Was this board an “IMSAI inspired” design, or an authorized modification, or what? If you have any information on this board – history, manuals, or just your experience – please <a href="https://services.glitchworks.net/ng/messages/new">contact us</a> and let us know!</p>
+:ET

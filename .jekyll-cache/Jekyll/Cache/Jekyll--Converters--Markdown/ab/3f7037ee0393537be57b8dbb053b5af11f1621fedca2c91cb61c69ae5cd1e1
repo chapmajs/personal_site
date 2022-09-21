@@ -1,0 +1,59 @@
+I"<<p>Dallas (now Maxim Semiconductor) produced many NVRAMs and battery backed RTCs, and it seems I’m slowly having to replace each model in their entire lineup! While working on a DECbrouter 90T1, a piece of networking hardware from the 90’s, I encountered a DS1244, which is a 32K NVRAM with “Phantom RTC.” This device is still sold by Maxim, but is somewhat expensive, and will eventually also die, requiring replacement of the module. In the DECbrouter 90T1, the module is soldered, and there is no room for a socket. So, rather than rework a vintage board several times to replace an expensive legacy module, I designed a replacement.</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/gw_1244_1/ds1244_destructed.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/ds1244_destructed.jpg" alt="DS1244 Destructed" /></a>
+  <a href="/images/vintage-misc/gw_1244_1/ds1244_ics_closeup.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/ds1244_ics_closeup.jpg" alt="Closeup of DS1244 ICs" /></a>
+</div>
+
+<p>The first step in making a replacement was figuring out what was in the original. I ordered two DS1244Y modules from an IC reseller in China for destructive disassembly. As an aside, these were listed as new and came with a 2015 datecode, but the lithium cells inside were dead. Typical relabels! Good thing I planned on smashing them…</p>
+
+<p>The DS1244Y was opened by removing the potting shell, then making cuts with a hack saw on all four sides, and wedging the encapsulation apart with a cold chisel and a small ball peen hammer. The module is just a 62256 JEDEC type SRAM with a controller, a 32.768 KHz crystal, and a lithium cell. The controller chip is of course the “secret sauce” in the module. It turns out that the controller is a <a href="https://datasheets.maximintegrated.com/en/ds/DS1315.pdf">Dallas/Maxim DS1315 Phantom Time Chip</a>, which is still in production. It’s a fairly expensive IC, but cheaper than buying a new DS1244 module.</p>
+
+<p>After tracing some of the connections on the original DS1244 module, it became clear that the DS1244 is just the datasheet reference implementation of the DS1315 with a static RAM. Aside from the physical size constraints, that fact made for an easy replacement design. This seemed like the perfect application for Batten &amp; Allen DIP leadframe pins. I’d purchased some samples from <a href="http://www.dasarodesigns.com/">D’Asaro Designs</a> several years ago and used them in this project. The board was laid out in <a href="http://kicad-pcb.org/">KiCad</a> and samples run at <a href="https://oshpark.com/">OSH Park</a>:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/gw_1244_1/prototype_1_front.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_1_front.jpg" alt="GW-1244-1 Prototype Front" /></a>
+  <a href="/images/vintage-misc/gw_1244_1/prototype_1_back.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_1_back.jpg" alt="GW-1244-1 Prototype Back with Incorrect Solder Mask" /></a>
+</div>
+
+<p>This is why you always run prototypes first! My footprint for the Batten &amp; Allen pins lacked openings on the bottom solder mask! The solder mask was manually scraped away from the pads, and the board assembled.</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/gw_1244_1/prototype_1_bottom.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_1_bottom.jpg" alt="GW-1244-1 Prototype Bottom" /></a>
+</div>
+
+<p>Since the DS1244 is soldered in the DECbrouter 90T1, I didn’t want to test the prototype in the DECbrouter. The replacement module is JEDEC compatible and can be used in place of any JEDEC-compatible SRAM, so I tested it in my <a href="/2016/03/29/ferroelectric-ram-part-1">Ferroelectric RAM S-100 board prototype</a> with the IMSAI:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/gw_1244_1/imsai_testing.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/imsai_testing.jpg" alt="GW-1244-1 in FeRAM Board" /></a>
+  <a href="/images/vintage-misc/gw_1244_1/imsai_testing_closeup.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/imsai_testing_closeup.jpg" alt="Closeup of GW-1244-1 in FeRAM Board" /></a>
+</div>
+
+<p>The prototype GW-1244-1 worked perfectly and retained data after a power-off! The Phantom RTC function was not tested in the IMSAI since the NVRAM test confirmed that the SRAM was properly connected and that the DS1315 was doing its job. The DS1244 was desoldered from the DECbrouter and the new module installed:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/gw_1244_1/prototype_1_side_by_side.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_1_side_by_side.jpg" alt="GW-1244-1 next to DS1244" /></a>
+  <a href="/images/vintage-misc/gw_1244_1/prototype_1_installed.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_1_installed.jpg" alt="GW-1244-1 Installed in DECbrouter 90T1" /></a>
+</div>
+
+<p>The GW-1244-1 is slightly shorter than the original DS1244, which is important as there’s a mezzanine above the NVRAM in the DECbrouter. The first prototype was a bit too wide, which is fine for installation in PC board holes, but was a little bit of a tight fit in a machine pin socket. That, and needing to confirm corrected solder mask, led to a second prototype run:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/gw_1244_1/prototype_2_assembled.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_2_assembled.jpg" alt="Second Prototype, Assembled" /></a>
+  <a href="/images/vintage-misc/gw_1244_1/prototype_2_lifted_pads.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_2_lifted_pads.jpg" alt="Lifted pads" /></a>
+</div>
+
+<p>Unfortunately, some of the pads on the prototype lifted while putting the Batten &amp; Allen leadframe on. Apparently OSH Park’s prototype boards have a little less copper adhesion than the production board house I use! No problem for a prototype, the ICs were recovered with a hot air rework tool.</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/gw_1244_1/prototype_2_leads_cut.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_2_leads_cut.jpg" alt="Second Prototype, Leadframe Cut" /></a>
+  <a href="/images/vintage-misc/gw_1244_1/prototype_2_bottom.jpg"><img src="/images/vintage-misc/gw_1244_1/scaled/prototype_2_bottom.jpg" alt="Second Prototype, Bottom" /></a>
+</div>
+
+<p>A few small outline and silkscreen tweaks were proven out in the second prototype. The outline for the 32.768 KHz crystal was adjusted to match the actual crystal being used. The silkscreen outlines for the TSSOP ICs were adjusted to keep the silkscreen from being cut by the solder mask/copper keepout in production. The IC designations and values were also rotated to match orientation when the module is turned over.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/gw_1244_1"></script> NVRAMs replaced
+</p>
+
+:ET

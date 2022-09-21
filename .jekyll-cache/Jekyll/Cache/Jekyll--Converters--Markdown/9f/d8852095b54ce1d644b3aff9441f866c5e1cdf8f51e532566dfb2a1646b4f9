@@ -1,0 +1,34 @@
+I"�<p>A customer recently ordered a completely refurbished IMSAI system and wanted the system customized to run common IMSAI software, using the IMSAI SIO2 serial interface:</p>
+
+<div class="center">
+  <a href="/images/s100/imsai_sio2/imsai_sio2.jpg"><img src="/images/s100/imsai_sio2/scaled/imsai_sio2.jpg" alt="IMSAI SIO2 board" /></a>
+</div>
+
+<p>The customer also wanted customization to include a disk controller; specifically, <a href="https://deramp.com/fdc_plus.html">DeRamp’s FDC+</a>, an excellent replacement for MITS’ two-board disk controller. Unfortunately, the IMSAI SIO2 and MITS Disk Controller (and therefore, FDC+) have an I/O address conflict when set for standard/default addressing. The customer really wanted both at their defaults though, to preserve software compatibility with IMSAI programs and with utilities written for the MITS Disk Controller.</p>
+
+<p>After reviewing the IMSAI SIO2 schematics, it was determined that the only I/O addressing overlap between the two is due to the SIO2’s control register. The control register is used to configure interrupts and carrier detect functionality. Very little software makes use of these features, and the customer decided to go for disabling the control register, if possible.</p>
+
+<div class="center">
+  <a href="/images/s100/imsai_sio2/modification.jpg"><img src="/images/s100/imsai_sio2/scaled/modification.jpg" alt="Overview of IMSAI SIO2 modifications" /></a>
+</div>
+
+<p>The modification turned out to be pretty simple: pull the active-low signal to enable the command register and buffer high, invert the <code>A3</code> address line, and feed it into an unused input on a 74LS30 eight-input NAND gate. Further, it’s possible to achieve this without cutting any traces on the SIO2! Using a 14-pin DIP header, mount a 74LS00 “in the air,” with pins two and three cut off:</p>
+
+<div class="center">
+  <a href="/images/s100/imsai_sio2/7400_modification.jpg"><img src="/images/s100/imsai_sio2/scaled/7400_modification.jpg" alt="Modified 74LS00 installed on a DIP header" /></a>
+  <a href="/images/s100/imsai_sio2/7400_jumpers.jpg"><img src="/images/s100/imsai_sio2/scaled/7400_jumpers.jpg" alt="74LS00 jumpers" /></a>
+</div>
+
+<p>Pin 2 of the 74LS00 IC should be jumped to 5V, conveniently located on pin 14. Pin 3 on the DIP header must also be pulled to 5V, this was accomplished with a jumper underneath the 74LS00, installed before the 74LS00 was mounted on the DIP header. The inverted <code>A3</code> signal is taken from pin 3 of the 74LS00, and run to pin 12 of the 74LS30. Pin 12 of the 74LS30 should be bent out so that it does not enter the socket:</p>
+
+<div class="center">
+  <a href="/images/s100/imsai_sio2/7430_modification.jpg"><img src="/images/s100/imsai_sio2/scaled/7430_modification.jpg" alt="Inverted A3 to 74LS30" /></a>
+</div>
+
+<p>This completes the modification. The socketed chips can be removed and replaced with non-modified chips at any time to restore original functionality. With the modification in place, serial channel A will appear at <code>0x02</code> and <code>0x03</code>, and channel B will appear at <code>0x04</code> and <code>0x05</code>, the same as an unmodified SIO2. The control register will not be accessible at any address, and will not conflict with the MITS disk controller or FDC+.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/imsai_sio2"></script> serial boards modified
+</p>
+
+:ET

@@ -1,0 +1,70 @@
+I"�&<p>About a year ago, I wrote up the repair of a <a href="/2018/07/09/rx211-repair">RX211 Unibus controller</a> which was tested in a friend’s PDP-11/34a. The RX211 was ultimately destined for my PDP-11/10, but in preparation for actually booting the RX211, the PDP-11/10’s power supply smoked and the system stopped working.</p>
+
+<p>A PDP-11/10 is the exact same machine as a PDP-11/05, except for the badging. The 11/10 was intended for sale to end users, while the 11/05 was intended for use by OEMs. My 11/10 is a later production PDP-11/10S housed in a full size BA11-K chassis, complete with a H765 power system. This system is common to many PDP-11s and expansion subsystems, and consists of a massive transformer and several regulator modules. I’d heard from several folks that the H765’s regulators use a ferroresonant design, hence the huge transformer and low switching frequency. This turns out to be inaccurate: the large transformer is just a step-down from line voltage to 28 VAC, which is fed into the various regulator modules and rectified. A buck converter then drops the rectified voltage down to the required output levels. The converter also handles regulation. The design is a little unusual in that it uses a LM723 linear voltage regulator as the controller for the switchmode buck converter, but this is something covered in the original Fairchild datasheet <a href="https://hackaday.com/2018/02/15/the-micro-a723-as-a-switch-mode-regulator/">written up on Hackaday by Jenny List</a>.</p>
+
+<p>Anyway, the full schematics for all of the regulators involved in the PDP-11/10 or 11/05 are available in the BA11-K Field Maintenance Print Set, <a href="https://archive.org/details/bitsavers_decunibusMingDrawingsApr82_6782157">available on archive.org</a> in various formats. This contains all of the drawings one would need to repair the H765 power system. The first and easiest check was to remove the various regulator modules and bench test them under load. For this, I used a large Stancor transformer capable of providing 24 VAC at 8 A, a small test harness terminated in a Mate-n-Lok connector, and several dummy load resistors. All of the modules checked out, confirming what I’d suspected: the fault was in the 5411086 board, which lives under the AC transformer in the H765 and provides +15 VDC, the Line Time Clock (LTC) signal, and AC LO/DC LO signals. I extracted the submodule that contains the 5411086 and AC control circuitry. The 5411086 was quite filthy:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/dirty_5411086.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/dirty_5411086.jpg" alt="Dirty 5411086 module" /></a>
+</div>
+
+<p>Flipping it over, the source of the smoke became apparent:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/burned_connector.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/burned_connector.jpg" alt="Burned 5411086 edge connector" /></a>
+</div>
+
+<p>The two leftmost traces are the AC input to the 5411086 board. Both were damaged, but one is clearly burned in two. The module is fused, but the fuse is after the bridge rectifier and bulk filter capacitor in the +15 VDC section, leaving other parts of the circuit unfused. The bridge rectifier was the main suspect, since nothing else connected to the AC input would’ve been able to pass enough current to blow away main power traces. It was removed and found to have a dead short across the AC input. The part originally used by DEC is a 35A bridge that is no longer produced; however, Vishay’s GBPC3506W-E4/51 (available <a href="https://www.mouser.com/ProductDetail/625-GBPC3506W-E4">from Mouser</a> and others) is a near drop-in replacement and rated for 600V. The big difference is regulator height, which matters on the 5411086 due to the shared heatsink to which the bridge rectifier attaches. A stack of three #6 flat washers brought it up to the appropriate height:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/rectifier_spacer.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/rectifier_spacer.jpg" alt="Washers as a spacer for the bridge rectifier" /></a>
+</div>
+
+<p>The 5411086 was of course cleaned and dried in the course of repairs. I also replaced the old 500 uF output capacitor since it smelled of electrolyte leakage. I used a modern Nichicon low ESR capacitor since the output <em>is</em> a switchmode supply output. I ended up cutting the damaged edge connector traces back and soldering a short wire pigtail to the AC input traces: as luck would have it, there’s a two pin Mate-n-Lok connector on the AC line between the AC transformer and the little pigtail that goes to the 5411086. I took the chance to add an inline 15A fast blow fuse, to prevent further damage to the 5411086 board. The board was then brought up using the Stancor 24 VAC transformer, a power meter, and a variac. For connections to the 5411086, I sawed the end off of a broken 25 x 2 card edge socket with proper 0.156” spacing:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/5411086_under_test.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/5411086_under_test.jpg" alt="5411086 bench testing" /></a>
+  <a href="/images/dec/pdp1110_psu_repair/5411086_finished_closeup.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/5411086_finished_closeup.jpg" alt="Closeup of finished 5411086 board" /></a>
+</div>
+
+<p>+15 VDC power output was tested with a 15 ohm dummy load resistor, LTC and AC LO/DC LO were also verified. Using the variac before the 24 VAC transformer allowed control of the line voltage and verification that AC LO/DC LO asserted at their proper points.</p>
+
+<p>Since I had the H765 torn down, I cleaned the entire power system and preemptively replaced the 50 uF capacitor in the AC control box. This capacitor dries out over time, resulting in more and more ripple to the AC control contactor, which will eventually result in the contactor buzzing instead of closing when the system is powered up. It’s easy to replace with the supply torn down, but not so easy if the machine is reassembled:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/power_control_recap.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/power_control_recap.jpg" alt="AC control box recapped" /></a>
+</div>
+
+<p>I also cleaned the various regulator modules. They collect a lot of dust! I’d originally thought mine used a smoked plastic for the front covers, but they were actually clear, just <em>very</em> dirty! I also replaced burned out lamps in two of the modules. As luck would have it, one of the H744 module’s lamps burned out after I got the system back together! Here’s one of the H744 5 VDC @ 25 A regulator modules, cleaned up and reassembled:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/h744_reassembled.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/h744_reassembled.jpg" alt="Cleaned and repaired H744" /></a>
+</div>
+
+<p>With the system this far apart, I decided to do a full cleaning of the chassis, including removing the front panel and cleaning the switches. The backplane was full of translucent green flakes from something-or-other, dust, and paper chads from the high speed paper tape punch/reader that had lived with this system when it was in operation. The front panel circuit board is date stamped May 21, 1975, which correlates with other dates found in this system:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/front_panel_date.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/front_panel_date.jpg" alt="Front panel date stamp" /></a>
+</div>
+
+<p>After reassembly, the PDP-11/10 was tested with a minimum board set. This includes the two CPU boards, M9312 boostrap/terminator, M9970 console SLU interface, 32 KB/16 KW core memory subsystem, and a M930 Unibus terminator. Grant cards were installed in the three SPC slots. Here’s the machine from the front, and the board set:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/reassembled_front.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/reassembled_front.jpg" alt="PDP-11/10 reassembled" /></a>
+  <a href="/images/dec/pdp1110_psu_repair/basic_boardset.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/basic_boardset.jpg" alt="Basic board set for testing" /></a>
+</div>
+
+<p>Success! The machine came up and was able to examine and deposit memory and run small test programs from the front panel! The failure of the rectifier did not seem to have damaged any of the system’s boards. This is likely due to the inclusion of overcurrent shutdown and crowbar protection in DEC’s power supply designs. With basic function confirmed, I added a DL11 async serial interface strapped for a CSR of <code>176500</code> (SLU0), connected a VT220 to the console port, and successfully booted XXDP from emulated TU58 tape. Here’s a picture of the front panel lit up, and the M9312 console emulator running on the VT220:</p>
+
+<div class="center">
+  <a href="/images/dec/pdp1110_psu_repair/lights.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/lights.jpg" alt="PDP-11/10 front panel" /></a>
+  <a href="/images/dec/pdp1110_psu_repair/console_emulator.jpg"><img src="/images/dec/pdp1110_psu_repair/scaled/console_emulator.jpg" alt="M9312 console emulator" /></a>
+</div>
+
+<p>My M9312 lacks boot ROMs for anything other than a RL11 controller, which can’t be fitted at the moment, so bootstraps have to be entered manually from the console. The M9312 console emulator makes this faster than using the front panel. Next steps for this machine include testing with MAINDEC-11 and XXDP routines, reinstalling the expansion core subsystem, and figuring out a mass storage subsystem!</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/pdp1110_psu_repair"></script> PDP-11/10s back online
+</p>
+
+:ET

@@ -1,0 +1,62 @@
+I"?<div>&nbsp;</div>
+<div class="error_explanation">
+  <div class="error_explanation_content">
+    
+<p>We’re going to control something mains powered with a computer! In the case of my old, low-feature EPROM eraser, this means that if a <a href="http://www.catb.org/jargon/html/B/Bad-Thing.html">Bad Thing</a> happens, the UV lamp could turn on which is potentially damaging to eyes and skin! Always unplug whatever you’re controlling before working on it, <strong>DO NOT DEPEND ON THE SOFTWARE/COMPUTER TO DO THE RIGHT THING!</strong></p>
+
+  </div>
+</div>
+
+<p>I’ve got a cheap old EPROM eraser which simply turns on when you plug it in, and turns off when you unplug it (no safety interlocks, even!). Erasing EPROMs usually involves filling it up, plugging it in, and setting a kitchen timer or something for 20 minutes. The trouble is, you have to remember to unplug it when the timer goes off, which involves stopping what you’re currently doing or forgetting about the EPROMs and overerasing them into uselessness. I’ve already built a number of <a href="/2013/02/28/relay-board">optoisolated relay switched outlets</a> for various projects, but didn’t currently have a timer to control them. Enter Ruby!</p>
+
+<div class="pageview">
+  <div class="pageview-header codeblock-header">.:[eprom_timer.rb]:.</div>
+    
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">'serialport'</span>
+<span class="nb">require</span> <span class="s1">'ruby-progressbar'</span>
+
+<span class="no">SECONDS_TO_RUN</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="mi">60</span>
+
+<span class="n">port</span> <span class="o">=</span> <span class="no">SerialPort</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'/dev/ttyUSB0'</span><span class="p">)</span>
+<span class="n">progress</span> <span class="o">=</span> <span class="no">ProgressBar</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">:title</span> <span class="o">=&gt;</span> <span class="s1">'EPROM Erase'</span><span class="p">,</span> <span class="ss">:total</span> <span class="o">=&gt;</span> <span class="no">SECONDS_TO_RUN</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="s2">"Erasing for </span><span class="si">#{</span><span class="no">SECONDS_TO_RUN</span><span class="si">}</span><span class="s2"> seconds (</span><span class="si">#{</span><span class="no">SECONDS_TO_RUN</span> <span class="o">/</span> <span class="mf">60.0</span><span class="si">}</span><span class="s2"> minutes)..."</span>
+
+<span class="c1"># Wired my cable for RTS == 0 == relay on</span>
+<span class="n">port</span><span class="p">.</span><span class="nf">rts</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">begin</span>
+  <span class="k">for</span> <span class="n">seconds</span> <span class="k">in</span> <span class="mi">1</span><span class="o">..</span><span class="no">SECONDS_TO_RUN</span>
+    <span class="n">progress</span><span class="p">.</span><span class="nf">increment</span>
+    <span class="nb">sleep</span> <span class="mi">1</span>
+  <span class="k">end</span>
+<span class="k">rescue</span> <span class="no">SystemExit</span><span class="p">,</span> <span class="no">Interrupt</span>
+  <span class="nb">puts</span> <span class="s1">' Caught interrupt, exiting...'</span>
+<span class="k">ensure</span>
+  <span class="n">port</span><span class="p">.</span><span class="nf">rts</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="nb">puts</span> <span class="s1">'...done!'</span>
+  <span class="nb">exit</span>
+<span class="k">end</span></code></pre></figure>
+
+</div>
+
+<p>(View <a href="https://github.com/chapmajs/Examples/blob/master/eprom_timer.rb">on GitHub</a> for direct download)</p>
+
+<p>Being as the relay controller was an optoisolated current loop, I just connected it to the RTS handshake pin on a USB -&gt; RS-232 adapter. The RTS pin is typically used to signal to a connected device that the computer is ready to send some data. It, along with the other output handshake signals, can be used as a 1-bit output port under software control. The <a href="https://rubygems.org/gems/serialport">serialport</a> gem allows us to control the handshake lines from Ruby with ease:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">'serialport'</span>
+
+<span class="n">port</span> <span class="o">=</span> <span class="no">SerialPort</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'/dev/ttyUSB0'</span><span class="p">)</span>
+<span class="n">port</span><span class="p">.</span><span class="nf">rts</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Switch the relay on</span>
+<span class="n">port</span><span class="p">.</span><span class="nf">rts</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># and back off again</span></code></pre></figure>
+
+<p>I added in a quick progress bar using the <a href="https://rubygems.org/gems/ruby-progressbar">ruby-progressbar</a> gem. Its <a href="http://www.rubydoc.info/gems/ruby-progressbar/1.7.5">documentation</a> covers both basic and advanced usage.</p>
+
+<p>The control of the relay is wrapped in a <code>begin-rescue-ensure-end</code> structure, which captures <code>SIGINT</code> and <code>SIGTERM</code>. This makes sure that we turn the relay off if someone bashes CTRL+C or uses <code>kill</code>.</p>
+
+<p>For wiring, simply use pins 4 and 7 (RTS and GND) on a DB-25, or pins 7 and 5 on a DB-9. You can stick a LED directly across them (they’re current limited) to test. Since the RS-232 port reverses polarity between mark and space, you can reverse the connections to invert the action on the LED. Use a two-color, two-pin LED and try toggling the RTS pin if you’re unsure.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/eprom_timer"></script> EPROMs ruined
+</p>
+
+:ET

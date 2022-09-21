@@ -1,0 +1,113 @@
+I"�3<h3 id="reproduction-io-breakouts-and-ram-replacements-now-available">Reproduction I/O Breakouts and RAM Replacements Now Available!</h3>
+
+<p>We have bare boards and parts kits available through our <a href="https://www.tindie.com/stores/glitchwrks/">Tindie store</a>:</p>
+
+<ul>
+  <li><a href="https://www.tindie.com/products/14713/">GW-SMBRAM-2 SEMI4804 Replacment</a>, available as a kit or assembled + tested</li>
+  <li><a href="https://www.tindie.com/products/14714/">Reproduction TDL Interface One Board</a> for IMSAI style D-SUB punchouts</li>
+  <li><a href="https://www.tindie.com/products/14715/">Reproduction TDL Interface 2 Board</a> for TDL Xitan chassis</li>
+</ul>
+
+<p>In October 2017, I traded <a href="http://retrotechnology.com/">Herb Johnson</a> for two <a href="http://www.s100computers.com/Hardware%20Folder/TDL/SMB/TDL%20SMB.htm">TDL SMB</a> boards. These boards are well regarded for providing a lot of functionality in a single S-100 board: ROM monitor, serial ports, cassette port, parallel I/O, and power-on jump functionality are all onboard. Herb acquired these particular SMBs from a former TDL engineer, they came stripped of all socketed parts, and even some of the non-socketed discrete parts were missing. I like a challenge though, so I dug into the boards.</p>
+
+<h3 id="power-supply-issues">Power Supply Issues</h3>
+
+<p>The first problem was a dead short on the +5V rail, after the regulator. Both boards exhibited this short. I stripped one board of all capacitors with no improvement. Removing the regulator didn’t help. Eventually, I removed every socket from the board and started bisecting the +5V supply rail with trace cuts. The problem was eventually isolated: an etch error, either in layout or under-etching, between a +5V supply trace near U9 and the grounded pad of capacitor C2. The short was under the silkscreen for the capacitor’s outline, making it totally invisible. As luck would have it, both boards were shorted in the exact same location, circled in red below:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/5v_short.jpg"><img src="/images/s100/tdl_smb/scaled/5v_short.jpg" alt="5V Short Between U9 and C2" /></a>
+</div>
+
+<p>Click on the image for a closeup. You can barely see where the copper has been cut with an X-acto knife. This is probably the critical problem that relegated these two boards to the boneyard.</p>
+
+<h3 id="replacing-semi-4804-static-rams">Replacing SEMI 4804 Static RAMs</h3>
+
+<p>One of the big problems with a TDL SMB that has been stripped of components is the availability of RAM: the SMB uses the SEMI 4804, a 1K x 4 bit static RAM in an 18-pin package. Apparently, the SEMI 4804 was in short supply even when the SMB was current, as TDL designed a small board to use 2114 type SRAMs instead. Herb had generously provided one of these TDL 2114 adapter boards for my examination and possible reproduction. Rather than copy the existing board, I decided to lay out a new adapter board that uses a more common SRAM, the 2K x 8 bit JEDEC standard 6116 pinout. That effort resulted in the following design, part number GW-SMBRAM-1, shown below in three stages of development:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/ram_replacement_trio.jpg"><img src="/images/s100/tdl_smb/scaled/ram_replacement_trio.jpg" alt="GW-SMBRAM-1 Front" /></a>
+  <a href="/images/s100/tdl_smb/ram_replacement_trio_back.jpg"><img src="/images/s100/tdl_smb/scaled/ram_replacement_trio_back.jpg" alt="GW-SMBRAM-1 Back" /></a>
+</div>
+
+<p>Below, the final GW-SMBRAM-1 design with a soldered 6116 SRAM is shown, with the original TDL solution below it:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/new_vs_old_ram_replacement.jpg"><img src="/images/s100/tdl_smb/scaled/new_vs_old_ram_replacement.jpg" alt="GW-SMBRAM-1 Versus TDL Replacement" /></a>
+</div>
+
+<p>The GW-SMBRAM-1 is not as wide, but a little taller. Not only does it use an easier-to-find SRAM, but due to the low-power nature of modern SRAM, it does not require a separate +5V regulator and flying lead. It’s a true drop-in replacement for SEMI 4804 SRAMs on the TDL SMB, and does not require any modification to existing boards. The prototype GW-SMBRAM-1 (purple board from <a href="https://oshpark.com/">OSH Park</a>) used machine pin male:male headers, but the production run adapters use <a href="https://www.mouser.com/ProductDetail/Aries-Electronics/18-600-20?qs=2mZjssE3HVW2RjoYOPGrJA%3D%3D">Aries 18-600-20</a>. While the Aries adapter is not particularly cheap, it does use coined pins that more closely resemble actual IC leads, and are less likely to damage sockets. This is especially important if your SMB uses original TI sockets!</p>
+
+<p>In addition to replacing an obscure SRAM with a more common SRAM, the GW-SMBRAM-1 can be used to replace the SMB’s RAM with another 2K ROM. Address decode is organized such that the two halves of a 2K x 8 EPROM show up in the correct order, when installed in place of a SRAM. Bit ordering is also preserved.</p>
+
+<h3 id="talking-to-onboard-memory">Talking to Onboard Memory</h3>
+
+<p>During the debug process, I intentionally did not populate the power-on jump circuitry on the SMB. I was using my IMSAI’s front panel to debug the board, and did not want to trip the power-on jump circuitry every time I powered up or hit <code>RESET</code>. Additionally, the power-on jump circuit on the TDL SMB is implemented in a somewhat poor manner: system memory is prevented from responding to the initial memory requests by forcing an intentional bus conflict! Two elements of a 74LS367 bus driver are ganged together and drive <em>against</em> the S-100 bus’s <code>SMEMR</code> signal. The S-100 bus has had provisions that allow conflict-less power-on jump from the very beginning, with the Altair bus, but even MITS themselves used the “intentional bus conflict” method on the Altair 8800B Turnkey board.</p>
+
+<p>In any event, fully disabling power-on jump is a simple matter of omitting ICs U7, U8, and U9, and jumpering U9 pin 6 to ground. I jumped it to U21 pin 1, since I didn’t have a Video ACIA installed for testing:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/boot_bypass_jumper.jpg"><img src="/images/s100/tdl_smb/scaled/boot_bypass_jumper.jpg" alt="Jumper to Disable Power-On Boot" /></a>
+</div>
+
+<p>This temporary modification got the IMSAI’s CPU board talking to the replacement SRAM on the GW-SMBRAM-1 adapter! On to ROM…</p>
+
+<h3 id="using-2716-eproms">Using 2716 EPROMs</h3>
+
+<p>The SMB was intended to be used with a 2K x 8 mask programmed ROM containing the Zapple monitor. As mentioned in <a href="http://www.s100computers.com/Hardware%20Folder/TDL/SMB/TDL%20SMB.htm">John Monahan’s Writeup</a>, modifying the SMB for use with a standard 2716 EPROM is actually pretty simple, since the mask ROM is only off by two pins from the JEDEC standard 2716. The trace to pin 21 needs to be cut and jumpered to +5V, and the trace to pin 20 needs to be cut and fed with a combined chip select, as the 2716 uses a single <code>*CS</code> line, whereas the mask ROM has two separate lines.</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/2716_socket_closeup.jpg"><img src="/images/s100/tdl_smb/scaled/2716_socket_closeup.jpg" alt="2716 Modifications in Socket Area" /></a>
+</div>
+
+<p>The above image shows the necessary modifications in the area under the ROM socket, U19. The area circled in red is a convenient location in which to cut the existing traces to U19 pins 20 and 21, and will not affect other circuits on the board. Jumper pin 21 to +5V on pin 24, as seen with the short C shaped red jumper wire on the left of the image. The jumper wire that exits the right of the image is for chip select on pin 20. Its connections are detailed below.</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/2716_select_area.jpg"><img src="/images/s100/tdl_smb/scaled/2716_select_area.jpg" alt="2716 Modifications Behind U10 - U13" /></a>
+</div>
+
+<p>Cut the tieup for the spare NOR gate in U10 at the location marked with the red circle above. Attach the chip select line from pin 20 on the ROM socket to pin 1 on U10 – this is the wire exiting the first ROM modification picture on the right, and entering the picture above on the left. Connect a jumper from U10 pin 2 to U13 pin 8. This provides a combined chip select with the correct polarity to the ROM socket, and ensures there will be no conflict with other memory devices on the board. Here’s a shot of the back of the board that shows all jumper wires:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/2716_mod_overview.jpg"><img src="/images/s100/tdl_smb/scaled/2716_mod_overview.jpg" alt="2716 Modifications on Back of SMB" /></a>
+</div>
+
+<p>I tacked the jumper wires down with a few dabs of two-part epoxy, to ensure the wires remained in place. This modification is permanent, but I decided it was highly unlikely that I’d find a mask ROM containing the Zapple monitor, or at least one that didn’t come installed in a SMB board of its own!</p>
+
+<p>Once the ROM socket has been modified for 2716s, the <a href="http://www.retrotechnology.com/restore/TDLmonitor.html">Zapple monitor</a> can be burned into a 2716 and used directly – this is the monitor intended to be used with the SMB. Other ROM monitors can be customized for the SMB’s RAM, ROM, and I/O addresses as well.</p>
+
+<h3 id="talking-to-the-tty-acia">Talking to the TTY ACIA</h3>
+
+<p>Getting the TTY ACIA talking to a RS-232 terminal presented a few challenges. Initially, I couldn’t get the ACIA to select. This turned out to be the result of a RC time constant added to the signal path for the <code>*E2A</code> enable signal of the 74LS138 at U23. I don’t understand why this time constant was in place, but it prevented the 74LS138 from asserting when it should. I removed C5 and R13, and replaced R13 with a jumper (zero ohm resistor), as seen below:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/removed_capacitor.jpg"><img src="/images/s100/tdl_smb/scaled/removed_capacitor.jpg" alt="C5 Removed, R13 Replaced with Jumper" /></a>
+</div>
+
+<p>This solved the select problem, and the TTY ACIA still didn’t print the ROM monitor’s sign-on message! The ACIA wasn’t getting a bitrate clock, which turned out to be a dead MC14411 at U24: the IC I’d grabbed from my spares had been dead. With the bitrate generator replaced, I got the monitor’s sign-on, but couldn’t type commands in.</p>
+
+<p>The solution here is actually covered in <a href="http://www.s100computers.com/Hardware%20Manuals/TDL/SMB%20Manual.pdf">the SMB manual</a> on PDF page 4, in the TTY RS232 Checklist section. The outputs from the RS-232 receiver and 20 mA current loop receiver <em>are tied together</em> on the SMB. One must be disabled to allow the other to work. I chose to lift pin 8 of U32, as the manual suggests. Success!</p>
+
+<h3 id="reproduction-io-breakout-boards">Reproduction I/O Breakout Boards</h3>
+
+<p>Herb provided original examples of TDL Interface One and Interface 2 breakout boards for the SMB: the Interface One is provided for S-100 boxes that have D-SUB connector cutouts spaced as on the IMSAI chassis, while the Interface 2 is provided for TDL’s Xitan chassis. I reproduced the Interface One and built one up for use with this SMB:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/interface_one_connectors.jpg"><img src="/images/s100/tdl_smb/scaled/interface_one_connectors.jpg" alt="Interface One Assembled" /></a>
+  <a href="/images/s100/tdl_smb/interface_one_installed.jpg"><img src="/images/s100/tdl_smb/scaled/interface_one_installed.jpg" alt="Interface One in IMSAI" /></a>
+</div>
+
+<p>This reproduction board is made from a 1:1 scan at 4000 DPI, made by <a href="http://www.mhtest.com/">Mile High Test Services</a> as with my other reproductions. Running this board gave me a chance to try an experiment: modern FR4 is a yellow color, but vintage FR4 is often a pale semi-translucent green color. The Interface One only has solder mask on one side, so I ran the boards with blue solder mask. Blue solder mask plus yellow FR4 results in green-looking FR4 on the exposed side!</p>
+
+<h3 id="further-work">Further Work</h3>
+
+<p>I have not yet attempted to repopulate the cassette interface circuit or Video ACIA. These features will get exercised later, of course. For now, the TDL SMB provides fine service as a work-alike to the <a href="/2011/11/03/dajen-sci">Dajen SCI</a> and allows me to use such a board without having to constantly move the Dajen SCI. I’ve also customized the <a href="https://github.com/chapmajs/glitchworks_monitor">Glitch Works Monitor GWMON-80</a> for the TDL SMB. It’s great to have returned a board from the boneyard back to service, and the second SMB will be similarly repaired – once I replace all of the sockets! Here’s a shot of the board in its current state:</p>
+
+<div class="center">
+  <a href="/images/s100/tdl_smb/repaired_smb_front.jpg"><img src="/images/s100/tdl_smb/scaled/repaired_smb_front.jpg" alt="Repaired TDL SMB" /></a>
+</div>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/tdl_smb"></script> SMBs back in service
+</p>
+
+:ET

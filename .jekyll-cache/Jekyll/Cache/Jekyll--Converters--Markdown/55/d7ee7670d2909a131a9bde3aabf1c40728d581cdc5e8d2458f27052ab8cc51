@@ -1,0 +1,57 @@
+I"�<p>I’d recently acquired a HP 700/43 serial terminal with keyboard in a larger lot of industrial equipment. The terminal appeared to work – it beeped, text came up – but as soon as the power switch was released, it popped out and cut power. This is a common problem with push-on/push-off power switches on vintage CRT monitors. I disassembled the terminal to determine which switch it used and replace it, if possible. This is the switch:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/switch_top.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/switch_top.jpg" alt="Preh ME5A" /></a>
+</div>
+
+<p>It’s a Preh ME5A, apparently commonly found in Commodore monitors as well. There’s no direct substitution. Since it was broken anyway, I decided to disassemble it. This turned out to be the culprit:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/pin_plate_broken.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/pin_plate_broken.jpg" alt="Broken Pin Plate" /></a>
+</div>
+
+<p>This little plate is supposed to have a small pin sticking up in the middle. The pin is obviously broken off in the above picture. It’s a small little plastic part, clearly not suited for long-term reliability in the switch. The pin, if it were present, would ride in a groove in part of the switch actuator, latching at a point that would hold the switch in the on position. I was able to approximate the size of the pin at 0.040 inch nominal diameter. It turns out that a large paperclip is about 0.040 inch! That’s also the same size as a #60 drill bit, which I happened to have on hand as a high-speed carbide drill for circuit board work. The little plastic plate was mounted in my <a href="http://www.stickvise.com/">Stickvise</a> and carefully drilled:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/plate_in_stickvise.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/plate_in_stickvise.jpg" alt="Plate in Stickvise" /></a>
+  <a href="/images/vintage-misc/hp_700_43/plate_drilled.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/plate_drilled.jpg" alt="0.040 Inch Hole Drilled" /></a>
+</div>
+
+<p>I centered the drill bit by making a small indentation in the plastic plate with a sharp dental pick. None of the awls or center punches I had were fine enough for the job. Drilling was done manually to avoid damaging the thin plastic plate. Next, a small bit of paperclip wire was cut from a donor paper clip and installed:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/paperclip_installed.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/paperclip_installed.jpg" alt="Paperclip in Plate" /></a>
+  <a href="/images/vintage-misc/hp_700_43/paperclip_profile.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/paperclip_profile.jpg" alt="Profile of Paperclip Wire" /></a>
+</div>
+
+<p>I thought the paperclip bit would’ve required gluing, but it was a press fit in the hole. The bit of wire measured 0.036 inch on the flattened side (where the machine that makes paperclips had flattened it a bit) and 0.040 inch on the rounded side. Once installed, the wire bit was filed to size, and the edges dressed down to remove burrs and prevent catching on the channel in the switch actuator. The final wire length ended up being 0.077 inch. The reworked plate was installed in the switch body with a dab of Lucas Red ‘n Tacky grease:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/repaired_plate_mounted.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/repaired_plate_mounted.jpg" alt="Repaired Plate Installed and Greased" /></a>
+</div>
+
+<p>The Preh ME5A switch is held together by the crimped front mounting plate, and six plastic rivets, which are melted over to permanently close the switch. The heads of the plastic rivets were cut off to open the switch. To reseal, I lightly clamped the rear of the switch body and applied a dab of 5-minute epoxy to the stub of each rivet. The recrimped front plate holds the front of the switch together, so no clamping is required there. Here’s the finished product:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/switch_glued.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/switch_glued.jpg" alt="Reassembled Switch" /></a>
+</div>
+
+<p>After curing, the switch worked fine! While I had the terminal apart, I replaced the two RIFA “smoke cap” line bypass capacitors. In the HP 700/43, both capacitors are Y rated, meaning they are rated to go from line to ground. They were replaced with two modern Y2 rated capacitors from Kemet. The critical parameters are the Y rating, 15mm lead spacing, and voltage rating. Here they are next to the RIFA capacitors they replaced, note that the RIFA capacitors were already cracking and would eventually fail:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/line_caps.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/line_caps.jpg" alt="New and Old Line Capacitors" /></a>
+</div>
+
+<p>With that, the terminal was cleaned out and reassembled. Here’s a picture of it operating in 132-column mode, connected to <code>ttyb</code> of my SPARCstation 10, running <a href="http://wiki.netbsd.org/ports/sparc/">NetBSD 7.1.2/SPARC</a>, with <code>vim</code> running:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_700_43/vim.jpg"><img src="/images/vintage-misc/hp_700_43/scaled/vim.jpg" alt="VIM on NetBSD/SPARC" /></a>
+</div>
+
+<p>Success! The keyboard required a bit of cleaning, there was buildup on the membrane that made the keys really insensitive. The CRT could use rejuvenated, but that’s a project for the next <a href="http://vcfed.org/wp/groups/vcf-mid-atlantic/repair-workshops/">VCF Mid-Atlantic Repair Workshop</a>! It may find a new home before then, as a fellow hobbyist had expressed interest in it, for pairing with a HP PA-RISC workstation…</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/hp_700_43"></script> switches repaired
+</p>
+
+:ET

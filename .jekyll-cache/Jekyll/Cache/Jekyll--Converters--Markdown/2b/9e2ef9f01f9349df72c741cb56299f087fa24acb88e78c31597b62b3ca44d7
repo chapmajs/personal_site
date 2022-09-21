@@ -1,0 +1,58 @@
+I"�<p>In 2011, Bill O’Neill contacted me about my <a href="/2011/10/29/sbc-rev-2">8085 SBC rev 2</a> project, with interest in building one himself. As luck would have it, I’d just run some of the boards at <a href="https://oshpark.com">OSH Park</a> (long enough ago it was called DorkbotPDX!). I had two spares, and ended up trading Bill for a single-board computer of his own design, based around the <a href="https://en.wikipedia.org/wiki/MOS_Technology_6507">6507 CPU</a>. The 6507 is a cut-down 6502, with fewer address lines, no interrupt lines, etc. His SBC included an 8K SRAM, 8K EPROM, 6551 ACIA, and glue logic. RAM was presented as 4K from <code>0x0000</code> to <code>0x0FFF</code>, there was an I/O segment at <code>0x1000</code> to <code>0x13FF</code>, and 3K of ROM lived at <code>0x1400</code> to <code>0x1FFF</code>. Within the I/O page, the ACIA was based at <code>0x1200</code>.</p>
+
+<p>Here’s a picture of my original build of Bill’s SBC:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/6507_sbc/original_build.jpg"><img src="/images/vintage-misc/6507_sbc/scaled/original_build.jpg" alt="Original 2011 build" /></a>
+</div>
+
+<p>The huge orange Sprague capacitor looks a bit silly on there, but I had several NOS packages of them at the time! It’s a pretty clean little SBC. There’s a two-position DIP switch in the upper-left corner, this allows selecting banks from the onboard RAM and ROM. Position 1 controls the ROM, pulling the ROM’s <code>A12</code> address line to ground when closed. Position 2 controls the RAM, pulling its <code>A12</code> line to ground when closed. Resistors pull both lines up when the switches are open.</p>
+
+<p>The header at the top-center allows for I/O expansion, and includes several decoded I/O addressing lines, the data bus, low address bits, etc. A MAX232 provides level shifting to interface the 6551 ACIA to RS-232.</p>
+
+<p>As can be seen from the small bridge rectifier and regulator, this board will run from AC or DC, with sufficient overhead to allow the 7805 to regulate. An input of 8V AC or 7.5V DC is sufficient.</p>
+
+<h3 id="software-load">Software Load</h3>
+
+<p>Bill provided a ROM with the bare board, which contains Microchess in one half, and a port of <a href="http://www.ittybittycomputers.com/IttyBitty/TinyBasic/">Tom Pittman’s Tiny BASIC</a> in the other half. There’s a bootloader ahead of both that initializes the ACIA and prompts for cold or warm start. Tiny BASIC on a little platform like this SBC is pretty handy, and I’ve spent many hours hacking on small BASIC programs that can live within the 4K RAM confines of the board.</p>
+
+<h3 id="2022-rebuild">2022 Rebuild</h3>
+
+<p>In July 2022, I decided to redo some parts of the 6507 SBC in preparation for more hacking on it. Below is a picture of its current state:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/6507_sbc/oms-02_sbc.jpg"><img src="/images/vintage-misc/6507_sbc/scaled/oms-02_sbc.jpg" alt="6507 SBC after 2022 rebuild" /></a>
+</div>
+
+<p>Probably the most immediately obvious change is the removal of the large orange capacitor! This was necessary to reduce the overall height of the board, which will matter later on. Since I always power the board from a DC supply, the capacitor did not have to be as large a value as I’d originally used.</p>
+
+<p>The expansion header was upgraded to a shrouded header with latches. This displaced a bypass capacitor, which was moved to the back of the board. The 74LS138 responsible for decoding memory into 1K segments was removed and socketed: the original had been squished at some point, and a potential future project would be made easier by having it socketed.</p>
+
+<p>At some point, I’d stolen the MAX232 used in the original build for some other project. The replacement MAX232 wasn’t happy with the 0.1uF ceramic capacitors I’d originally used, so the capacitors were replaced with 0.33uF radial ceramics (blue components around the MAX232 above).</p>
+
+<h3 id="reset-circuit">Reset Circuit</h3>
+
+<p>I added a small C&amp;K pushbutton switch for reset, found in the junk drawer. Originally, the 6507 SBC used a simple reset arrangement: a capacitor was charged via a resistor to 5V, and the pushbutton shorted the capacitor to ground to generate a reset. This seemed to work OK with the original software load, but I encountered weird problems when porting <a href="https://github.com/glitchwrks/gwmon-65">GWMON-65</a> to the SBC. I ended up removing the original resistor and capacitor, and hacking in a <a href="https://www.maximintegrated.com/en/products/power/supervisors-voltage-monitors-sequencers/DS1233.html">DS1233 EconoReset</a>:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/6507_sbc/reset_mod_ds1233.jpg"><img src="/images/vintage-misc/6507_sbc/scaled/reset_mod_ds1233.jpg" alt="Modified reset circuit with DS1233" /></a>
+  <a href="/images/vintage-misc/6507_sbc/reset_mod_cap.jpg"><img src="/images/vintage-misc/6507_sbc/scaled/reset_mod_cap.jpg" alt="0.01uF reset capacitor" /></a>
+</div>
+
+<p>The DS1233 monitors <code>VCC</code> to provide power-up reset, but also allows for a manual pushbutton reset. Adding an external capacitor allows for control of the reset duration. I used a 0.01uF ceramic capacitor (red radial component) for this purpose. The DS1233 and capacitor fit pretty nicely in the space originally intended for the reset capacitor and resistor, with a little creative lead-forming on the DS1233.</p>
+
+<p>Before this modification, GWMON-65 would not come on the 6507 SBC. The driver for the 6551 ACIA was known to be functional as it had been tested on another system. After hours of debug hacking, I was ready to shelve the SBC for a while, but decided to test some solder pull Rockwell R6551 ACIAs with it. To my surprise, GWMON-65 came up just fine with the Rockwell parts! The original ACIA Bill supplied was a RCA CDP65C51A, a CMOS part. I studied the datasheets for the two parts looking for initialization differences, major timing differences, etc. but could not find any. I then considered that perhaps CMOS vs. NMOS levels mattered with the shape and speed of the reset signal.</p>
+
+<p>I dumped Bill’s original ROM and found a delay routine that was called pretty much immediately on reset. This seemed suspicious, as there is typically no reason to delay initializing the ACIA, following a hardware reset. With the DS1233 EconoReset hacked in, the CDP65C51A behaved perfectly, suggesting that reset speed or shape was holding the CMOS-levels CDP65C51A in reset longer than the TTL-levels R6551. I emailed Bill about it, who had encountered the problem himself and solved it with the delay loop initially, and a MOSFET circuit later on.</p>
+
+<h3 id="final-thoughts">Final Thoughts</h3>
+
+<p>With the 6507 SBC cleaned up and GWMON-65 ported and running, I now have a nice little single-board to test general 6502 machine code programs. Previously, Tiny BASIC made it difficult to load machine code into memory, limiting the board’s use to BASIC programming and getting beaten by a 6507 in Microchess.</p>
+
+<p>Staying within the limited confines of a cut-down 6502 does make for some more interesting projects than jumping into a system with 64K of RAM. I still need to adapt Tiny BASIC to coexist with GWMON-65. I will probably add a monitor option to the bootloader, so it presents <code>C/W/M?</code> as e.g. Ohio Scientific systems with BASIC-in-ROM do. I also have a few small expansion projects in mind!</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/6507_sbc"></script> SBCs hacked on
+</p>
+
+:ET

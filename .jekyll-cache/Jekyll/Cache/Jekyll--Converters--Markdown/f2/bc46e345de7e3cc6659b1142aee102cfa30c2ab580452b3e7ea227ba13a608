@@ -1,0 +1,48 @@
+I"�<p><a href="http://www.enablelabs.com">Enable Labs</a> recently moved to a larger building, and with the move we decided to replace our aging <a href="http://www.pfsense.org">pfSense</a> router/firewall device with new hardware in a rack mount chassis. There were several requirements for the project: the chassis must be half-depth for front- or mid-mount in a two post telecom rack, it must be low-power (preferably Intel Atom based), and it must provide a sufficient number of physical Ethernet ports for our planned network topology. We would need at least three LAN ports, as well as a WAN port. Since the chassis was to be 1U and we wanted some expandability, it was decided that a quad port Ethernet card would fit the bill.</p>
+
+<p>We chose to go with an <a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-d525mw.html">Intel D525MW</a> Mini-ITX motherboard in a <a href="http://www.supermicro.com/products/chassis/1u/512/sc512l-200.cfm">SuperMicro 512L-200B</a> shallow 1U chassis. This choice was made due to the availability of an Intel D525MW in-house for throughput and compatibility testing. The chassis depth of 14 inches limited the selection of Ethernet cards physically, while the PCI 2.2 slot on the motherboard limited us to 5V compatible PCI and PCI-X cards. Here’s a review of the various cards we experimented with, from the winner down.</p>
+
+<h2 id="sun-microsystems-gigaswift-quad-port-pci-x-adapter-501-6738-10">Sun Microsystems GigaSwift Quad Port PCI-X Adapter (501-6738-10)</h2>
+
+<p class="center"><a href="/images/general/quadnic/sun6738.jpg"><img src="/images/general/quadnic/scaled/sun6738.jpg" alt="Sun 501-6738-10, image credit to eBay seller tryc2" /></a></p>
+
+<p>This adapter ended up being our winner. It’s a true quad port Ethernet card, it’s physically short enough to fit in the chosen 1U case, and it’s PCI 2.2 3.3V/5V compatible. These cards are also cheaply available as used hardware through auction sites like eBay – we picked ours up for $24 including shipping. The National Semiconductor Saturn chipset and FreeBSD <a href="http://www.freebsd.org/cgi/man.cgi?query=cas&amp;sektion=4">cas(4)</a> driver play well together. When using this card in a PCI 2.2 slot, the PCI bus will be your bottleneck.</p>
+
+<p>The only hitch is that this card is only supported in pfSense 2.0.1, and it’s not officially listed in the <a href="http://www.freebsd.org/releases/8.1R/hardware.html#ETHERNET">FreeBSD 8.1 Hardware Notes</a>, which is the FreeBSD release that pfSense 2.0.x is based on. <a href="http://forum.pfsense.org/index.php?topic=33960.0;wap2">This pfSense forum post</a> made it seem likely that the board would be supported, but there was no definite evidence available online. The updated cas(4) driver was apparently included in the pfSense 2.0.1 release, and this card is recognized at boot time with no additional configuration. We’ve been using it in a production environment for several weeks with no troubles.</p>
+
+<h2 id="sun-microsystems-gigaswift-quad-port-pci-x-adapter-501-6522-08">Sun Microsystems GigaSwift Quad Port PCI-X Adapter (501-6522-08)</h2>
+
+<p class="center"><a href="/images/general/quadnic/sun6522.jpg"><img src="/images/general/quadnic/scaled/sun6522.jpg" alt="Sun 501-6522-08" /></a></p>
+
+<p>Similar to the above Sun 501-6738-10, this Sun adapter shares the same chipset and many of the same characteristics. It is an older card, so it’s cheaply available through online resellers. It is officially listed in the <a href="http://www.freebsd.org/releases/8.1R/hardware.html#ETHERNET">FreeBSD 8.1 Hardware Notes</a> as being supported, and was initially our card of choice; however, due to its length it would not fit in our shallow 1U chassis. If you’re using a full-depth chassis or an old PC for your pfSense build, this card would be an economical choice.</p>
+
+<h2 id="intel-pro1000-mt-quad-port-pci-x-adapter">Intel PRO/1000 MT Quad Port PCI-X Adapter</h2>
+
+<p class="center"><a href="/images/general/quadnic/pro1000mt.jpg"><img src="/images/general/quadnic/scaled/pro1000mt.jpg" alt="Intel PRO/1000 MT" /></a></p>
+
+<p>I’m generally a big fan of Intel’s gigabit Ethernet adapters, but this card was a letdown. Intel specifies it as a universal PCI-X/PCI 2.2 compatible card; however, it is a 3.3V-only PCI card with the 5V notch uncut. This wouldn’t be disappointing if Intel didn’t list the card as 3.3V/5V compatible. It’s probably a fine card for anyone building a box with 3.3V PCI slots or actual PCI-X slots, but avoid it for most PCI 2.2 motherboards (very few have 3.3V-only slots). Do note that Intel’s PRO/1000 MT dual port cards are actually universal 3.3V/5V compatible.</p>
+
+<h2 id="silicom-pxg4bpi-quad-port-pci-x-bypass-adapter">Silicom PXG4BPi Quad Port PCI-X Bypass Adapter</h2>
+
+<p class="center"><a href="/images/general/quadnic/silicom.jpg"><img src="/images/general/quadnic/scaled/silicom.jpg" alt="Silicom PXG4BPi" /></a></p>
+
+<p>Avoid this card for FreeBSD applications. These cards are available for less than true Intel PRO/1000 cards through online resellers and are often listed as Intel-compatible. They’re not. They use an Intel chipset, but will not work with the Intel <a href="http://www.freebsd.org/cgi/man.cgi?query=em&amp;sektion=4">em(4)</a> driver under FreeBSD. You can get the driver source from Silicom’s website (you’ll need to e-mail them for a login), but I had no luck in building it under FreeBSD 8.1. It wasn’t worth my time to fix someone else’s proprietary-licensed C code.</p>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>Choices for quad port gigabit Ethernet adapters seem to be pretty open. Depending on your situation, you can probably pick one up cheaply on the surplus market. There are a couple of main considerations to picking an appropriate card:</p>
+
+<ul>
+  <li>Avoid cards that use a single gigabit chipset and a four-port switch if you need four true adapters</li>
+  <li>Make sure it is electrically compatible – some cards support only 3.3V PCI operation</li>
+  <li>While not an issue for full-size cases, make sure cards are short enough for shallow cases</li>
+  <li>If the driver has a proprietary license, make sure the source complies in your target environment <em>first</em></li>
+</ul>
+
+<p>This roundup only covers gigabit PCI-compatible quad port cards. There are a number of options available for the PCIe bus (careful, many of these use more than one PCIe lane and won’t work in an x1 slot!), and if you don’t need gigabit ports on your router, there are several good quad port fast Ethernet adapters available for the PCI and PCI-X bus. Our fallback, had the Sun GigaSwift card not worked out, would have been the Sun Quad Fast Ethernet PCI Adapter (501-4366), which is a <a href="http://www.freebsd.org/cgi/man.cgi?query=hme&amp;sektion=4">hme(4)</a> based card and has been supported since FreeBSD 5.0.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/quadnic"></script> packets filtered
+</p>
+
+:ET

@@ -1,0 +1,121 @@
+I"�0<p>This project has been on my shelf for a while: it’s an Intel MCS-80 System Design Kit, or SDK-80. This is Intel’s official rapid prototyping SBC for the MCS-80 family, which is centered around the Intel 8080. The simple ROM monitor, expandable system RAM, and onboard user prototype area seems to have made it a popular choice in the educational sector, too. It is the predecessor to Intel’s very popular <a href="/2013/01/02/intel-sdk-85">SDK-85 for the Intel 8085</a>. This particular SDK-80 had been modified extensively by its previous owner, to include not only hardware changes but alteration and expansion of the ROM monitor. Unfortunately, on initial checkout it did not work, and got shelved for repair at a later date.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/original_front.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/original_front.jpg" alt="SDK-80 Condition As Received" /></a>
+</div>
+
+<p>The above picture shows the SDK-80 as I received it. This included:</p>
+
+<ul>
+  <li>Base MCS-80 circuitry, minus the 8212 address buffers</li>
+  <li>Full 1K of RAM in system RAM area</li>
+  <li>3K of ROM in 2708 EPROMs</li>
+</ul>
+
+<p>The prototype area contained:</p>
+
+<ul>
+  <li>Additional 1K of RAM in Intel 2111/8111 SRAMs</li>
+  <li>Additional Intel 8251 USART</li>
+  <li>Discrete RS-232 level shifting for second USART</li>
+</ul>
+
+<p>Here’s some closeups of the CPU and RAM/ROM areas:</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/original_cpu_area.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/original_cpu_area.jpg" alt="Original CPU Area" /></a>
+  <a href="/images/sdk80/sdk80_cleanup/original_ram_rom.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/original_ram_rom.jpg" alt="Original RAM/ROM Area" /></a>
+</div>
+
+<p>The first picture shows the main MCS-80 chipset. Most of the Intel ICs in this shot are fairly early white ceramic packages with gold lids. Very early SDK-80s came with “gray trace” ceramic DIPs, including the 8205 decoders. Note that the 8212 address bus buffers are missing: the SDK-80 manual states that they can be bypassed by jumpering the inputs to the outputs and letting the 8080 drive the address bus directly. This is probably marginal with the bus loading present on this board.</p>
+
+<p>The second picture shows the RAM and ROM area. Intel provided circuitry to allow for 1K of static RAM in 8111/2111 type SRAMs, and up to 4K of ROM in 2708 EPROMs. The base configuration was 256 bytes of RAM, located in the two rightmost SRAM sockets, and 1K of ROM in the leftmost EPROM socket. The ROM contained Intel’s ROM monitor for the SDK-80, which allows development and entry of small programs via the serial console. As the board arrived, it was fully populated with Intel 8111 and 2111 static RAMs, for a full 1K of RAM. Three EPROMs were present: the first contains a slightly modified version of Intel’s monitor. The second and third EPROMs contain code which I have not yet fully disassembled, but which interfaces with the second USART in the prototype area. All SRAMs are nice purple ceramic Intel parts, and the EPROMs are white ceramic Intel 8708s and 2708s (functionally equivalent).</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/original_proto_area.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/original_proto_area.jpg" alt="Original Prototype Area" /></a>
+</div>
+
+<p>The above shows the prototype area, as received. It contains another 1K of RAM in Intel 8111 SRAMs, some plastic, some purple ceramic. It also contains a second Intel 8251 USART, with discrete transistor level shifters for RS-232. The RAM uses the extra select lines from the 8205 address decoder in the RAM area. The USART, like the I/O devices in the CPU area, is minimally decoded and repeats through I/O space.</p>
+
+<p>While the circuitry in the prototype area looks alright from the top, the bottom is another story:</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/original_back.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/original_back.jpg" alt="Back of the Board, As Received" /></a>
+  <a href="/images/sdk80/sdk80_cleanup/original_wiring_closeup.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/original_wiring_closeup.jpg" alt="Original Prototype Area Wiring" /></a>
+</div>
+
+<p>The wiring in the prototype area is a bit of a mess. In troubleshooting the board, my first step was to take it down to a bare minimum configuration, by removing all of the ICs in the prototype area. This did not restore operation. Output on the console port was strange and intermittent, as if there were problems with the RAM or ROM. Several test EPROMs were programmed to aid in debugging, but there were still intermittent problems. Here’s a topside shot of the minimal configuration with a test EPROM installed:</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/minimal_config.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/minimal_config.jpg" alt="Minimal Configuration" /></a>
+  <a href="/images/sdk80/sdk80_cleanup/stored_ics.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/stored_ics.jpg" alt="Removed ICs" /></a>
+</div>
+
+<p>A closer look at the prototype area “wire wrap” reveals the real issue:</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/original_wirewrap.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/original_wirewrap.jpg" alt="Original Prototype Area Wire Wrap Technique" /></a>
+</div>
+
+<p>It’s sort of like wire wrap, but instead of using silver-plated wire with Kynar insulation, it appears that enamel insulated magnet wire was used. The previous owner clearly used a Vector Slit ‘n Wrap tool, which allows for easy busing of connections, but makes alterations difficult. Unfortunately, the only real step forward in getting the SDK-80 working was to completely isolate the prototype area circuitry, by cutting all of the connections to the main SDK-80 area:</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/proto_area_isolated.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/proto_area_isolated.jpg" alt="Prototype Area Isolated" /></a>
+  <a href="/images/sdk80/sdk80_cleanup/ram_rom_area_cleanup.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/ram_rom_area_cleanup.jpg" alt="Closeup of RAM/ROM Area Cleanup" /></a>
+</div>
+
+<p>All of the connections from the prototype area to the main SDK-80 were cut and the wraps removed. This is a real hassle when a Vector Slit ‘n Wrap tool has been used: at the start of each wrap chain, the beginning wrap is “upside down;” that is, the end of the wire is at the bottom of the wrap. A traditional unwrap tool can’t be used until the top end of the wrap is cut free. Chain wraps present the same problem.</p>
+
+<p>After isolating the prototype area, the SDK-80 came up and operated perfectly, proving that the problem was somewhere in the mess of wiring in the prototype area. Oh well! Time to remove all of it…not an easy task. With this level of work, I decided to completely strip and restore the prototype area, removing all sockets and Vector wrap pins, leaving the prototype area in a near-unused state for future hacking. I also decided to replace many of the sockets on the SDK-80: there were many single-wipe sockets, as well as an excessive number of wire wrap sockets with very long pins.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/cleanup_sockets.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/cleanup_sockets.jpg" alt="Sockets Removed During Cleanup" /></a>
+  <a href="/images/sdk80/sdk80_cleanup/cleanup_wrap_pins.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/cleanup_wrap_pins.jpg" alt="Cut Off Wire Wrap Pins" /></a>
+</div>
+
+<p>Removing the wire wrap sockets was the second-most difficult task, after dealing with the “wire wrap” mess. The pins were too long for my Hakko 472D desoldering iron, so they had to be cut off. No pads were damaged in the cleanup process. I’ll save the cut wire wrap pins for other projects: they’re handy for providing wire-wrappable jumper options.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/cleanup_vector_pins.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/cleanup_vector_pins.jpg" alt="Vector Pins Removed in Cleanup" /></a>
+</div>
+
+<p>The vector pins used to mount discrete components were removed intact and saved: these were shorter than the socket pins, and did not have other pins located immediately next to them.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/cleanup_debris.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/cleanup_debris.jpg" alt="Cleanup Debris" /></a>
+</div>
+
+<p>The above image shows the debris left over from the cleanup. Along with single-wipe socket housings and the unwrapped enamel wire, I used a large number of cotton swabs. There was a large amount of rosin flux residue on the board, which was removed with cotton swabs and 91% isopropyl alcohol.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/bitrate_area.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/bitrate_area.jpg" alt="Console Bitrate Selection Area" /></a>
+</div>
+
+<p>This is the bitrate selection area for the console USART. Intel states in the manual that it can be jumpered with a wire, or a miniature rotary switch can be installed. There was a jumper installed when I received the board, which was fine for testing, but was removed for the installation of a Spectrol rotary switch. Intel provided bitrates up to 4800 bps, but an extra pad in the bitrate area should allow 9600 bps to be jumpered to the rotary switch at a later time.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/cleanup_finished.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/cleanup_finished.jpg" alt="Cleanup Finished" /></a>
+  <a href="/images/sdk80/sdk80_cleanup/finished_back.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/finished_back.jpg" alt="Finished Back of Board" /></a>
+</div>
+
+<p>Finally finished! The SDK-80 was built up essentially as it was furnished from Intel, with the addition of more RAM in the stock RAM area, a full 1K instead of the base 256 bytes. All removed sockets were replaced with high-quality machine pin sockets. Wire wrap sockets were installed for the first EPROM socket and the high address byte buffer socket to allow for future expansion. The Vector pins in the control/status line area were retained as well. Intel 8212s were installed for bus buffering. The Spectrol miniature rotary switch can be seen to the left of the USART.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/address_buffers.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/address_buffers.jpg" alt="Address Buffers Installed" /></a>
+</div>
+
+<p>The 8212 address bus buffers will allow for adequate bus drive for the onboard RAM and ROM, as well as any additional devices installed in the prototype area. I plan to expand this SDK-80 somewhat, progress on that will be documented in later writeups.</p>
+
+<div class="center">
+  <a href="/images/sdk80/sdk80_cleanup/power_connector.jpg"><img src="/images/sdk80/sdk80_cleanup/scaled/power_connector.jpg" alt="Molex Power Connector" /></a>
+</div>
+
+<p>Intel originally intended for flying leads to be used to supply power to the SDK-80. That’s how it was configured when I received it, but throughout the debugging and cleanup process, several of the wires broke at their solder joints to the circuit board. To remedy this, I installed a 6-pin Molex connector that fits the footprint provided. This makes the SDK-80 much easier to set up and take down, since it does not have a permanent home on the workbench.</p>
+
+<p>So far, the SDK-80 has been very stable. I customized <a href="https://github.com/chapmajs/glitchworks_monitor">GWMON-80</a> for the console port and have used it for several hours. GWMON-80 is small enough that I was able to use the SDK-80 to debug an issue with GWMON-80 by using the Intel HEX loader to copy development versions into the 1K of RAM on the SDK-80. That work eventually resulted in <a href="https://github.com/chapmajs/glitchworks_monitor/commit/dd46f326c1c2c40a2f904b2df6a5f3c90ef89207">this commit</a>, which fixes a long-time issue with the <code>D</code> command. Overall, I find the SDK-80 a very neat little SBC, it is quickly becoming one of my favorites!</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/sdk80_cleanup"></script> Wire Wrap Messes Fixed
+</p>
+
+:ET

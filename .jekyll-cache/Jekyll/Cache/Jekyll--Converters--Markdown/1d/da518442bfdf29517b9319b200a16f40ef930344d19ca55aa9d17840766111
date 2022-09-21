@@ -1,0 +1,109 @@
+I"�)<h3 id="quick-links">Quick Links</h3>
+
+<ul>
+  <li><a href="https://forum.vcfed.org/index.php?threads/1979-miller-technology-z80-single-board-computer-m-80.52026/">VCFed Forums Thread on the Miller Technology M80</a></li>
+  <li><a href="https://www.youtube.com/c/HelloWorld0000">Hello World’s</a> <a href="https://www.youtube.com/watch?v=xqmMPCon700">first video of several</a> reverse engineering and testing the Miller Technologies M80</li>
+  <li><a href="http://filedump.glitchwrks.com/rom_dumps/miller_technologies_m80_1.1_1200bps.hex">ROM image of the 1200 BPS M80 monitor</a>, via HTTP</li>
+  <li><a href="ftp://filedump.glitchwrks.com/rom_dumps/miller_technologies_m80_1.1_1200bps.hex">ROM image of the 1200 BPS M80 monitor</a>, via FTP</li>
+</ul>
+
+<h3 id="miller-technology-m80-sbc">Miller Technology M80 SBC</h3>
+
+<p>In 2022, <a href="https://spoolqueue.com/">Connor Krukosky</a> found this little Miller Technology M80 single board computer in some discarded lab scrap and traded it to me. There appears to be little information on the M80 SBC; in fact, when searching for information after acquiring the M80, the first result was a <a href="https://forum.vcfed.org/index.php?threads/1979-miller-technology-z80-single-board-computer-m-80.52026">VCFed Forums thread from 2016</a> in which another hobbyist had been searching for information. The sole reply was from me, stating that the board was not STD Bus!</p>
+
+<p>Here’s the M80 SBC, essentially as Connor found it:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/miller_m80/m80_top.jpg"><img src="/images/vintage-misc/miller_m80/scaled/m80_top.jpg" alt="Miller Technology M80 SBC, top" /></a>
+  <a href="/images/vintage-misc/miller_m80/m80_bottom.jpg"><img src="/images/vintage-misc/miller_m80/scaled/m80_bottom.jpg" alt="Miller Technology M80 SBC, bottom" /></a>
+</div>
+
+<p>General specifications are:</p>
+
+<ul>
+  <li>Z80 CPU at 2 MHz</li>
+  <li>2K of EPROM in two 2708-type 1K x 8 devices</li>
+  <li>128 bytes of static RAM</li>
+  <li>16 GPIO lines</li>
+  <li>Sockets for 2K of expansion RAM in four 2114 1K x 4 SRAMs</li>
+  <li>Onboard memory decoding for easy expansion</li>
+  <li>Small prototype area</li>
+</ul>
+
+<p>The M80 SBC has provisions for four power supply rails: +5V, -5V, +12V, and -12V. The first three are required for basic operation, as the 2708 EPROMs are triple-voltage parts.</p>
+
+<p>There was a broken flywire to the edge connector, which originally ran from a GPIO pin to one of the RS-232 level shifting ICs in the prototype area. The snipped ribbon cable on the bottom originally connected to the board’s power supply. Someone had added a toggle switch and a pushbutton switch, but never wired them in.</p>
+
+<p>There’s an empty socket on the M80 SBC, which was intended for a National Semiconductor INS8154 RAM Input/Output (RAM I/O) chip. This LSI chip includes two 8-bit I/O ports with handshake lines and 128 bytes of static RAM. It seems the INS8154 was intended for use with National’s <a href="https://en.wikipedia.org/wiki/National_Semiconductor_SC/MP">SC/MP microprocessor</a>. Its function is similar to the <a href="https://en.wikipedia.org/wiki/MOS_Technology_6532">MOS Technology 6532 RIOT</a>, but with simpler I/O facilities.</p>
+
+<h3 id="prototype-interface-board">Prototype Interface Board</h3>
+
+<p>Some time later, Connor found two more associated boards, the first being a Vector Electronics 22/44 prototype board that seemed to match up with the GPIO on the connector:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/miller_m80/protoboard_top.jpg"><img src="/images/vintage-misc/miller_m80/scaled/protoboard_top.jpg" alt="Vector 22/44 prototype board, top" /></a>
+  <a href="/images/vintage-misc/miller_m80/protoboard_bottom.jpg"><img src="/images/vintage-misc/miller_m80/scaled/protoboard_bottom.jpg" alt="Vector 22/44 prototype board, bottom" /></a>
+</div>
+
+<p>It looks like the Vector board was probably a high current drive interface for the M80 SBC. In addition to the power transistors, there’s an indicator LED, and a small signal transistor which controls a relay.</p>
+
+<h3 id="ps-80-power-supply">PS-80 Power Supply</h3>
+
+<p>The second board Connor found is the Miller Technology PS-80 power supply board:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/miller_m80/psu_top.jpg"><img src="/images/vintage-misc/miller_m80/scaled/psu_top.jpg" alt="Miller Technology PS-80, top" /></a>
+  <a href="/images/vintage-misc/miller_m80/psu_bottom.jpg"><img src="/images/vintage-misc/miller_m80/scaled/psu_bottom.jpg" alt="Miller Technology PS-80, bottom" /></a>
+</div>
+
+<p>The PS-80 still had the other half of the rainbow ribbon seen on the bottom of the M80 SBC, so the two were almost certainly used together in the system’s previous application. It’s a simple linear supply, and appears to have been designed for low current applications, as there are no heatsinks on any of the regulators. The back of the PS-80 had been insulated with black electrical tape, which had gone sticky. The part number was under the tape:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/miller_m80/psu_partnumber.jpg"><img src="/images/vintage-misc/miller_m80/scaled/psu_partnumber.jpg" alt="Miller Technology PS-80 part number" /></a>
+</div>
+
+<p>The PS-80 will get new electrolytic capacitors before use. I’ve ordered the capacitors, but have not yet installed them. The board’s uninsulated bottom makes it a little less than ideal for benchtop testing, so the M80 SBC is currently being powered with my Lambda LPT-7202-FM triple-voltage power supply and a smaller Lambda single-voltage supply. The M80 SBC requires +5V, -5V, +12V, and -12V to operate, due to the 2708 type EPROMs and RS-232 level shifters. The PS-80 provides all of these rails.</p>
+
+<h3 id="getting-the-m80-sbc-running">Getting the M80 SBC Running</h3>
+
+<p>The first step in getting the M80 SBC running was to find a replacement National Semiconductor INS8154 RAM I/O chip. These appear to be fairly hard to find, and are expensive. None of my usual component suppliers carried the INS8154, so I was forced to roll the dice on a popular electronic auction site. For $37.20 USD, I received this from a US-based supplier:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/miller_m80/counterfeit_ins8154.jpg"><img src="/images/vintage-misc/miller_m80/scaled/counterfeit_ins8154.jpg" alt="Counterfeit INS8154" /></a>
+</div>
+
+<p>An obvious counterfeit! This chip has been walnut blasted or blacktopped and laser etched with new markings. This isn’t always a definite sign of a complete fake, but the pictured INS8154 also did not work in the M80 SBC. The 2K of 2114 static RAMs were removed, test ROMs were burned, and all indications pointed to a dead INS8154. Another INS8154 was ordered:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/miller_m80/working_ins8154.jpg"><img src="/images/vintage-misc/miller_m80/scaled/working_ins8154.jpg" alt="Working INS8154" /></a>
+</div>
+
+<p>This particular INS8154 is packaged in a side-brazed purple ceramic carrier. It’s been my experience that ceramic ICs, even from unknown sellers, are much more likely to be genuine, I suppose because anything packaged in ceramic is likely to be desirable as-is. This one shipped from the UK, from a seller who provides parts for various UK-designed vintage computers. Apparently the MK14, some of the Acorn designs, and a few other systems used the INS8154. In any case, with the good IC installed and the broken flywire repaired, the monitor came up:</p>
+
+<div class="center">
+  <img src="/images/vintage-misc/miller_m80/monitor.png" alt="Miller M80 ROM monitor" />
+</div>
+
+<p>The EPROM installed in my M80 SBC contained <code>M-80 MONITOR VER 1.1 1200 BAUD</code>. An Intel HEX dump of the ROM is available <a href="ftp://filedump.glitchwrks.com/rom_dumps/miller_technologies_m80_1.1_1200bps.hex">here via FTP</a> (or <a href="http://filedump.glitchwrks.com/rom_dumps/miller_technologies_m80_1.1_1200bps.hex">here via HTTP</a>). While I was waiting for the new INS8154 to arrive, <a href="http://xi6.com/">Bruce Tomlin</a> created a <a href="https://forum.vcfed.org/index.php?threads/1979-miller-technology-z80-single-board-computer-m-80.52026/post-1272854">disassembly of the ROM</a>. He confirmed that serial bit-bang I/O was on pins <code>PB4</code> and <code>PB5</code> of the INS8154.</p>
+
+<p>Something to note is that the M-80 monitor does not require any 2114 static RAMs to be installed in the M80 SBC. The monitor uses only the RAM in the INS8154 for stack and variables. This makes testing simpler, as long as one has a working INS8154!</p>
+
+<h3 id="hello-world-m80-sbc-videos">Hello World M80 SBC Videos</h3>
+
+<p><a href="https://www.youtube.com/c/HelloWorld0000">Hello World</a> on YouTube has done a series of videos on his M80 SBC. Oddly enough, he’s the person whose 2016 post on the VCFed Forums I’d answered! Below is the first of several videos he’s made concerning repairing and reverse engineering the M80 SBC:</p>
+
+<div class="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/xqmMPCon700" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>The Miller Technology M80 SBC and PS-80 power supply make for a fairly neat example of embedded Z80 technology before everyone switched to standardized bus, like the <a href="https://en.wikipedia.org/wiki/STD_Bus">STD Bus</a>. The small prototype area is limited, but the inclusion of GPIO means that very little is needed to use the M80 SBC in an application.</p>
+
+<p>The bit-bang ROM monitor allows for easier debugging and prototyping, especially since the M80 SBC can include 2K of static RAM, allowing development and debugging of programs that could eventually be ROMed in the SBC’s own RAM. Old trade magazine ads suggest Miller Technology also had a ROM BASIC for the M80 SBC, though I have not been able to find it.</p>
+
+<p>The power requirements of the M80 SBC make it a little annoying to experiment with, in today’s world of single-supply systems. Having the PS-80 makes it easy to power, but the PS-80 does require better packaging/insulation for benchtop use. Perhaps I’ll build a card cage for the PS-80 and M80 SBC, and include a plastic shield for the back of the PS-80.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/miller_m80"></script> counterfeit chips replaced
+</p>
+
+:ET

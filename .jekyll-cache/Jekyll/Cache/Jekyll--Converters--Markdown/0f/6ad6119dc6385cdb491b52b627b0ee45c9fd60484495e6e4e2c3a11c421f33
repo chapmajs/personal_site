@@ -1,0 +1,81 @@
+I"�<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/outside_before_repair.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/outside_before_repair.jpg" alt="HP 59309A before repair" /></a>
+</div>
+
+<p>The HP 59309A (HP museum entry <a href="http://www.hpmuseum.net/display_item.php?hw=741">here</a>) is a digital clock that connects over HP-IB (GPIB, IEEE-488) to computers or test equipment assemblies. It was intended to provide clock/calendar functionality to computers, timing information to test equipment, etc.</p>
+
+<h3 id="initial-check-out">Initial Check-Out</h3>
+
+<p>As received, the HP 59309A clock basically worked: there was some battery leakage on the motherboard, which had been disclosed. After running for about an hour, the date suddenly changed from <code>11 13</code> (13th of November) to <code>11 33</code> (an impossible combination in any date format):</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/wrong_date.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/wrong_date.jpg" alt="Incorrect date of 11-33" /></a>
+</div>
+
+<p>After tracing the likely issue to a 74LS03 quad open collector NAND gate, the chip was replaced with no change. It was discovered that there was a film of high resistance corrosion over the edge connector contact connected to the 74LS03’s pin 1 (sixth pin in from the right in the picture below). After cleaning the contact, the date displayed correctly:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/dirty_pin.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/dirty_pin.jpg" alt="Dirty pin on card" /></a>
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/fixed_date.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/fixed_date.jpg" alt="Correct date displayed" /></a>
+</div>
+
+<p>The original 74LS03 was reinstalled in the board.</p>
+
+<h3 id="full-cleaning-and-repair">Full Cleaning and Repair</h3>
+
+<p>During initial check-out, the battery corrosion was found to be a little worse than the pictures from the seller reflected. There were also two RIFA line filter capacitors present, which had not yet failed but were cracking. The main filter capacitor was original and would get replaced since the clock had to be disassembled anyway.</p>
+
+<p>Here’s a picture of the “minor corrosion:”</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/corrosion.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/corrosion.jpg" alt="Corrosion from a leaked 9V battery" /></a>
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/board_removed_corrosion.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/board_removed_corrosion.jpg" alt="Closeup of battery corrosion" /></a>
+</div>
+
+<p>After disassembly, the RIFA line filter capacitors were the first to go. They had not yet failed, but were cracking, which is the start of failure for them. Cracks allow moisture into the capacitor, which is constructed of foil and paper. As the paper dielectric absorbs moisture, it becomes conductive, and eventually gets hot enough to carbonize. Once enough has carbonized, there’s a runaway overheating of the capacitor, which usually results in smoke and a blown-apart capacitor. Here’s the originals, before and after removal:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/rifa_capacitors.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/rifa_capacitors.jpg" alt="Original RIFA capacitors" /></a>
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/rifa_cracks.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/rifa_cracks.jpg" alt="Cracks visible in RIFA capacitors" /></a>
+</div>
+
+<p>Both were cut out and replaced with WIMA Y2 rated safety capacitors, which are polyester film and should provide very long life:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/rifas_replaced.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/rifas_replaced.jpg" alt="RIFA capacitors replaced with WIMA Y2 safety capacitors" /></a>
+</div>
+
+<p>With the motherboard out, corrosion was neutralized with Superior #30 organic acid liquid flux. Superior #30 is mildly acidic and neutralizes corrosion (don’t worry, it’s safe for electronic work). It also aids in re-tinning bare copper traces once the corrosion has been stripped off. Fortunately, as with many HP boards of the era, this one is finished in gold, which resisted most of the corrosive efforts of the battery leakage. A new axial 2200uF 16V capacitor was installed for the main filter.</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/motherboard_cleaned.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/motherboard_cleaned.jpg" alt="Motherboard cleaned and recapped" /></a>
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/battery_contacts_cleaned.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/battery_contacts_cleaned.jpg" alt="Battery contact area cleaned and repaired" /></a>
+</div>
+
+<p>The main filter capacitor wasn’t shorted, but it was quite old, the unit was apart anyway, and the bridge rectifier showed signs of running hot. Here’s a picture of the bottom of the motherboard, showing discoloration under the bridge rectifier:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/board_under_rectifier.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/board_under_rectifier.jpg" alt="Discolored circuit board under rectifier" /></a>
+</div>
+
+<p>The plug-in circuit cards were cleaned and reinstalled in the clock chassis:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/boards.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/boards.jpg" alt="Plug-in circuit cards" /></a>
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/reassembled.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/reassembled.jpg" alt="Reassembled HP 59309A clock" /></a>
+</div>
+
+<p>With repairs complete, the HP 59309A clock was powered up and the date and time set:</p>
+
+<div class="center">
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/finished_front.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/finished_front.jpg" alt="Repairs finished, from the front" /></a>
+  <a href="/images/vintage-misc/hp_59309a_digital_clock/finished_closeup.jpg"><img src="/images/vintage-misc/hp_59309a_digital_clock/scaled/finished_closeup.jpg" alt="Closeup of display" /></a>
+</div>
+
+<p>The 5V regulator and bridge rectifier now run cooler, though the regulator may get an additional external heatsink. HP-IB interface testing is next!</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/hp_59309a_digital_clock"></script> clocks repaired
+</p>
+
+:ET

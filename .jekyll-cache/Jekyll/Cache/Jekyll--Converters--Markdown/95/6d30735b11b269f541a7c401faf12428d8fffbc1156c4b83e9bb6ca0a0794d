@@ -1,0 +1,29 @@
+I"v<p>Since acquiring my <a href="/2016/04/20/challenger-3-cleanup">Challenger III</a> I’d wanted to find a prototype board for the OSI bus. Having a protoboard would let me build a debug board as I had <a href="/2011/09/01/debug-board">for the S-100 bus</a>, to assist in repairing the nonworking boards left over from the combination of my Challenger III boards with those that my boss had. I could also build a more reliable 48K + 8K all-in-one RAM board using a modern high density static RAM rather than a pile of SEMI4200 static RAMs. Unfortunately, original Ohio Scientific 495 prototype boards are hard to come by – I know of one other original in existence (also being used as a RAM board!), and <a href="http://www.technology.niagarac.on.ca/people/mcsele/OhioScientific.html">Mark Csele</a> had remarked in an email that they were probably unobtainable.</p>
+
+<p>Additionally, 8x10” or larger sheets of perfboard or even punchboard are expensive. They don’t have pads for the Molex KK-156 connectors used with the OSI bus, and the high insertion force of the KK-156 connectors had resulted in ripped-off connectors on a previous attempt to epoxy connectors to a large piece of perfboard.</p>
+
+<p>A lack of 495 boards resulted in vintage solutions like this:</p>
+
+<p class="center"><a href="/images/osi/495_proto/homebrew_proto.jpg"><img src="/images/osi/495_proto/scaled/homebrew_proto.jpg" alt="Homebrew prototype board" /></a> <a href="/images/osi/495_proto/homebrew_connectors.jpg"><img src="/images/osi/495_proto/scaled/homebrew_connectors.jpg" alt="Connector closeup" /></a></p>
+
+<p>This is a vintage homebrew ROM board I picked up from a popular online auction site. As you can see, a small single-sided board was hand etched to carry the KK-156 connectors, which was then glued to a large chunk of prototype board. Unlike my attempt, this one appears to hold on pretty solidly. I was thinking about replicating the small carrier board when I came across an actual OSI 495 board for sale:</p>
+
+<p class="center"><img src="/images/osi/495_proto/original.jpg" alt="Homebrew prototype board" /></p>
+
+<p>It was in good condition with very little of the prototype space used – it appears the previous owner never got past laying down sockets and some basic wiring. My plan was originally to turn this into a combination debug/RAM board, but in talking with <a href="http://www.altairkit.com/">Grant Stockley</a> about duplication of S-100 boards, I decided to instead clone the board. I used Grant’s recommendation of scanning services from <a href="http://www.mhtest.com/">Mile High Test Services</a>, a Colorado-based shop specializing in high resolution conversion of PC board art into CAD files.</p>
+
+<p>My board went off to Mile High Test Services and was scanned as a single-sided job. I specified no clean-up, to preserve the original “look and feel” of a board laid out with tape and acetate: not all lines are perfectly straight, holes are off-center, et c. I received a set of Gerber files, which I was able to manipulate with <a href="http://kicad-pcb.org/">KiCad</a> and re-export as Gerber files:</p>
+
+<p class="center"><a href="/images/osi/495_proto/495_gerbers.png"><img src="/images/osi/495_proto/scaled/495_gerbers.png" alt="495 gerbv export" /></a></p>
+
+<p>This worked out pretty well, and the board went off to the manufacturer for a small prototype run. I ran the board as single-sided, no plated-through holes, no solder mask, no silkscreen – just like the original. I did add a bit of text in the bottom-left corner indicating that the board was a reproduction:</p>
+
+<p class="center"><a href="/images/osi/495_proto/back.jpg"><img src="/images/osi/495_proto/scaled/back.jpg" alt="Reproduction 495 board" /></a> <a href="/images/osi/495_proto/label.jpg"><img src="/images/osi/495_proto/scaled/label.jpg" alt="Reproduction label" /></a></p>
+
+<p>Aside from one small flaw in a power trace (doesn’t affect functionality), it turned out great! I ran a small number of these boards as a test. So far, there hasn’t been a lot of interest in doing a larger run; however, if you’d like to purchase one of the initial boards or put your name in for a purchase on a larger run, <a href="https://services.glitchworks.net/ng/messages/new">let me know</a> via the contact form.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/495_proto"></script> chunks of protoboard
+</p>
+
+:ET

@@ -1,0 +1,50 @@
+I"p<h2 id="overview">Overview</h2>
+
+<p>This has been a long-standing project for me – I’ve wanted to upgrade my MINC-23 boot ROMs since I got it operational in May of 2014. The ROMs included on the MINC’s <a href="http://web.archive.org/web/20160809224154/http://www.willsworks.net/pdp11/BOARDS.HTM#BDV11">BDV11 Diagnostic/Bootstrap/Terminator</a> board were functional, but required setting DIP switches to select the boot device, and only provided bootloaders for RX01/02, RK05, and RL01/02 storage systems. I wanted the more exhaustive memory test of the PDP-11/23+, its support of numerous boot devices, and its diagnostic and memory mapping utilities.</p>
+
+<p>I knew this could be accomplished as several people have done so in the past. I used the following resources to build ROMs:</p>
+
+<ul>
+  <li><a href="http://web.archive.org/web/20160809224154/http://www.willsworks.net/pdp11/BOARDS.HTM">Will Kranz’s PDP-11 board information page</a></li>
+  <li><a href="http://web.archive.org/web/20160321035043/http://avitech.com.au/pdp-11-03/bdv11-rom-upgrade.html">Malcolm Macleod’s BDV11 upgrade page</a> which includes the newest KDF11B ROM images</li>
+  <li><a href="http://www.vcfed.org/forum/showthread.php?24754-Qbus-Memory-cards&amp;p=175462#post175462">Lou N2MIY’s input from this VC Forums thread</a> which covers jumper and switch settings</li>
+  <li>DEC Micronote 057, Bitsavers has a copy in the micronote reprint PDF, locates W13 and supplies socket numbers</li>
+</ul>
+
+<h2 id="applications">Applications</h2>
+
+<p>Swapping ROMs isn’t a universal process. The KDF11-B diagnostic ROMs won’t work with all QBus CPU modules due to slight differences in instruction sets. For example, it’s not possible to use the KDF-11B ROMs with a LSI-11/2 CPU board (the original PDP-11/03 4-chip MCP-1600 chipset) due to the LSI-11/2’s inability to directly access the PSW at <code>0177776Q</code> (there are special instructions for this on the LSI-11/2 – <code>MFPS</code> and <code>MTPS</code>).</p>
+
+<p>It appears that the KDF11-B ROMs are also incompatible with J-11 “Jaws” based CPU boards. <a href="http://www.vcfed.org/forum/showthread.php?51827-Another-BDV11-ROM-Upgrade&amp;p=406866#post406866">This thread</a> on the VC Forums confirms my observation that the J-11 CPUs will HALT with <code>ERR 6 TRAP 10</code>, which, according to the PDP-11 Microcomputer Handbook, is a CPU or memory error during diagnostics. Presumably, the KDF11-B ROMs are trying to test some internal functionality of the J-11 CPU that behaves differently and generates an erroneous failure.</p>
+
+<p>Basically, if your CPU board uses the F-11 “Fonz” CPU, you can use the KDF11-B diagnostic ROMs. If you’re using the LSI-11/2 or J-11 CPU then the ROMs won’t work as stock ROMs. It is unclear as to whether compatibility is limited to QBus machines, or whether F-11 based Unibus machines (PDP-11/24 for example) can also use the ROMs.</p>
+
+<h2 id="process">Process</h2>
+
+<p>We’ll be working with the two ROM images (low and high byte) for the 8K x 8 EPROMs on a PDP-11/23+ KDF11-B CPU board. The KDF11-B includes the functionality of a KDF11-A CPU board, two DLV11 SLUs, and the BDV11 diagnostic/boostrap/terminator board all in one, and has a very nice full featured diagnostic ROM. The ROM can boot from just about any storage system you’d find in a QBus machine, includes a more exhaustive memory and hardware test, and can map both memory and I/O space. The thing that lets this BDV11 modification work is that the KDF11-B implements all of its included functions in a standard way, so the ROM will work with discrete CPU, SLU, and ROM boards. Probably the most critical supported feature is the ROM’s compatibility with the memory access scheme of the BDV11 – it uses 256-byte pages switchable with a page control register.</p>
+
+<p>The KDF11-B ROM images need to be split up into 2K chunks, so that they can be burned into eight 2K x 8 EPROMs (Intel 2716 or compatible), since the BDV11 can’t use 8K x 8 ROMs. Alternately, it seems you could use sixteen 1K x 8 2708 EPROMs if you happen to have a large quantity of 2708s in your parts stash. Additionally, the BDV11 may require a few jumper cuts/moves to set it up for 2K x 8 5V EPROMs.</p>
+
+<p>I started with modifying the BDV11 for 2K x 8 EPROMs. On my BDV11, this required cutting jumpers W3 and W5 and installing jumpers W4 and W13. You’ll want to pull up DEC Micronote 057 to locate W13, as one of the holes for it may be occupied by a capacitor (mine wasn’t). These changes brought my board to “Configuration F” from page 127 (PDF page 137) of the 1983 PDP-11 Microcomputer Interfaces Handbook. At this point, I plugged a pattern ROM into E48 and tested the BDV11. If you’re on a PDP-11 with 22-bit addressing (pretty much all KDF11 CPU boards) that the PCR is now at 1777520, the switch/LED register is at 1777524, and the ROM will start at 773000 – I always forget and end up thinking something is wrong!</p>
+
+<p>The ROMs need to be split into 2K chunks for burning into 2716 EPROMs. I accomplished this with <code>split</code> and <code>srec_cat</code> tools under Slackware Linux 14.1:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">split</span> <span class="nt">-b</span> 2048 <span class="nt">-d</span> <span class="nt">-a</span> 1 23-453e4.bin 23-453e4.
+<span class="nv">$ </span>srec_cat 23-453e4.0 <span class="nt">-binary</span> <span class="nt">-o</span> 23-453e4.0.hex <span class="nt">-intel</span> <span class="nt">-address-length</span><span class="o">=</span>2</code></pre></figure>
+
+<p>The first command splits the first KDF11-B ROM image into 2K chunks, while the second converts the first chunk from raw binary to Intel Hex format. I’ve uploaded the converted ROM images <a href="http://filedump.theglitchworks.net/software/vintage/dec/roms/bdv11_upgrade/">to the filedump</a> so that future DEC hackers don’t need to remember how to do the conversion work!</p>
+
+<p>I burned the EPROMs with a neat vintage programmer, the <a href="http://www.artbv.eu/products/programmers/epp1f/index.htm">A.R.T. EPP-1</a>, which is apparently still supported, even though it is considered obsolete by the manufacturer. This little programmer plugs into any computer with a RS-232 port and a terminal emulator, the commands are printed right on the top cover of the enclosure, and you simply upload files in Intel Hex format. It doesn’t handle as many devices as some of my other programmers, but it’s completely self-contained (built in power supply, even) and requires no proprietary software, so it often lives in my top desk drawer.</p>
+
+<p>Here’s a picture of the finished BDV11. Click on the image for a larger view. You should be able to tell which jumpers need to be cut/installed from the larger view – I used tan 0 Ohm resistors in the W4 and W13 positions. To help with locating, W13 is directly above the EPROM labeled 23-453E4 #4:</p>
+
+<p class="center"><a href="/images/dec/bdv11_roms/board.jpg"><img src="/images/dec/bdv11_roms/scaled/board.jpg" alt="New EPROMs installed" /></a></p>
+
+<p>Plugged the new ROMs into the BDV11, reinstalled it in the MINC, and it worked:</p>
+
+<p class="center"><a href="/images/dec/bdv11_roms/boot_message.jpg"><img src="/images/dec/bdv11_roms/scaled/boot_message.jpg" alt="MINC-23 boot message" /></a></p>
+
+<p>Don’t forget to protect your EPROMs from UV erasure with a label or a bit of opaque tape (black electrician’s tape works great). I printed some labels and stuck them to the EPROMs with packing tape:</p>
+
+<p class="center"><a href="/images/dec/bdv11_roms/labels.jpg"><img src="/images/dec/bdv11_roms/scaled/labels.jpg" alt="EPROM labels" /></a></p>
+:ET

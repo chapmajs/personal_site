@@ -1,0 +1,37 @@
+I"R<p>One of the components with the highest failure rate in vintage computers is the hard disk. Being mechanical, it experiences breakdown even if well-maintained. While there are many examples of fully operational 5.25” MFM, IDE and SCSI drives working in their original host computers, the nature of such devices make modern alternatives attractive. Usually, these options involve attaching modern disk drives to vintage controller boards, or developing modern controller boards for use with vintage technology, as with the XTIDE Project.</p>
+
+<h2 id="using-industrial-flash-in-vintage-computers">Using Industrial Flash in Vintage Computers</h2>
+
+<p>Many vintage computers will allow you to plug a modern IDE hard drive directly into a vintage controller with little problem, except perhaps a reduction in the usable capacity of the drive. Dynamic Disk Overlays (DDOs) can overcome this problem for many machines, and if the vintage machine is running a UNIX-like operating system, it may not be an issue at all. While this is often a good solution for vintage machines, I prefer to have hard drives that closely match the original capacity of the drives that would have been found in a vintage computer: small values between 20 and 500 MB are typical of MFM and early IDE/SCSI hard drives.</p>
+
+<p>While these capacities are not available with modern hard drives, they are readily (and cheaply!) available with CompactFlash cards, which may be placed in an IDE converter for use in vintage machines. Until recently, this was my main method for replacing failed or aging hard drives in vintage machines with IDE controllers. CompactFlash cards in sizes less than 1 GB can be purchased very cheaply through secondhand sources. Adapters exist for most IDE configurations, including 44-pin laptop-size IDE applications – one place that I still use CompactFlash cards in place of hard drives.</p>
+
+<p>Due to problems with CompactFlash cards that didn’t fully support the IDE standard, I had switched to purchasing industrial CompactFlash modules. These are more expensive than regular “consumer-grade” CF, but are usually intended for IDE service and boast higher write limits. However, due either to the CF cards I was using or the IDE adapters I had on hand, not all of my vintage machines would correctly identify even industrial CF cards, forcing me to use actual hard drives.</p>
+
+<p class="center"><img src="/images/xtide/xtide/flashmodule.jpg" alt="128 MB PQI Industrial Flash module" /></p>
+
+<p>Recently, I came across a large quantity of industrial Flash modules. These devices are great because they provide a much more accurate emulation of an IDE drive, in addition to having a very high write limit – over one million rewrites! Usually, these devices are out of my price range, but due to the fact that I bought several hundred on the surplus market, the price-per-unit became affordable. I’ve started using these as hard disk replacements in all of my vintage machines, as they work just fine in the handfull of applications I’ve tried them in. Since I have 64 and 128 MB modules, the capacities are comparable to hard drives that might have originally been installed in the computers I use them in. They also draw less power, and produce a lot less heat and noise.</p>
+
+<h2 id="modifying-the-xtide-controller">Modifying the XTIDE Controller</h2>
+
+<p class="center"><a href="/images/xtide/xtide/xtidemod-front.jpg"><img src="/images/xtide/xtide/scaled/xtidemod-front.jpg" alt="Front of the XTIDE Controller" /></a></p>
+
+<p>In case you haven’t heard about it, the XTIDE Project has brought a sought-after solution to the world of vintage computers: a low-cost IDE controller that will connect a 16-bit (standard PATA) IDE drive to the 8-bit ISA bus! Not only that, but the board is community developed and produced as open hardware. It’s a wonderful board, available as a bare board, as a kit or as an assembled and tested add-in card. Not only does it support modern drives, but the Universal BIOS allows even the oldest of ISA-based PC compatibles to take advantage of very large hard drives. If you just want the Universal BIOS support, you can even burn the Universal BIOS code to a standard PROM and use it with standard IDE controllers! A popular option is to install the PROM into the PROM socket on a network card that supports boot PROMs.</p>
+
+<p>The XTIDE project is great, but after assembling ten cards from kits for those who wished to purchase an assembled card rather than a DIY project, I noticed something I’d like to have added to the XTIDE. From the start, I had planned to use a CompactFlash card in an IDE converter as the “hard disk” for my XTIDE boards. I’d planned on attaching a Molex connector to the +5V and ground traces of the XTIDE, so that I didn’t require an extra power cable for the CF card – this is especially important in systems like the IBM PS/2 Model 30, which has ISA slots but no Molex connectors whatsoever.</p>
+
+<p>I soon realized that many of the CompactFlash -&gt; IDE converters on the market were able to draw power for the CF card from the IDE connector itself. It’s apparently commonplace to provide +5V on pin 20 of the IDE connector, a pin usually left out for keying purposes. That was perfect! I could provide power to my CF card, there wouldn’t be any extraneous Molex-terminated cables hanging off the back of the card, and I could still use the XTIDE with spinning-platter hard disks if I wanted to. The modification, for me, consisted of two parts: adding a jumper wire from a heavy +5V trace to pin 20, and replacing the power supply bypass electrolytic with a larger value. The latter was done to compensate for the potentially higher draw of the board with the IDE-powered module attached. I chose a 100 uF, 6.3V capacitor because I had several on hand.</p>
+
+<p class="center"><a href="/images/xtide/xtide/xtidemod-back.jpg"><img src="/images/xtide/xtide/scaled/xtidemod-back.jpg" alt="Back of the XTIDE Controller" /></a></p>
+
+<p>The above image shows the jumper wire installed. One end is soldered to the positive terminal of the power supply bypass capacitor, and the other is connected to IDE pin 20. It is #24 stranded core wire, which should be more than sufficient for the current draw imposed by Flash memory devices.</p>
+
+<p class="center"><a href="/images/xtide/xtide/xtidemod-flash.jpg"><img src="/images/xtide/xtide/scaled/xtidemod-flash.jpg" alt="XTIDE with Industrial Flash module" /></a></p>
+
+<p>I tried to use a CF -&gt; IDE converter with my XTIDE board, but had little luck with it. The XTIDE would identify the cards, and would try to boot from them, but I never got much farther than that. I suspect it’s a combination of low-end converter and CF cards that don’t fully support the IDE standard. As an alternative, I switched to industrial Flash modules, which also support a +5V power supply on IDE pin 20. Both the M-Systems 64 MB modules and PQI 128 MB modules work perfectly with the XTIDE card, even in my Leading Edge Model D, which wasn’t overly excited about the XTIDE board to begin with. Even though it has little to do with the functionality of the card, I think the industrial Flash modules look better anyway – it’s a fast, trim, professional-looking solution, and beats even the ever-popular HardCard!</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/xtide"></script> vintage hard drives saves
+</p>
+
+:ET

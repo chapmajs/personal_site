@@ -1,0 +1,52 @@
+I"�<p>In late February/early March of 2017, I had a friend’s PDP-11/34a chassis on my workbench for repair and testing. <a href="http://retrotechnology.com/">Herb Johnson</a> loaned me his chassis for the testing of a PDP-11/34a board set I’d acquired with other Unibus boards, as part of a purchase of a customer’s old spare parts inventory. You can read about the repair work his PDP-11/34a board set required <a href="http://www.retrotechnology.com/dec/1134_herb.html">here, on his site</a>. With his machine restored to full operation, I decided to finally take the time to repair and test a RX211 Unibus RX02 controller I’d picked up some time before.</p>
+
+<div class="center">
+  <a href="/images/dec/rx211_repair/finished.jpg"><img src="/images/dec/rx211_repair/scaled/finished.jpg" alt="Repaired RX211 Controller" /></a>
+</div>
+
+<p>Above is the repaired and tested RX211 controller. This is a quad height module, suitable for installation in a Unibus SPC slot. It supports only the RX02 disk system. Notice the bus grant plug near the bottom-middle of the controller: this controller does transfers via DMA, as opposed to earlier RX01 controllers, which use programmed I/O.</p>
+
+<p>The board was purchased used and untested, with a very broken switchpack:</p>
+
+<div class="center">
+  <a href="/images/dec/rx211_repair/broken_switchpack.jpg"><img src="/images/dec/rx211_repair/scaled/broken_switchpack.jpg" alt="Broken Switchpack" /></a>
+</div>
+
+<p>The switchpack was removed by cutting off the contact leaves and pulling the body off over the contacts. Each contact stub was then heated and pulled out with pliers, and the holes cleared using a vacuum desoldering station. DEC used very small annular rings on these boards, and it’s very difficult to desolder components without lifting pads, even with a high-quality desoldering station like the Hakko 472D. Some of the traces under the switchpack had been damaged, and some of the through-hole plating was showing intermittent contact:</p>
+
+<div class="center">
+  <a href="/images/dec/rx211_repair/switchpack_removed.jpg"><img src="/images/dec/rx211_repair/scaled/switchpack_removed.jpg" alt="Switchpack Removed" /></a>
+</div>
+
+<p>With the new switchpack soldered down and a copy of the RX211 schematic, I reconnected the broken traces and through-holes using 30 gauge Kynar wrapping wire:</p>
+
+<div class="center">
+  <a href="/images/dec/rx211_repair/new_switchpack.jpg"><img src="/images/dec/rx211_repair/scaled/new_switchpack.jpg" alt="New Switchpack Installed" /></a>
+  <a href="/images/dec/rx211_repair/trace_fixes.jpg"><img src="/images/dec/rx211_repair/scaled/trace_fixes.jpg" alt="Trace Repair Wiring" /></a>
+</div>
+
+<p>I configured the RX211 per the manual, and stole a BR#5 plug from a RL11 disk controller, as the RX211 arrived with its bus grant plug missing. Using this board in a Unibus backplane requires removing the wire-wrapped NPG jumper from the backplane. There was already one slot with the jumper removed in Herb’s chassis, as the chassis had originally contained a RL11 controller. As with all proper DEC hardware, it doesn’t really work until XXDP is happy, so a run of CZRXFB0 was in order:</p>
+
+<div class="center">
+  <a href="/images/dec/rx211_repair/xxdp.jpg"><img src="/images/dec/rx211_repair/scaled/xxdp.jpg" alt="Successful Run of XXDP CZRXFB0" /></a>
+</div>
+
+<p>Success! Some people, especially hobbyists, seem to be of the mind that XXDP isn’t “worth the trouble” when repairing PDP-11 hardware. I disagree. I’ve found it to be essential in getting both Unibus and QBus hardware to operate properly. With that out of the way, I dug out RT-11 4.0 boot media on RX02 floppies and tried to boot RT-11:</p>
+
+<div class="center">
+  <a href="/images/dec/rx211_repair/rt11.jpg"><img src="/images/dec/rx211_repair/scaled/rt11.jpg" alt="RT-11SJ 4.0 Directory" /></a>
+</div>
+
+<p>RT-11 booted properly, using the RX bootstrap ROM in the M9312 bootstrap/terminator board! This copy of RT-11 was customized for my MINC-23, but is not so customized as to misbehave on the PDP-11/34a. The RX02 drives used for the test were borrowed from the MINC-23. Here’s a picture of the full setup, with a VT220 as the console terminal – excuse the mess of schematics and notes!</p>
+
+<div class="center">
+  <a href="/images/dec/rx211_repair/full_system.jpg"><img src="/images/dec/rx211_repair/scaled/full_system.jpg" alt="PDP-11/34a with Console Terminal and RX02 Drives" /></a>
+</div>
+
+<p>The RX211 is ultimately destined for my PDP-11/10. After finishing Herb’s PDP-11/34a and returning it to him, I set the PDP-11/10 up on the bench. My PDP-11/10 came to me as an all-core, minimally configured machine, I suspect it had an expansion chassis at one point, but it wasn’t available to me. This was the first time it was going to boot off of disk, only having run XXDP exercisers over emulated TU-58 tape. It failed to boot on first try, and then something in the power supply section let go and smoked. I suspect it’s something in the AC LO/DC OK circuitry as the regulator modules check out. So, for now, it’s out of commission.</p>
+
+<p class="center">
+    <script language="javascript" src="https://services.glitchworks.net/counters/rx211_repair"></script> RX02 subsystems repaired
+</p>
+
+:ET
