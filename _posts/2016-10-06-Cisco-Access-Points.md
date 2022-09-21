@@ -68,36 +68,36 @@ With Cisco IOS 12, you can coerce IOS into putting `BVI1` on a VLAN other than t
 
 If you don't want to associate `BVI1` with the native VLAN on the APs Ethernet interface, you can coerce IOS into using a VLAN with IOS 12. Configuration is a little unintuitive, and it seems that Cisco doesn't really want APs configured in this way. The following is an example configuration from the Catalyst 2940 switch on my test network, which provides the VLAN trunk port to the AP under test:
 
-{% highlight cisco_ios %}
+{% codeblock :language => 'cisco_ios', :title => 'Cisco 2940 AP Port Configuration' %}
 interface FastEthernet0/5
- switchport trunk native vlan 99
- switchport trunk allowed vlan 11,20
- switchport mode trunk
- switchport nonegotiate
-{% endhighlight %}
+    switchport trunk native vlan 99
+    switchport trunk allowed vlan 11,20
+    switchport mode trunk
+    switchport nonegotiate
+{% endcodeblock %}
 
 Setting the native VLAN to 99 effectively blackholes any untagged traffic coming into the port, provided nothing is using VLAN 99. No untagged traffic will leave the port, since VLAN 99 isn't used for anything other than a blackhole in my configuration. This is typically a good idea as an additional layer in securing your network. We're going to allow tagged packets for VLAN 11 (Wireless subnet) and VLAN 20 (management subnet) across the trunk.
 
 Basically, we want to assign `bridge-group 1` to something other than `FastEthernet0` or `GigabitEthernet0`, but IOS won't let you do
 
-{% highlight cisco_ios %}
+{% codeblock :language => 'cisco_ios', :title => 'Cisco Console Configuration' %}
 conf ter
 inter fa0
 no bridge-group 1
-{% endhighlight %}
+{% endcodeblock %}
 
 And, you can't add a subinterface to `bridge-group 1` without removing the parent interface! The following snippet will force `FastEthernet0` out of `bridge-group 1`:
 
-{% highlight cisco_ios %}
+{% codeblock :language => 'cisco_ios', :title => 'Cisco Console Configuration' %}
 conf ter
 inter fa0
 bridge-group 2
 no bridge-group 2
-{% endhighlight %}
+{% endcodeblock %}
 
 With that taken care of, you can now create a subinterface for VLAN 20 and assign it to `bridge-group 1`. The following configuration will put managment on VLAN 20:
 
-{% highlight cisco_ios %}
+{% codeblock :language => 'cisco_ios', :title => 'Cisco IOS 12 VLAN Configuration' %}
 interface FastEthernet0
     no ip address
     no ip route-cache
@@ -114,7 +114,7 @@ interface FastEthernet0.20
 interface BVI1
     ip address dhcp client-id FastEthernet0
     no ip route cache
-{% endhighlight %}
+{% endcodeblock %}
 
 From this point, configure the AP as you normally would. There are many good guides for configuring IOS APs from the command line. I don't personally use the web interface, so I can't say whether it will work properly with a non-native management VLAN.
 
@@ -122,7 +122,7 @@ From this point, configure the AP as you normally would. There are many good gui
 
 IOS 15 is quite resistant to having `BVI1` sit on anything other than the native VLAN. It'll lie to you about what's going on. You can't use the `bridge-group` swap as mentioned above to get `bridge-group 1` off of `GigabitEthernet0`. You can upload a configuration from e.g. TFTP with `bridge-group 1` assigned to a different interface, but you'll have to copy it to `startup-config` and reboot. You can also do the following:
 
-{% highlight cisco_ios %}
+{% codeblock :language => 'cisco_ios', :title => 'Cisco Console Configuration' %}
 conf ter
 inter gi0.10
 encap dot1q 10 native
@@ -131,7 +131,7 @@ bridge-group 2
 inter gi0.10
 no encap dot1q 10 native
 encap dot1q 10
-{% endhighlight %}
+{% endcodeblock %}
 
 Now, if you put a port into monitor mode (port mirroring), at least on a Cisco switch (I used a little Catalyst 2940), and you have Dot1Q encapsulation turned on for the destination port, THE SWITCH WILL ADD VLAN HEADERS BACK! You'll see traffic moving around with VLAN 10 tags. I guess this is some sort of diagnostic translation where the monitor session is automatically assigning the switchport's native VLAN header to packets that are really untagged.
 
