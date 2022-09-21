@@ -13,7 +13,7 @@ Dropwizard includes [Coda Hale Metrics](https://github.com/dropwizard/metrics) i
 
 While uptime isn't included in the default set of provided metrics, an uptime metric [seemed to be available](https://github.com/dropwizard/metrics/blob/master/metrics-core/src/main/java/com/codahale/metrics/JvmAttributeGaugeSet.java) as part of the metrics package. I couldn't find any documentation on using or registering these metrics, which turns out to be very simple. Add the following to your Dropwizard application class:
 
-{% highlight groovy %}
+{% codeblock :language => 'groovy', :title => 'Dropwizard Uptime Metrics' %}
 import com.codahale.metrics.JvmAttributeGaugeSet
 
 class YourApplication extends Application<YourApplicationConfiguration> {
@@ -24,6 +24,6 @@ class YourApplication extends Application<YourApplicationConfiguration> {
         environment.metrics().registerAll(new JvmAttributeGaugeSet())   
     }
 }
-{% endhighlight %}
+{% endcodeblock %}
 
 Dropwizard Metrics will now report uptime, in milliseconds, in the gauges section of the metrics report. The gauge is registered with the key `uptime`. Since this method brings in the entire `JvmAttributeGaugeSet`, you'll also get metrics for the name (pid@hostname) and JVM vendor.
