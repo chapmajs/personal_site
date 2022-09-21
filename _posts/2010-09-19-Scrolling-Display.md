@@ -38,24 +38,24 @@ This works just fine, and allows me to make revisions to the code without worryi
 
 Getting a message to scroll across the screen in the manner I wanted wasn't as easy as one might assume. First of all, I wanted to be able to continuously loop message, as with a marquee. This required the use of a [circular array](http://en.wikipedia.org/wiki/Circular_buffer); that is, an array whose tail links back to its head. This is a trivial task in higher level languages, even if one has to design their own linked list. However, I'm writing my code for the 8085 SBC in 8080 Assembly! Even so, the task wasn't too difficult (albeit not dynamic) and didn't require a lot of code:
 
-{% highlight nasm %}
-  ;Circular Array Implementation
-  ;Return with the next value of the array in A.
-  ;If we reach the end, loop back around.
-  ARRAYNEXT: PUSH H 
-             LHLD STRINGPTR
-             MOV A, M
-             CPI 00h
-             JZ WRAP
-             INX H
-             SHLD STRINGPTR
-             POP H
-             RET
-  WRAP:      LXI H, STRING
-             SHLD STRINGPTR
-             CALL ARRAYNEXT
-             RET
-{% endhighlight %}
+{% codeblock :language => 'nasm', :title => 'Circular Array in 8080 ASM' %}
+;Circular Array Implementation
+;Return with the next value of the array in A.
+;If we reach the end, loop back around.
+ARRAYNEXT: PUSH H 
+           LHLD STRINGPTR
+           MOV A, M
+           CPI 00h
+           JZ WRAP
+           INX H
+           SHLD STRINGPTR
+           POP H
+           RET
+WRAP:      LXI H, STRING
+           SHLD STRINGPTR
+           CALL ARRAYNEXT
+           RET
+{% endcodeblock %}
 
 What this gives us is a sort of get_next() function for our null-terminated character array. All we need to do is define STRINGPTR with an equate to a free memory location, and define STRING as the starting memory address of our null-terminated string. I chose 0x2000 for STRINGPTR, the first address at the bottom of the SBC's RAM. STRING was assigned 0x0400, a block of the 2K EEPROM that contained my null-terminated string.
 
@@ -67,25 +67,25 @@ Do note that while this implementation works fine in our case, it has a few shor
 
 To get the message to scroll smoothly, one character at a time, it was necessary to devise a way to obtain a "sliding window" sample of the string. The window is 8 bytes wide, as that's the width of our character display. As the window moves along the string, it grabs the next character to display and pushes the characters currently in the window down by one, with the first character being pushed out of the window. Sound familiar? It's similar to the function of a First In, First Out, or FIFO, buffer. Our case is slightly different in that we don't care about the character coming out, and we want to dump the entire buffer to the display after a new value has been enqueued.
 
-{% highlight nasm %}
-  ;Shift the contents of the data buffer down one
-  ;and replace the last character with the next char
-  ;from the circular array.
-  SHIFT:  LXI H, BUFF     ;buff*
-          MOV B, H        ;buff* + 1
-          MOV C, L
-          INX B   
-          MVI D, 07h      
-  SH1:    LDAX B
-          MOV M, A
-          INX H
-          INX B
-          DCR D
-          JNZ SH1
-          CALL ARRAYNEXT
-          MOV M, A
-          RET     
-{% endhighlight %}
+{% codeblock :language => 'nasm', :title => 'Display Scroll Routine' %}
+;Shift the contents of the data buffer down one
+;and replace the last character with the next char
+;from the circular array.
+SHIFT:  LXI H, BUFF     ;buff*
+        MOV B, H        ;buff* + 1
+        MOV C, L
+        INX B   
+        MVI D, 07h      
+SH1:    LDAX B
+        MOV M, A
+        INX H
+        INX B
+        DCR D
+        JNZ SH1
+        CALL ARRAYNEXT
+        MOV M, A
+        RET     
+{% endcodeblock %}
 
 The critical code in our FIFO can be found in the SHIFT function. What shift does is start at the beginning of the buffer, which is simply a block of memory allocated for the purpose, and shift each value down one position in the buffer. That is, array[1] becomes array[0], array[2] becomes array[1], and so on, until we reach the last position in the buffer. When we get to the last position, as determined by the count in register D, we then need to get the next character from the string and put it in this position. Fortunately, we've already got ARRAYNEXT to both get the next character and deal with wrapping the array around when we get to its end!
 
@@ -95,4 +95,8 @@ Of course, the SHIFT function could be further genericised: passing the pointer 
 
 The rest of the FIFO implementation is straightforward: a CLEAR method to preload the buffer with a defined byte at every position (we used 0x20, ASCII space, so that the display initializes as blank), and a UPDATE method to dump the entire buffer to the character display. The only other function is the DELAY function I wrote for the SOD blink test. You can find the entire Assembly source for the LED scroller [in the Glitch Works File Dump](http://filedump.glitchwrks.com/8085projects/files/charscroll.asm).
 
-The code was once again assembled with GNUSim8085 and manually programmed into my Intel iUP-201 PROM Programmer -- I really need to get a serial transfer program written for it! The project will get a few modifications before being displayed at the Maker Faire, but you can watch a video with a brief explanation [on YouTube](http://www.youtube.com/watch?v=P9A4H4YBX-Q) -- seeing the display's scroll pattern will help demonstrate the exact function of the FIFO and circular array.
+The code was once again assembled with GNUSim8085 and manually programmed into my Intel iUP-201 PROM Programmer -- I really need to get a serial transfer program written for it! The project will get a few modifications before being displayed at the Maker Faire, but you can watch a video with a brief explanation:
+
+<div class='center'><iframe width="560" height="315" src="https://www.youtube.com/embed/P9A4H4YBX-Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
+Seeing the display's scroll pattern will help demonstrate the exact function of the FIFO and circular array.
