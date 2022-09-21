@@ -20,25 +20,25 @@ Turning Off Cookies and Sessions
 
 In `config/application.rb`, we remove the middleware responsible for both cookies and the cookie-based session store:
 
-{% highlight ruby %}
+{% codeblock :language => 'ruby', :title => 'Disable Cookies in Rails 5' %}
 # Disable cookies, we don't use them here
 config.middleware.delete ActionDispatch::Cookies
 config.middleware.delete ActionDispatch::Session::CookieStore
-{% endhighlight %}
+{% endcodeblock %}
 
 Since that effectively breaks sessions, we'll turn those off, too. We're doing this in `config/initializers/session_store.rb`:
 
-{% highlight ruby %}
+{% codeblock :language => 'ruby', :title => 'Disable Cookies in Rails 5' %}
 # Not using sessions here
 Rails.application.config.session_store :disabled
-{% endhighlight %}
+{% endcodeblock %}
 
 If you still want to use flash messages, you'll need to manually include them in `config/application.rb`:
 
-{% highlight ruby %}
+{% codeblock :language => 'ruby', :title => 'Disable Cookies in Rails 5' %}
 # Enable flash messages, these will be on the request since we're not using sessions
 config.middleware.use ActionDispatch::Flash
-{% endhighlight %}
+{% endcodeblock %}
 
 Flash messages still work, they will just come from the request rather than the session.
 
@@ -49,10 +49,10 @@ With sessions disabled, [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_
 
 To reduce noise, you can also remove the `csrf_meta_tags` include from your base `ApplicationLayout` (often `app/views/layouts/application.html.erb`). This will prevent meta tags containing the CSRF token from being inserted in responses. We can also tell Rails to stop inserting hidden CSRF token fields into forms -- these will show up as a hidden field called `authenticity_token` by default. Leaving them in, like `csrf_meta_tags`, doesn't hurt anything, but it's another parameter that will come in with every form. Disable it by adding the following to your application config:
 
-{% highlight ruby %}
+{% codeblock :language => 'ruby', :title => 'Disable CSRF Protection in Rails 5' %}
 # No session, so don't bother with CSRF tokens
 config.action_controller.allow_forgery_protection = false
-{% endhighlight %}
+{% endcodeblock %}
 
 This application-wide setting will stop `form_tag`, `form_for`, and things that extend Rails' form support, like the [simple_form gem](https://github.com/plataformatec/simple_form), from inserting `authenticity_token` fields into your forms.
 
