@@ -44,13 +44,13 @@ end
 
 Being as the relay controller was an optoisolated current loop, I just connected it to the RTS handshake pin on a USB -> RS-232 adapter. The RTS pin is typically used to signal to a connected device that the computer is ready to send some data. It, along with the other output handshake signals, can be used as a 1-bit output port under software control. The [serialport](https://rubygems.org/gems/serialport) gem allows us to control the handshake lines from Ruby with ease:
 
-{% highlight ruby %}
+{% codeblock :language => 'ruby', :title => 'Controlling RS-232 Lines from Ruby' %}
 require 'serialport'
 
 port = SerialPort.new('/dev/ttyUSB0')
 port.rts = 0 # Switch the relay on
 port.rts = 1 # and back off again
-{% endhighlight %}
+{% endcodeblock %}
 
 I added in a quick progress bar using the [ruby-progressbar](https://rubygems.org/gems/ruby-progressbar) gem. Its [documentation](http://www.rubydoc.info/gems/ruby-progressbar/1.7.5) covers both basic and advanced usage.
 
