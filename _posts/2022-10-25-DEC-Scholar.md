@@ -50,7 +50,7 @@ Both modems do actually work:
 
 {% linked_image :file => 'level29.jpg', :alt_text => 'VT320 connected to Level 29 BBS through DEC Scholar 2400' %}
 
-Shown above is my DEC VT320 plugged into the DEC Scholar 2400 BPS modem connected at 2400 BPS to [Level 29 BBS(https://bbs.retrobattlestations.com/) over the phone line. We seemed to be having a lot of line noise today, notice the garbage at the login prompt! I disconnected and tried again, but line conditions were even worse.
+Shown above is my DEC VT320 plugged into the DEC Scholar 2400 BPS modem connected at 2400 BPS to [Level 29 BBS](https://bbs.retrobattlestations.com/) over the phone line. We seemed to be having a lot of line noise today, notice the garbage at the login prompt! I disconnected and tried again, but line conditions were even worse.
 
 The DEC Scholar can of course answer the line, but given the non-Hayes command set, it's probably less suited to automatic answering for e.g. \*NIX system dialins than other modems. It does make a pretty decent modem for terminals and computers running terminal emulators, though!
 
