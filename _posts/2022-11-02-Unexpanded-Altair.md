@@ -55,7 +55,7 @@ Above is the Altair's only memory: a 1K static RAM board using Intel 2101 style 
 
 With repairs completed and the power supply thoroughly load tested, the CPU and 1K static RAM boards were installed, and the system was brought up:
 
-{% linked_image :file => 'running.jpg', :alt_text => 'Unexpanded rev 0 Altair 8800 running' %}
+{% linked_images :files => ['running.jpg', 'cover_off.jpg'], :alt_texts => ['Unexpanded rev 0 Altair 8800 running', 'Altair 8800, cover off'] %}
 
 Success! The Altair, as shown above, was running a toggle-in test program to check the function of the front panel sense switches. The opcode for an `IN` instruction (`0xDB` in hex, or `333` in octal) can be seen on the data lights. Since the Altair 8800 lacks a front panel lamp register, I was having it store the result in RAM, and then examining that location after running the program.
 
