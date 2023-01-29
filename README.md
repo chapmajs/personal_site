@@ -1,6 +1,6 @@
 # users.glitchwrks.com/~glitch/ Source
 
-This project contains the source, configuration, et c. use with [Jekyll](https://jekyllrb.com/) to generate [my personal site](http://user.glitchwrks.com/~glitch/). The Jekyll site is completely static, but does make use of several dynamic projects:
+This project contains the source, configuration, et c. use with [Jekyll](https://jekyllrb.com/) to generate [my personal site](http://users.glitchwrks.com/~glitch/). The Jekyll site is completely static, but does make use of several dynamic projects:
 
 * [site_services](https://github.com/chapmajs/site_services) -- Sinatra app that provides hit counter services
 * [rails_services](https://github.com/glitchwrks/rails_services) -- Rails app that provides many dynamic functions, such as the contact form
