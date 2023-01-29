@@ -34,7 +34,7 @@ The Western Digital WD1771 disk controller does in fact include a FM (single-den
 
 As a result, Cromemco decided to use the data separator present on Persci 277 drives. This turns out to be less of an issue than expected, as many early 8" floppy drives (the Shugart SA-800, for example) include a FM data separator. But that still leaves the requirement for 5.25" drives that include a data separator...right?
 
-This one is flat out incorrect -- while the WD1771's on-board data separator is indeed disabled for 8" disk access, the *MINI/MAXI* select line enables it for 5.25" disks. Any standard 40-track 5.25" floppy drive will indeed work perfectly with the 4FDC, provided the drive is strapped appropriately. I'm currently using [a pair of Tandon TM-100 drives](http://www.glitchwrks.com/2013/01/11/5.25-Disk-Box) with my 4FDC, which successfully formats, reads, writes and boots floppy disks. Perhaps the lower data rate of the 5.25" drives makes the on-board WD1771 data separator acceptable; in any case, it seems to work.
+This one is flat out incorrect -- while the WD1771's on-board data separator is indeed disabled for 8" disk access, the *MINI/MAXI* select line enables it for 5.25" disks. Any standard 40-track 5.25" floppy drive will indeed work perfectly with the 4FDC, provided the drive is strapped appropriately. I'm currently using [a pair of Tandon TM-100 drives](/~glitch/2013/01/11/5-25-disk-box) with my 4FDC, which successfully formats, reads, writes and boots floppy disks. Perhaps the lower data rate of the 5.25" drives makes the on-board WD1771 data separator acceptable; in any case, it seems to work.
 
 RDOS Differences
 ----------------

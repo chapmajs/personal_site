@@ -7,7 +7,7 @@ description: During a recent bit of site maintenance, I DRYed up the Jekyll proj
 image: ruby.png
 ---
 
-This site is largely a static site, built with the help of [Jekyll](https://jekyllrb.com/). Jekyll essentially takes some templates, a bunch of Markdown (or your choice of markup language), and turns out HTML suitable for direct deployment to a HTTP server. Jekyll replaced a bunch of static HTML and maintenance scripts [in April 2012](http://www.glitchwrks.com/2012/04/20/jekyll-upgrade). It's a nice, "blog aware" solution that doesn't involve running anything server-side. It's also written in Ruby, which is one of my preferred languages. Being open source means it's easy to hack on, and recent site maintenance brought a few points to mind that got me to actually write some plugins for Jekyll.
+This site is largely a static site, built with the help of [Jekyll](https://jekyllrb.com/). Jekyll essentially takes some templates, a bunch of Markdown (or your choice of markup language), and turns out HTML suitable for direct deployment to a HTTP server. Jekyll replaced a bunch of static HTML and maintenance scripts [in April 2012](/~glitch/2012/04/20/jekyll-upgrade). It's a nice, "blog aware" solution that doesn't involve running anything server-side. It's also written in Ruby, which is one of my preferred languages. Being open source means it's easy to hack on, and recent site maintenance brought a few points to mind that got me to actually write some plugins for Jekyll.
 
 There were a few consistent pain points across the Markdown source for the site, as follows:
 
@@ -154,7 +154,7 @@ end
 Liquid::Template.register_tag('linked_image', GlitchWorks::LinkedImageTag)
 {% endcodeblock %}
 
-This tag is meant to handle the case of a single linked image, as well as multiple linked images centered within the same `<div>` -- the [Sun SPARCstation IPC Recap writeup](/2017/07/24/ipc-recap) demonstrates how the images appear. The `bind_params` method takes care of handling both cases: it expects either `:files` and `:alt_texts` to be passed in, or automatically throws `:file` and `:alt_text` into single-element arrays.
+This tag is meant to handle the case of a single linked image, as well as multiple linked images centered within the same `<div>` -- the [Sun SPARCstation IPC Recap writeup](/~glitch/2017/07/24/ipc-recap) demonstrates how the images appear. The `bind_params` method takes care of handling both cases: it expects either `:files` and `:alt_texts` to be passed in, or automatically throws `:file` and `:alt_text` into single-element arrays.
 
 The `internal_render` method loops over the supplied files, creating thumbnails linked to the full sized images. It can be called as such:
 
@@ -275,7 +275,7 @@ some plain text
 The Danger Block
 ----------------
 
-A few writeups have warnings at the top of the article concerning [Bad Things](http://www.catb.org/jargon/html/B/Bad-Thing.html) that may happen if you just use examples from the article without understanding what's going on. Articles that use it include [the EPROM timer](/2016/03/21/eprom-timer), in which the computer is put in charge of mains power, and [Removing Cookies and Sessions from Rails 5](/2017/01/16/removing-cookies-sessions-rails-5), which may make your Rails app less secure if you don't know why you're disabling cookies and/or sessions.
+A few writeups have warnings at the top of the article concerning [Bad Things](http://www.catb.org/jargon/html/B/Bad-Thing.html) that may happen if you just use examples from the article without understanding what's going on. Articles that use it include [the EPROM timer](/~glitch/2016/03/21/eprom-timer), in which the computer is put in charge of mains power, and [Removing Cookies and Sessions from Rails 5](/~glitch/2017/01/16/removing-cookies-sessions-rails-5), which may make your Rails app less secure if you don't know why you're disabling cookies and/or sessions.
 
 This warning was previously achieved with HTML inlined in the Markdown template for the article, which was suboptimal. Not only was there plain HTML present, but Markdown couldn't be used within the HTML tags, meaning the link to [Bad Thing in the Jargon File](http://www.catb.org/jargon/html/B/Bad-Thing.html) had to be done as an anchor tag. The custom tag block is implemented as follows:
 

@@ -7,7 +7,7 @@ description: With a Cromemco 4FDC and no boot media, getting a functional system
 image: cdos-icon.jpg
 ---
 
-With a [functional Cromemco 4FDC](/2014/01/30/Cromemco-4FDC) and [a pair of Tandon TM-100 drives](/2013/01/11/5.25-Disk-Box), it was time to to get CDOS running with the Cromemco Z2-D. This is a bit of a task when one does not have boot media as the 4FDC can't format disks on its own. It may be possible to restore CDOS disks using [Dave Dunfield's ImageDisk](http://www.classiccmp.org/dunfield/img/index.htm), since ImageDisk CDOS images do exist; however, disks for the 4FDC will need to be single-sided, single-density, which "modern" PC floppy controllers often have trouble with.
+With a [functional Cromemco 4FDC](/~glitch/2014/01/30/cromemco-4fdc) and [a pair of Tandon TM-100 drives](/~glitch/2013/01/11/5-25-disk-box), it was time to to get CDOS running with the Cromemco Z2-D. This is a bit of a task when one does not have boot media as the 4FDC can't format disks on its own. It may be possible to restore CDOS disks using [Dave Dunfield's ImageDisk](http://www.classiccmp.org/dunfield/img/index.htm), since ImageDisk CDOS images do exist; however, disks for the 4FDC will need to be single-sided, single-density, which "modern" PC floppy controllers often have trouble with.
 
 Dave Dunfield has also provided a [RDOS transfer utility](http://www.classiccmp.org/dunfield/img/index.htm) but it's geared toward the Cromemco 16FDC, which uses RDOS 2.x. The 4FDC uses RDOS 1.x which differs enough in command syntax as to be inoperable with the RT utility. RT allows one to format disks by loading an "in-memory" image of CDOS's INIT utility. This is simply a snapshot of the first 32K of RAM with INIT loaded in the TPA. This key bit of data makes bare-metal bootstrapping with no existing images possible.
 
@@ -25,7 +25,7 @@ The Test System
 - North Star 32K HRAM3 Dynamic RAM board (0x0000 - 0x7FFF)
 - Processor Technology 16KRA 16K Dynamic RAM board (0x8000 - 0xBFFF)
 
-Additionally, I used my [Dajen SCI](/2011/11/03/Dajen-SCI) to load the in-memory CDOS image just to test that CDOS 2.58 was workable with a Cromemco 4FDC. Note that the RAM boards used do not support Cromemco-style bank switching -- that is OK for image restoration or using CDOS with 48K of RAM.
+Additionally, I used my [Dajen SCI](/~glitch/2011/11/03/dajen-sci) to load the in-memory CDOS image just to test that CDOS 2.58 was workable with a Cromemco 4FDC. Note that the RAM boards used do not support Cromemco-style bank switching -- that is OK for image restoration or using CDOS with 48K of RAM.
 
 Formatting Disks
 ----------------

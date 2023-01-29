@@ -28,7 +28,7 @@ Layout is non-critical since there's more than enough protoboard for this simple
 {:.center}
 [![Lego 9767 Back](/images/vintage-misc/lego_logo/scaled/back.jpg)](/images/vintage-misc/lego_logo/back.jpg) [![Lego 9767 Back Closeup](/images/vintage-misc/lego_logo/scaled/back_closeup.jpg)](/images/vintage-misc/lego_logo/back_closeup.jpg) 
 
-I followed a wiring color code similar to the [Ohio Scientific RAM board build](/2016/05/17/64k-ram-for-osi). Colors are as follows:
+I followed a wiring color code similar to the [Ohio Scientific RAM board build](/~glitch/2016/05/17/64k-ram-for-osi). Colors are as follows:
 
 * Heavy red is +5V
 * Black is ground

@@ -81,7 +81,7 @@ That completes cleanup and repair of the LanRover/E PLUS. On to making it actual
 
 ### Loading Firmware and Configuration Files
 
-dosdude1's video contains information on using Shiva's Windows 9x tools to both load firmware and configure the LanRover/E PLUS. That's fine, and likely the most common way it was done when these were current hardware, but I wanted to try loading firmware from a \*NIX host. This would allow loading from a boot server, rather than having to start up a Windows 9x machine every time I wanted to use the terminal server and it had been switched off. Fortunately I'd just [cleaned up an old VA Linux server](/2022/10/27/va-linux-server), which would work fine for the purpose!
+dosdude1's video contains information on using Shiva's Windows 9x tools to both load firmware and configure the LanRover/E PLUS. That's fine, and likely the most common way it was done when these were current hardware, but I wanted to try loading firmware from a \*NIX host. This would allow loading from a boot server, rather than having to start up a Windows 9x machine every time I wanted to use the terminal server and it had been switched off. Fortunately I'd just [cleaned up an old VA Linux server](/~glitch/2022/10/27/va-linux-server), which would work fine for the purpose!
 
 The firmware archives found on dosdude1's site included some marked as UNIX-compatible, which contained a text file that explains some of the file naming conventions, and which files are used for what, along with the Shiva products they apply to. It is also mentioned that BOOTP and TFTP are used by the LanRover to download firmware.
 

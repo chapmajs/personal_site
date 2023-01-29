@@ -7,7 +7,7 @@ description: After searching for quite some time, I finally acquired a Sun 19 in
 image: sun_ecl_monitor-icon.jpg
 ---
 
-Since getting my [Sun 3/50 system](/2022/09/19/sun-3-50), I've been looking for a Sun 19" ECL monitor to go with it. The 3/50's previous owner had put me in contact with a fellow who did have a 19" monochrome Sun monitor, but it turned out to be a grayscale monitor with an interface closer to VGA -- definitely not ECL.
+Since getting my [Sun 3/50 system](/~glitch/2022/09/19/sun-3-50), I've been looking for a Sun 19" ECL monitor to go with it. The 3/50's previous owner had put me in contact with a fellow who did have a 19" monochrome Sun monitor, but it turned out to be a grayscale monitor with an interface closer to VGA -- definitely not ECL.
 
 In mid-2022, I was contacted by another vintage Sun hacker concerning a storage locker full of Sun3 equipment in California. I was not able to work out a deal with the seller, but yet another hobbyist in California was able to make a deal some months later. Through the efforts of several other hobbyists, an ECL monitor and two Sun type 3 keyboards were ferried across the continent, and I was able to pick them up in December. Finally, an ECL monitor for my Sun 3/50!
 

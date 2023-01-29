@@ -12,15 +12,15 @@ image: GW-OSI-RAM1_icon.jpg
 * [Tindie Store Listing](https://www.tindie.com/products/glitchwrks/glitch-works-gw-osi-ram1-osi-universal-ram-board-2/) for bare boards, kits, assembled, etc.
 * [Mouser Project Page](https://www.mouser.com/ProjectManager/ProjectDetail.aspx?ProjectGUID=a7652d8e-56aa-4c82-981f-37940dad9818) for those wishing to buy their own parts
 * [osiweb.org Forum Build Thread](http://www.osiweb.org/osiforum/viewtopic.php?f=3&t=332&p=2130)
-* [32K Prototype Build](/2016/04/23/32k-ram-for-osi)
-* [32K -> 64K Prototype Expansion](/2016/05/17/64k-ram-for-osi)
-* [560Z Build, including 12-bit RAM](/2017/02/26/osi-560z-build)
+* [32K Prototype Build](/~glitch/2016/04/23/32k-ram-for-osi)
+* [32K -> 64K Prototype Expansion](/~glitch/2016/05/17/64k-ram-for-osi)
+* [560Z Build, including 12-bit RAM](/~glitch/2017/02/26/osi-560z-build)
 
 ## Introduction
 
-Reliable, dense, low-power RAM is often a problem with Ohio Scientific systems: many original OSI RAM boards are fairly low density and/or power hungry. More modern boards using 6116 static RAMs do exist, but are uncommon and very desirable, since they eliminate many issues with older OSI RAM boards. Indeed, the main motivation behind [cloning the OSI 495 protoboard](/2016/04/22/cloning-the-495) was to have a protoboard on which to build a better RAM board!
+Reliable, dense, low-power RAM is often a problem with Ohio Scientific systems: many original OSI RAM boards are fairly low density and/or power hungry. More modern boards using 6116 static RAMs do exist, but are uncommon and very desirable, since they eliminate many issues with older OSI RAM boards. Indeed, the main motivation behind [cloning the OSI 495 protoboard](/~glitch/2016/04/22/cloning-the-495) was to have a protoboard on which to build a better RAM board!
 
-The situation is worse with the [560Z Processor Lab](/2017/02/26/osi-560z-build), as it requires 12-bit RAM for PDP-8 operation. The only OSI board that provides 12-bit RAM is the OSI 420, an early board using 2102 static RAMs. 2102s are both power hungry and hard to find, and the 420 board is limisted to 4K. With two prototype RAM boards built, I wanted to lay out a proper PC board to make building RAM boards less time consuming for both myself and other OSI hackers. Building on the [32K prototype](/2016/04/23/32k-ram-for-osi) (later [expanded to 64K](/2016/05/17/64k-ram-for-osi)) and the 12-bit prototype built specifically for the [560Z Processor Lab project](/2017/02/26/osi-560z-build), I came up with a set of goals and features for a universal OSI RAM board.
+The situation is worse with the [560Z Processor Lab](/~glitch/2017/02/26/osi-560z-build), as it requires 12-bit RAM for PDP-8 operation. The only OSI board that provides 12-bit RAM is the OSI 420, an early board using 2102 static RAMs. 2102s are both power hungry and hard to find, and the 420 board is limisted to 4K. With two prototype RAM boards built, I wanted to lay out a proper PC board to make building RAM boards less time consuming for both myself and other OSI hackers. Building on the [32K prototype](/~glitch/2016/04/23/32k-ram-for-osi) (later [expanded to 64K](/~glitch/2016/05/17/64k-ram-for-osi)) and the 12-bit prototype built specifically for the [560Z Processor Lab project](/~glitch/2017/02/26/osi-560z-build), I came up with a set of goals and features for a universal OSI RAM board.
 
 ## Design Goals and Features
 
@@ -53,7 +53,7 @@ The 560Z specific RAM prototype included a lamp register for debug purposes. Thi
 {:.center}
 [![GW-OSI-RAM1 Without Mezzanine](/images/osi/gw_osi_ram1/scaled/mezzanine_removed.jpg)](/images/osi/gw_osi_ram1/mezzanine_removed.jpg) [![Mezzanine Installed](/images/osi/gw_osi_ram1/scaled/full_board.jpg)](/images/osi/gw_osi_ram1/full_board.jpg)
 
-Initial debugging was done with my [OSI Challenger 3](/2016/04/20/challenger-3-cleanup). Unfortunately, I was set to leave on a business trip the day that the prototype boards arrived. As luck would have it, I was visiting a friend who had a Challenger 2P up and running. We installed the GW-OSI-RAM1 in his 2P with a single 32K SRAM installed, with all but the first 4K segment enabled (the 2P has 4K on the CPU board). As seen in the screenshot below, this raised the RAM available to the user in BASIC to nearly a full 32K. Success!
+Initial debugging was done with my [OSI Challenger 3](/~glitch/2016/04/20/challenger-3-cleanup). Unfortunately, I was set to leave on a business trip the day that the prototype boards arrived. As luck would have it, I was visiting a friend who had a Challenger 2P up and running. We installed the GW-OSI-RAM1 in his 2P with a single 32K SRAM installed, with all but the first 4K segment enabled (the 2P has 4K on the CPU board). As seen in the screenshot below, this raised the RAM available to the user in BASIC to nearly a full 32K. Success!
 
 {:.center}
 [![GW-OSI-RAM1 in Challenger 2P](/images/osi/gw_osi_ram1/scaled/2p_installed.jpg)](/images/osi/gw_osi_ram1/2p_installed.jpg) [![Challenger 2P RAM Size](/images/osi/gw_osi_ram1/scaled/2p_memsize.jpg)](/images/osi/gw_osi_ram1/2p_memsize.jpg)
@@ -79,7 +79,7 @@ The mezzanine board was first tested on the main OSI bus in my Challenger 3, und
 
 ## Testing with the 560Z and IM6100
 
-A 12-bit RAM board isn't very useful if not tested to work with 12-bit systems, so it was time to test with my reproduction 560Z board. I loaded values into the lamp register from the OSI 560Z driver, which is [discussed in the 560Z writeup](/2017/02/26/osi-560z-build). This worked fine:
+A 12-bit RAM board isn't very useful if not tested to work with 12-bit systems, so it was time to test with my reproduction 560Z board. I loaded values into the lamp register from the OSI 560Z driver, which is [discussed in the 560Z writeup](/~glitch/2017/02/26/osi-560z-build). This worked fine:
 
 {:.center}
 [![560Z Lamp Register](/images/osi/gw_osi_ram1/scaled/560z_control.jpg)](/images/osi/gw_osi_ram1/560z_control.jpg)

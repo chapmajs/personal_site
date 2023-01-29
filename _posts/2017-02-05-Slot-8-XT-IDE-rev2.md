@@ -11,10 +11,10 @@ image: rev_2_slot_8_icon.png
 
 * [GitHub Repository](https://github.com/glitchwrks/xt_ide_slot_8_support/)
 * [Build Thread on VC Forums](http://www.vcfed.org/forum/showthread.php?54048)
-* [XT-IDE rev 3 Installation Writeup](/2017/02/03/slot-8-support)
+* [XT-IDE rev 3 Installation Writeup](/~glitch/2017/02/03/slot-8-support)
 * [Slot 8 Support on Glitch Works Tindie Store](https://www.tindie.com/products/10590/)
 
-Part of the purpose in doing [XT-IDE Slot 8 Support](/2017/02/03/slot-8-support) as a daughterboard module was to make Slot 8 Support available for older revisions of the XT-IDE board. It's usable on any previous board that has ISA pin `B8` present on the edge connector. Many of the rev 1 production run boards had this pin removed to save on plating costs, so the Slot 8 Support board won't work there. It does, however, work with the XT-IDE rev 2 boards, and allows use of ROM, IDE, and even the onboard serial port when the board is installed in Slot 8.
+Part of the purpose in doing [XT-IDE Slot 8 Support](/~glitch/2017/02/03/slot-8-support) as a daughterboard module was to make Slot 8 Support available for older revisions of the XT-IDE board. It's usable on any previous board that has ISA pin `B8` present on the edge connector. Many of the rev 1 production run boards had this pin removed to save on plating costs, so the Slot 8 Support board won't work there. It does, however, work with the XT-IDE rev 2 boards, and allows use of ROM, IDE, and even the onboard serial port when the board is installed in Slot 8.
 
 For this installation, I used an earlier prototype from [OSH Park](https://oshpark.com) -- this one uses silkscreen, which was removed in a later revision to allow the board to be produced for less. I went ahead and labeled a few of the ICs on my XT-IDE rev 2 board, and marked the pins we'd be soldering to with small arrows. I used a permanent marker, which will usually erase from the board with isopropyl alcohol.
 
@@ -50,6 +50,6 @@ Route `TP1` from the Slot 8 Support module through the remaining two pins of K3,
 {:.center}
 [![Location of Jumper K3](/images/xtide/rev_2_slot_8/scaled/k3_mod_installed.jpg)](/images/xtide/rev_2_slot_8/k3_mod_installed.jpg)
 
-That's it! If you performed the K3 modification, put a jumper shunt on K3 to enable Slot 8 support, and remove it for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please {% contact :text => 'use the contact form' %} to make your order. If you have an XT-IDE rev 3 card, here's the [installation writeup](/2017/02/03/slot-8-support).
+That's it! If you performed the K3 modification, put a jumper shunt on K3 to enable Slot 8 support, and remove it for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please {% contact :text => 'use the contact form' %} to make your order. If you have an XT-IDE rev 3 card, here's the [installation writeup](/~glitch/2017/02/03/slot-8-support).
 
 {% counter :id => 'slot_8_support', :text => 'XT Slot 8s Utilized' %}

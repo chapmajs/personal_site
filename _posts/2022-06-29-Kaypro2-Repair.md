@@ -17,7 +17,7 @@ This was necessary as the power supply in the Kaypro II was completely dead. The
 
 {% linked_image :file => 'monitor_board.jpg', :alt_text => 'Kaypro II monitor board' %}
 
-With the monitor operating and adjusted, the diskette drives were tested. Both were dead, so an [external diskette cabinet](/2013/01/11/5-25-disk-box) usually used with other machines served as drives for the Kaypro II.
+With the monitor operating and adjusted, the diskette drives were tested. Both were dead, so an [external diskette cabinet](/~glitch/2013/01/11/5-25-disk-box) usually used with other machines served as drives for the Kaypro II.
 
 Software testing finished up, I wrote KERMIT-80 diskettes out for a friend, and the Kaypro II was shelved again. Bits and pieces were worked on over time. I finally had some time in June 2022 to finalize repairs -- really, more to free up the shelf space it occupied!
 

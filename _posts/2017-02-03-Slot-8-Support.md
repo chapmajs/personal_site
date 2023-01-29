@@ -11,12 +11,12 @@ image: slot_8_support_icon.png
 
 * [GitHub Repository](https://github.com/glitchwrks/xt_ide_slot_8_support/)
 * [Build Thread on VC Forums](http://www.vcfed.org/forum/showthread.php?54048)
-* [XT-IDE rev 2 Installation Writeup](/2017/02/05/slot-8-xt-ide-rev2)
+* [XT-IDE rev 2 Installation Writeup](/~glitch/2017/02/05/slot-8-xt-ide-rev2)
 * [Slot 8 Support on Glitch Works Tindie Store](https://www.tindie.com/products/10590/)
 
 With the IBM 5160 PC/XT motherboard, ISA slot 8 is a special case. [modem7 provides an excellent write-up](http://www.minuszerodegrees.net/5160/misc/5160_slot_8.htm) on slot 8 and its requirements. Basically, there's a `/CARDSEL` line that needs to be pulled low when a card in slot 8 wants to respond to a read operation. Many cards don't support this feature. Those that do usually have a jumper to specifically enable slot 8 compatibility.
 
-When working on the [XT-IDE rev 3 design](http://www.glitchwrks.com/2016/07/06/xt-ide-rev3), I decided not to include support for slot 8 on the card. It barely cleared the floppy drive in my XT, when installed in slot 8, and adding any length to the card to accomodate the open collector driver for `/CARDSEL` would've made it not fit at all. I asked about the need for slot 8, and very few people expressed interest. It was decided that a guide for "dead bug" modification, or a small daughterboard, would be designed for those needing slot 8 support.
+When working on the [XT-IDE rev 3 design](/~glitch/2016/07/06/xt-ide-rev3), I decided not to include support for slot 8 on the card. It barely cleared the floppy drive in my XT, when installed in slot 8, and adding any length to the card to accomodate the open collector driver for `/CARDSEL` would've made it not fit at all. I asked about the need for slot 8, and very few people expressed interest. It was decided that a guide for "dead bug" modification, or a small daughterboard, would be designed for those needing slot 8 support.
 
 Basically, we want to assert `/CARDSEL` any time the EEPROM or the IDE interface is read from. This means we should respond to both memory and I/O reads. For the EEPROM, this means we want to enable `/CARDSEL` when the EEPROM's `/RD` and `/CS` are both low. For the IDE interface, we'll enable `/CARDSEL` when `/CS_IDE` and the ISA `/IOR` (I/O read) lines are low:
 
@@ -66,6 +66,6 @@ With the `/CARDSEL` jumpers installed, make the jumper connections to `/ISA_IOR`
 {:.center}
 [![I/O Jumpers Installed](/images/xtide/slot_8_support/scaled/io_jumpers.jpg)](/images/xtide/slot_8_support/io_jumpers.jpg)
 
-That's it! If you routed `/CARDSEL` through a switch, close the switch to enable Slot 8 support, and open the switch for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please {% contact :text => 'use the contact form' %} to make your order. If you have an XT-IDE rev 2 card, here's the [installation writeup](/2017/02/05/slot-8-xt-ide-rev2).
+That's it! If you routed `/CARDSEL` through a switch, close the switch to enable Slot 8 support, and open the switch for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please {% contact :text => 'use the contact form' %} to make your order. If you have an XT-IDE rev 2 card, here's the [installation writeup](/~glitch/2017/02/05/slot-8-xt-ide-rev2).
 
 {% counter :text => 'XT Slot 8s Utilized' %}

@@ -13,7 +13,7 @@ During this time, I found a total of six KIM-1 computers: five rev 0 and rev A M
 
 ### My First KIM-1
 
-My first KIM-1 was given to me by [Burgess Macneal](https://en.wikipedia.org/wiki/Burgess_Macneal), who was the owner of the building that Alcomp's bulk inventory storage was located in. I'd spotted it sitting by itself in The Gym. Burgess himself is a 6502 hacker: his business's first computer was an [Ohio Scientific Challenger III](http://www.glitchwrks.com/2019/07/30/470-repair-and-second-c3), kit-built and run without a case its whole life. He suggested I repair the KIM-1 and learn 6502 assembly. That's pretty much what I did, apparently working on my parents' living room table:
+My first KIM-1 was given to me by [Burgess Macneal](https://en.wikipedia.org/wiki/Burgess_Macneal), who was the owner of the building that Alcomp's bulk inventory storage was located in. I'd spotted it sitting by itself in The Gym. Burgess himself is a 6502 hacker: his business's first computer was an [Ohio Scientific Challenger III](/~glitch/2019/07/30/470-repair-and-second-c3), kit-built and run without a case its whole life. He suggested I repair the KIM-1 and learn 6502 assembly. That's pretty much what I did, apparently working on my parents' living room table:
 
 {% linked_image :file => 'burgess_repair.jpg', :alt_text => 'My first KIM-1 being repaired' %}
 
@@ -115,7 +115,7 @@ Its serial number is `1898`:
 
 {% linked_image :file => 'lastone_sn.jpg', :alt_text => 'Revision A KIM-1 Serial Number' %}
 
-Unfortunately, the KIM-1 I'd intended to keep was eventually sold. This was autumn 2010, I'd just moved with my future wife to Troy, NY while she pursued a Ph.D. at Rensselaer Polytechnic Institute. Jobs were scarce, college loans were coming due, and the KIM-1 was valuable. Oh well! Easy come, easy go. Paying bills was of course more important than owning a KIM-1, and I could always [hack on the Apple IIe](http://www.glitchwrks.com/2010/11/09/48-hours-apple-iie) or the [Ohio Scientific](http://www.glitchwrks.com/2016/04/20/challenger-3-cleanup) if I needed a 6502-based system!
+Unfortunately, the KIM-1 I'd intended to keep was eventually sold. This was autumn 2010, I'd just moved with my future wife to Troy, NY while she pursued a Ph.D. at Rensselaer Polytechnic Institute. Jobs were scarce, college loans were coming due, and the KIM-1 was valuable. Oh well! Easy come, easy go. Paying bills was of course more important than owning a KIM-1, and I could always [hack on the Apple IIe](/~glitch/2010/11/09/48-hours-apple-iie) or the [Ohio Scientific](/~glitch/2016/04/20/challenger-3-cleanup) if I needed a 6502-based system!
 
 ### What Happened to These Computers?
 
