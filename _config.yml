@@ -1,3 +1,4 @@
 markdown: kramdown
 permalink: /:year/:month/:day/:slug
 exclude: ['README.md']
+baseurl: /~glitch
