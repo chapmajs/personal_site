@@ -2,7 +2,7 @@
 layout: post
 title: Building a Mail Server with OpenBSD, OpenSMTPd, and Dovecot
 topic: Handling mail the OpenBSD way
-category: coding
+category: programming
 description: I recently replaced a paid email service for a this small site with OpenBSD, OpenSMTPd, and Dovecot. OpenSMTPd is OpenBSD's internal SMTP server project, though as with OpenSSH it is also released in a portable form for other UNIX-like operating systems. Documentation is good, and configuration was pretty easy.
 image: openbsd.gif
 ---

@@ -2,7 +2,7 @@
 layout: post
 title: Configuring an access log for Dropwizard projects
 topic: Configuring an access log for Dropwizard projects
-category: coding
+category: programming
 description: One would think that access logging would be a common task for any application, but getting here took half a day of digging through incorrect documentation.
 image: dropwizard.png
 ---

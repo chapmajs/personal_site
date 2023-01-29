@@ -2,7 +2,7 @@
 layout: post
 title: OpenBSD, Hurricane Electric, and Dynamic IPs
 topic: Keeping your Hurricane Electric IPv6 tunnel up with dynamic IPs
-category: coding
+category: programming
 description: Hurricane Electric allows dynamic updates for your end of the IPv6 tunnel, but OpenBSD needs to be made aware of the changes too. Here's a simple script to accomplish that.
 image: openbsd.gif
 ---

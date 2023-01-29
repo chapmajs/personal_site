@@ -2,7 +2,7 @@
 layout: post
 title: Removing Cookies and Sessions from Rails 5
 topic: Stripping cookies and sessions out of Rails 5
-category: coding
+category: programming
 description: In transitioning from Sinatra to Rails for site services, I ended up removing pieces of Rails 5 that were not relevant to my project. This post covers removing cookies and sessions and their related configuration options, and what can and cannot be removed.
 image: rails.png
 ---

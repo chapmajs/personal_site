@@ -2,7 +2,7 @@
 layout: post
 title: Jekyll Plugins, Custom Liquid Tags and Blocks
 topic: Custom Liquid tags and blocks via Jekyll plugins
-category: coding
+category: programming
 description: During a recent bit of site maintenance, I DRYed up the Jekyll project for glitchwrks.com by creating custom Liquid tags and blocks for the site. These reduce code duplication, simplify and centralize configuration, and make the Markdown for writeups nicer.
 image: ruby.png
 ---

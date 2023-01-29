@@ -2,7 +2,7 @@
 layout: post
 title: Multipart HTTP POSTs with Groovy's HTTPBuilder
 topic: Using HTTPBuilder to make multipart HTTP POSTs to RESTful services
-category: coding
+category: programming
 description: Groovy's HTTPBuilder, an extension of Apache Commons HttpClient, allows multipart HTML POSTs, but documentation and useful/recent examples are lacking. Here's an example using non-deprecated methods to send multiple files and a few string params to a RESTful service and handle a returned binary.
 image: groovy.png
 ---

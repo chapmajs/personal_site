@@ -2,7 +2,7 @@
 layout: post
 title: Configuring MariaDB Replication
 topic: Getting MariaDB replication working with an existing database
-category: coding
+category: programming
 description: MariaDB/MySQL replication provides an easy way to do realtime database backup, or allow for high-speed LAN access to a read-only reporting DB. Here's my method for getting a new replication slave running from an existing live DB.
 image: mariadb.png
 ---

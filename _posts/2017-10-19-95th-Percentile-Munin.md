@@ -2,7 +2,7 @@
 layout: post
 title: Graphing 95th Percentile in Munin
 topic: Adding 95th percentile graphing to Munin graphs
-category: coding
+category: programming
 description: Like many ISPs, my colocation ISP bills bandwidth usage as 95th percentile. The ISP sends weekly and monthly bandwidth graphs to help in planning for bandwidth costs. While this is a common thing, it's not something that Munin supports out of the box, though rrdtool does.
 image: munin.png
 ---

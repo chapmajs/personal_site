@@ -2,7 +2,7 @@
 layout: post
 title: Quick EPROM Timer Script
 topic: Controlling a relay with Ruby
-category: coding
+category: programming
 description: I was erasing a pile of UV EPROMs today and got tired of interrupting what I was doing to go unplug the EPROM eraser when 20 minutes had elapsed, so I made up a little cable to control one of my relay-switched outlets using the serial handshake lines on a serial port. A few lines of Ruby later and, problem solved!
 image: ruby.png
 ---

@@ -2,7 +2,7 @@
 layout: post
 title: Reporting Dropwizard Uptime via Metrics
 topic: Configuring uptime reporting in Dropwizard
-category: coding
+category: programming
 description: Another simple configuration task with insufficient documentation! Get your actual application uptime from Dropwizard's metrics.
 image: dropwizard.png
 ---
