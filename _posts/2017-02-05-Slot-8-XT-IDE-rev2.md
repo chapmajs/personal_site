@@ -20,35 +20,29 @@ For this installation, I used an earlier prototype from [OSH Park](https://oshpa
 
 Installation is the same basic process as with the XT-IDE rev 3: start by removing the solder from pins 14, 20, 22, and 28 of the EEPROM. You only need to remove solder so that the pad is flat, it's not necessary to remove it from the through-hole. Orient the Slot 8 Support module with the capacitor toward the IDE connector end of the XT-IDE. Mount the Slot 8 Support module using its four tabs, soldering them down and keeping the Slot 8 Support module as close to the XT-IDE circuit board as possible:
 
-{:.center}
-[![Slot 8 Support Mounted](/images/xtide/rev_2_slot_8/scaled/mounted.jpg)](/images/xtide/rev_2_slot_8/mounted.jpg)
+{% linked_image :file => 'mounted.jpg', :alt_text => 'Slot 8 Support mounted' %}
 
 Since there are no spare jumper or switch positions on the XT-IDE rev 2, I initially installed the module permanently, with no way to disable Slot 8 Support:
 
-{:.center}
-[![Direct Install Method](/images/xtide/rev_2_slot_8/scaled/direct_install.jpg)](/images/xtide/rev_2_slot_8/direct_install.jpg)
+{% linked_image :file => 'direct_install.jpg', :alt_text => 'Direct install method' %}
 
 ## Hacking in Jumperable Slot 8 Support
 
 One of the VCForums members requested [a way to disable Slot 8 on rev 2 boards](http://www.vcfed.org/forum/showthread.php?54048-Slot-8-Support-Daughterboard-for-XT-IDE&p=437609#post437609), so I came up with the following hack. Jumper K3 on the XT-IDE rev 2 supplies +5V and GND through a three-pin, 0.1" spaced header near the IDE connector. I'm not sure what, if anything, actually uses this feature. Here's K3 on a bare rev 2 board:
 
-{:.center}
-[![Location of Jumper K3](/images/xtide/rev_2_slot_8/scaled/k3_location.jpg)](/images/xtide/rev_2_slot_8/k3_location.jpg)
+{% linked_image :file => 'k3_location.jpg', :alt_text => 'Location of jumper K3' %}
 
 Since this is the end of the line for the +5V trace that goes to K3, and the center pin is left unconnected, we can repurpose K3 as a Slot 8 Support enable/disable jumper. Start by cutting the +5V trace on the component side of the XT-IDE, between K3 and P9:
 
-{:.center}
-[![Location of Jumper K3](/images/xtide/rev_2_slot_8/scaled/k3_trace_cut.jpg)](/images/xtide/rev_2_slot_8/k3_trace_cut.jpg)
+{% linked_image :file => 'k3_trace_cut.jpg', :alt_text => 'K3 trace cut' %}
 
 As you can see, I like to remove a lot of trace when I make a cut! With the trace cut, snip off the uppermost pin of K3, the pin nearest the IDE connector:
 
-{:.center}
-[![Location of Jumper K3](/images/xtide/rev_2_slot_8/scaled/k3_pin_cut.jpg)](/images/xtide/rev_2_slot_8/k3_pin_cut.jpg)
+{% linked_image :file => 'k3_pin_cut.jpg', :alt_text => 'K3 pin cut' %}
 
 Route `TP1` from the Slot 8 Support module through the remaining two pins of K3, and down to ISA pin `B8`:
 
-{:.center}
-[![Location of Jumper K3](/images/xtide/rev_2_slot_8/scaled/k3_mod_installed.jpg)](/images/xtide/rev_2_slot_8/k3_mod_installed.jpg)
+{% linked_image :file => 'k3_mod_installed.jpg', :alt_text => 'K3 modification installed' %}
 
 That's it! If you performed the K3 modification, put a jumper shunt on K3 to enable Slot 8 support, and remove it for use in regular slots. If you're interested in ordering a bare board, parts kit, or assembled module, please {% contact :text => 'use the contact form' %} to make your order. If you have an XT-IDE rev 3 card, here's the [installation writeup](/~glitch/2017/02/03/slot-8-support).
 

@@ -15,15 +15,13 @@ Part of the trouble in writing boot code, firmware, or other ROM routines for ol
 
 I purchased this board to reduce the amount of headache in developing for these neat old boards. The DBM-1 provides 2K of dual-port static RAM on a S-100 card: the memory appears as regular RAM to the S-100 host on one port, and the other port is accessible via 24-pin headers on the top of the board. The headers correspond to the pinouts of 2708, Intel 2716, and Texas Instruments 2716 EPROMs. IDC connectors and ribbon cable jumpers can be used to connect the DBM-1 to target systems.
 
-{:.center}
-[![DBM-1 S100 card](/images/s100/eprom_sim/scaled/front.jpg)](/images/s100/eprom_sim/front.jpg)
+{% linked_image :file => 'front.jpg', :alt_text => 'DBM-1 S100 card' %}
 
 I've found a few references to the DBM-1 through various online sources, mostly ads in various trade and user group magazines. From these, I've gleaned that the DBM-1 refers to "DeBug Memory," that it supports traps at specified memory addresses, and that it can be daisy-chained with another DBM-1 to provide 4K of EPROM simulation with the trap addresses extending through the range. No schematics or manuals, though, which I'd really like to find! If you have more information on this board, please let me know via the contact link above.
 
 Fortunately, my DBM-1 came configured to operate as a standalone board and was in working condition when it arrived. I found it at address 0x8000 with all other memory cards removed. It occupies a single 2K block, and appears to be addressable on any 2K boundary. It functions as any other memory board on the S-100 bus, and as suggested by several of the ads I've found, it functions fine as regular RAM. My current switch settings are as below:
 
-{:.center}
-[![Switch settings](/images/s100/eprom_sim/scaled/switches.jpg)](/images/s100/eprom_sim/switches.jpg)
+{% linked_image :file => 'switches.jpg', :alt_text => 'Switch settings' %}
 
 It seems that the rightmost five positions of the address switch control which 2K block the DBM-1 will use. Open switch == 1, closed switch == 0. As of yet, I don't know what SW2 does, and I haven't experimented with changing its settings. The daisy chain connector is jumpered pin 1 to pin 3 with a wire wrap jumper, I'd imagine this is standard for single DBM-1 boards but would be removed if there were a second board in use.
 

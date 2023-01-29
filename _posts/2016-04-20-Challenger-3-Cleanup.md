@@ -15,35 +15,29 @@ I decided to dig it out and get it going earlier this week, in order to work on 
 
 I didn't think to take pictures of the original mess, but it went outside for an immediate vacuuming and blow-out with compressed air. All boards were removed, vacuumed, cleaned with a brush, then blown out. I removed the backplane, power supplies, and removable metal brackets from the case. The metal bits were all washed with soap and water. I finally thought to take pictures when the power supplies were back in:
 
-{:.center}
-[![Power supplies reinstalled](/images/osi/challenger_cleanup/scaled/power_supplies.jpg)](/images/osi/challenger_cleanup/power_supplies.jpg)
+{% linked_image :file => 'power_supplies.jpg', :alt_text => 'Power supplies reinstalled' %}
 
 Notice that the chassis rail is removed from the closest side -- it's *much* easier to work around the power supplies with it removed. It's responsible for a fair bit of stiffening on the chassis though, so make sure it's well supported. Apparently Ohio Scientific applied a dab of some sort of rubber adhesive when they assembled the chassis, so not only was it difficult to remove fasteners, but they then had to be cleaned before reuse.
 
 While I had the chassis rail off, I increased the clearance between the power switch and the rearmost power supply. There was insufficient clearance to uninsulated 120 VAC for my liking. This is *after* the increase in clearance:
 
-{:.center}
-[![Power switch clearance](/images/osi/challenger_cleanup/scaled/power_switch_clearances.jpg)](/images/osi/challenger_cleanup/power_switch_clearances.jpg)
+{% linked_image :file => 'power_switch_clearances.jpg', :alt_text => 'Power switch clearance' %}
 
 While I was in there, I went ahead and fixed the +5 and GND lines going to the backplane. The solder was sort of globbed on, typically a sign that the assembler was using a too-small iron. Interesting, as this was a factory assembled unit!
 
-{:.center}
-[![Cold solder joints](/images/osi/challenger_cleanup/scaled/power_cold_solder.jpg)](/images/osi/challenger_cleanup/power_cold_solder.jpg) [![Repaired solder joints](/images/osi/challenger_cleanup/scaled/power_repaired.jpg)](/images/osi/challenger_cleanup/power_repaired.jpg)
+{% linked_images :files => ['power_cold_solder.jpg', 'power_repaired.jpg'], :alt_text => ['Cold solder joints', 'Repaired solder joints'] %}
 
 It seems that the 8-slot backplane was made by cutting down a larger backplane:
 
-{:.center}
-[![Cut down backplane](/images/osi/challenger_cleanup/scaled/cutoff_backplane.jpg)](/images/osi/challenger_cleanup/cutoff_backplane.jpg)
+{% linked_image :file => 'cutoff_backplane.jpg', :alt_text => 'Cut down backplane' %}
 
 Finally reassembled! Here's a few pictures before card installation:
 
-{:.center}
-[![Side view](/images/osi/challenger_cleanup/scaled/side_view_no_cards.jpg)](/images/osi/challenger_cleanup/side_view_no_cards.jpg) [![Front view](/images/osi/challenger_cleanup/scaled/inside_no_cards.jpg)](/images/osi/challenger_cleanup/inside_no_cards.jpg)
+{% linked_images :files => ['side_view_no_cards.jpg', 'inside_no_cards.jpg'], :alt_texts => ['Side view', 'Front view'] %}
 
 This system had been working before storage and our move from New York. The power supplies checked out and were within spec on DC voltage and AC ripple. After cleaning and reassembly, with just the 510 CPU and 524 48K RAM boards installed, the system booted to the `H/D/M?` prompt! I went ahead and replaced the two burned out lamps in the front panel switches -- I'd ordered a box of ten 330 type miniature lamps a few years ago but never got around to installing them. Here's a picture of the system up and running:
 
-{:.center}
-[![Finished, running system](/images/osi/challenger_cleanup/scaled/finished.jpg)](/images/osi/challenger_cleanup/finished.jpg)
+{% linked_image :file => 'finished.jpg', :alt_text => 'Finished, running system' %}
 
 I sorted through the 510 CPU board schematics in an effort to try and determine which pins on the AX connector were for reset, RS-232, and current loop. I went ahead and made a little ASCII art explanation of their location and function:
 

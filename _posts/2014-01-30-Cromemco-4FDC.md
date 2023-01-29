@@ -11,8 +11,7 @@ In the summer of 2008, while working as an assistant in a warehouse full of elec
 
 After getting the ZPU reliably executing code from ROM, purchasing and repairing an [IMS 8K Static RAM board](http://s100computers.com/Hardware%20Folder/IMS/8K%20Static%20RAM/8K%20Static%20RAM.htm) from [Erik Klein](http://www.vintage-computer.com/)'s [Vintage Computer and Gaming Marketplace](http://marketplace.vintage-computer.com/), and writing enough ROM routines to fully test the setup, I purchased a Cromemco 4FDC from a popular online auction site. It was supposed to be "fully working," as with most things one purchases online...
 
-{:.center}
-[![My Cromemco 4FDC](/images/s100/4fdc/scaled/front.jpg)](/images/s100/4fdc/front.jpg)
+{% linked_image :file => 'front.jpg', :alt_text => 'My Cromemco 4FDC' %}
 
 The 4FDC was Cromemco's first floppy controller, intended for their System 3 computer. It's a single-sided, single-density controller based around the Western Digital WD1771 disk controller. The board also includes a TMS5501 UART, which is used as the default console port, and a 2708 PROM socket for the boot ROM/monitor, RDOS. The 4FDC was designed to drive 8" Persci 277 voice coil drives, or Wangco Model 82 5.25" drives. RDOS, aside from providing standard monitor commands, can read and write tracks and sectors to any connected floppy drive. While it's an interesting and versatile board, it doesn't seem to be popular with the vintage computer crowd.
 

@@ -11,8 +11,7 @@ image: feram_icon.jpg
 
 I became aware of commercially availale FeRAM around 2010, when a friend mentioned wishing he'd chosen it over [MRAM](https://en.wikipedia.org/wiki/Magnetoresistive_random-access_memory) for a project. Samples were ordered from Ramtron, then the largest supplier of FeRAM. I switched over to their serial-access FeRAMs in a number of data logging projects with excellent results, but had a few 8K and 32K parallel FeRAMs in SOIC surface mount packages sitting in the samples bin. It seemed the perfect fit to build a S-100 board with FeRAM, as the nonvolatile nature would make front panel operation a little more practical, much in the way development and debugging could be done on earlier computers with core memory.
 
-{:.center}
-[![Initial Prototype](/images/s100/feram/scaled/prototype_front.jpg)](/images/s100/feram/prototype_front.jpg) [![Prototype Wiring](/images/s100/feram/scaled/prototype_back.jpg)](/images/s100/feram/prototype_back.jpg)
+{% linked_images :files => ['prototype_front.jpg', 'prototype_back.jpg'], :alt_texts => ['Initial prototype', 'Prototype wiring'] %}
 
 Six years later, and I've just now finished implementing a prototype FeRAM board! There were a few challenges to oversome:
 
@@ -46,8 +45,7 @@ Battery-backed SRAM often overcomes this problem with an internal cutover circui
 
 The FM18W08 does include its own write inhibit circuitry, but it is a wide-voltage device, operating from 2.7V to 5.5V. The lower end of this spec leave plenty of room for problems with a 5V nominal system -- below 4.5V, operation is undefined and may include spurious writes.
 
-{:.center}
-[![Powerup Cutout Circuit](/images/s100/feram/scaled/powerup_protect.jpg)](/images/s100/feram/powerup_protect.jpg)
+{% linked_image :file => 'powerup_protect.jpg', :alt_text => 'Powerup cutout circuit' %}
 
 My solution was to monitor the local regulator on the FeRAM board, then wait a predetermined amount of time before releasing the /PRESET signal and allowing writes to the FeRAM. This was accomplished using a Maxim [ICL7665](https://datasheets.maximintegrated.com/en/ds/ICL7665.pdf) voltage monitor and a 555 timer for the delay. /PRESET and write control was accomplished using a DPDT relay, with MWRITE routed through the normally open contacts, and pulled to ground through a 4.7K resistor. I included a LED to indicate when write inhibit was released.
 

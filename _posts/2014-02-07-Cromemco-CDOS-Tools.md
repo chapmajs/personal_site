@@ -14,8 +14,7 @@ Dave Dunfield has also provided a [RDOS transfer utility](http://www.classiccmp.
 The Test System
 ---------------
 
-{:.center}
-[![Test System](/images/vintage-misc/4fdc_utils/scaled/hacking.jpg)](/images/vintage-misc/4fdc_utils/hacking.jpg) [![Test System Closeup](/images/vintage-misc/4fdc_utils/scaled/test_system.jpg)](/images/vintage-misc/4fdc_utils/test_system.jpg)
+{% linked_images :files => ['hacking.jpg', 'test_system.jpg'], :alt_texts => ['Test system', 'Test system closeup'] %}
 
 - Morrow WunderBuss terminated 8-slot backplane
 - Lambda triple-voltage adjustable power supply, set for +7V, +15V, -15V
@@ -72,8 +71,7 @@ WD 0200 0AFF 1
 
 Following this workflow, it was easy to hack together a Perl script using the [Device::SerialPort](http://search.cpan.org/~cook/Device-SerialPort-1.04/SerialPort.pm) module. You can find the script [in my GitHub repositories](https://github.com/chapmajs/cromemco_utilities). This proof-of-concept worked, and now a bootable CDOS 2.58 5.25" SSSD disk has been created:
 
-{:.center}
-[![CDOS 2.58 Booted](/images/vintage-misc/4fdc_utils/scaled/cdos.jpg)](/images/vintage-misc/4fdc_utils/cdos.jpg)
+{% linked_image :file => 'cdos.jpg', :alt_text => 'CDOS 2.58 booted' %}
 
 Further Utility Development
 ---------------------------

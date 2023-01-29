@@ -2,7 +2,7 @@
 layout: post
 title: Sabernetics I2C OLED Display Testing and Demo
 topic: Exercising the Sabernetics I2C OLED Display with the Bus Pirate
-category: news
+category: general
 description: The Kickstarter-funded Sabernetics Technology OLED Display arrived yesterday. Before committing it to a project, I wanted to ensure the display was functional and get a feel for its daylight readability. The Bus Pirate was the obvious choice for prototyping.
 image: glitch.jpg
 ---
@@ -21,8 +21,7 @@ Making the Connections
 
 Fortunately, due to the flexible designs of both the OLED module and the Bus Pirate, no additional hardware is required to interface the two. Both devices use standard 0.1" spaced square pins for interface headers, so I chose to make the connections between the two using wire wrap. I've got the tools and wire on hand, so wire wrap tends to be quicker for these interfaces, and doesn't require dragging the soldering station to work!
 
-{:.center}
-[![Bus Pirate connected to OLED Display](/images/general/oled/scaled/connections.jpg)](/images/general/oled/connections.jpg)
+{% linked_image :file => 'connections.jpg', :alt_text => 'Bus Pirate connected to OLED display' %}
 
 Connections between the OLED module and Bus Pirate are pretty straightforward:
 
@@ -52,8 +51,7 @@ At this point, we can begin writing bytes into the display's RAM. We've initiali
 
 Again, this follows standard Bus Pirate I2C syntax. Command 0x40 tells the SSD1306 controller that we want to write to display RAM. The following bytes are written to sequential addresses in the active Page of RAM, as the RAM pointer is automatically incremented on writes. Here's the result:
 
-{:.center}
-[![Initialized Display with Test Pattern](/images/general/oled/scaled/inittest.jpg)](/images/general/oled/inittest.jpg)
+{% linked_image :file => 'inittest.jpg', :alt_text => 'Initialized display with test pattern' %}
 
 At this point, we can be pretty certain that our display actually works. However, since it's easy to interface to the Bus Pirate with a scripting language, why not push a few more bytes to the display?
 
@@ -69,8 +67,7 @@ Scripting the commands to the Bus Pirate requires talking to the USB UART. Since
 
 I threw together a quick script to dump two bitmaps to the two available RAM pages. That script is available from my [GitHub Examples repository](https://github.com/chapmajs/Examples/blob/master/display_test.py). I've tested it under Arch Linux x86_64 and i686 with Python 3.2.3 and pySerial 2.6-2 from the Arch Linux pacman repositories. The two bitmaps align to render the [Enable Labs](http://www.enablelabs.com) logo and a message. Here's the output:
 
-{:.center}
-[![Bus Pirate and Display after running Python script](/images/general/oled/scaled/buspiratedisplay.jpg)](/images/general/oled/buspiratedisplay.jpg) [![Hello from Troy NY!](/images/general/oled/scaled/hello.jpg)](/images/general/oled/hello.jpg)
+{% linked_images :files => ['buspiratedisplay.jpg', 'hello.jpg'], :alt_texts => ['Bus Pirate and display after running Python script', 'Hello from Troy NY!'] %}
 
 Final Thoughts
 --------------

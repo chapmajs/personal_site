@@ -40,30 +40,25 @@ The original RAM prototype met many of these goals, using 62256 32K x 8 SRAMs wh
 
 The board was laid out in [KiCad](http://kicad-pcb.org/), a completely free and open source CAD package. KiCad has a 3D rendering mode, so before production boards were actually ordered, it was possible to get an idea as to what the prototype would look like:
 
-{:.center}
-[![GW-OSI-RAM1 3D Rendering](/images/osi/gw_osi_ram1/scaled/osi_ram_3d_20170406.png)](/images/osi/gw_osi_ram1/osi_ram_3d_20170406.png) [![3D Rendering with Components](/images/osi/gw_osi_ram1/scaled/osi_ram_3d_20170406_components.png)](/images/osi/gw_osi_ram1/osi_ram_3d_20170406_components.png)
+{% linked_images :files => ['osi_ram_3d_20170406.png', 'osi_ram_3d_20170406_components.png'], :alt_texts => ['GW-OSI-RAM1 3D rendering', '3D rendering with components'] %}
 
 I was at first dismissive of KiCad's 3D rendering features, but it was actually very helpful in final design checks and getting a feel for how the layout was progressing. Plus, it was something to show other hobbyists! The GW-OSI-RAM1 was laid out to be run with a board house that has very good pricing on large boards, but uses an awful inkjet/v-jet silkscreen process. As such, all text and symbols were done as copper/solder mask relief. Here's a shot of the segment select switch legends:
 
-{:.center}
-[![Segment Select Switches](/images/osi/gw_osi_ram1/scaled/bank_switches.jpg)](/images/osi/gw_osi_ram1/bank_switches.jpg)
+{% linked_image :file => 'bank_switches.jpg', :alt_text => 'Segment Select switches' %}
 
 The 560Z specific RAM prototype included a lamp register for debug purposes. This was omitted from the main GW-OSI-RAM1 board in favor for a large prototype area and mezzanine connector. Breaking the lamp register out as a mezzanine board allows for octal or hex grouping of the LEDs with only one (large and expensive!) base board. Having the lamp register on a separate board also allows it to be mounted remotely with a ribbon cable, such as on a front panel. The mezzanine connector and standoffs were placed on 0.1" centers to allow mezzanine boards to be built from standard perfboard. Address decode is provided on the GW-OSI-RAM1. If a lamp register is not desired, the prototype area can be used with the mezzanine connector without the need to bring up the data bus from elsewhere on the board. Here's the prototype run board with and without a perfboard mezzanine installed:
 
-{:.center}
-[![GW-OSI-RAM1 Without Mezzanine](/images/osi/gw_osi_ram1/scaled/mezzanine_removed.jpg)](/images/osi/gw_osi_ram1/mezzanine_removed.jpg) [![Mezzanine Installed](/images/osi/gw_osi_ram1/scaled/full_board.jpg)](/images/osi/gw_osi_ram1/full_board.jpg)
+{% linked_images :files => ['mezzanine_removed.jpg', 'full_board.jpg'], :alt_texts => ['GW-OSI-RAM1 without mezzanine', 'Mezzanine installed'] %}
 
 Initial debugging was done with my [OSI Challenger 3](/~glitch/2016/04/20/challenger-3-cleanup). Unfortunately, I was set to leave on a business trip the day that the prototype boards arrived. As luck would have it, I was visiting a friend who had a Challenger 2P up and running. We installed the GW-OSI-RAM1 in his 2P with a single 32K SRAM installed, with all but the first 4K segment enabled (the 2P has 4K on the CPU board). As seen in the screenshot below, this raised the RAM available to the user in BASIC to nearly a full 32K. Success!
 
-{:.center}
-[![GW-OSI-RAM1 in Challenger 2P](/images/osi/gw_osi_ram1/scaled/2p_installed.jpg)](/images/osi/gw_osi_ram1/2p_installed.jpg) [![Challenger 2P RAM Size](/images/osi/gw_osi_ram1/scaled/2p_memsize.jpg)](/images/osi/gw_osi_ram1/2p_memsize.jpg)
+{% linked_images :files => ['2p_installed.jpg', '2p_memsize.jpg'], :alt_texts => ['GW-OSI-RAM1 in Challenger 2P', 'Challenger 2P RAM size'] %}
 
 ## Prototyping a Mezzanine Board
 
 With the basic RAM board proved out, I needed to build a mezzanine to test the address decode functionality. Since the connector and mounting holes are on 0.1" centers, it's possible to cut down a piece of protoboard and build a mezzanine board. My first prototype is just a lamp register with the LEDs in octal grouping:
 
-{:.center}
-[![Mezzanine Front](/images/osi/gw_osi_ram1/scaled/mezzanine_front.jpg)](/images/osi/gw_osi_ram1/mezzanine_front.jpg) [![Mezzanine Back](/images/osi/gw_osi_ram1/scaled/mezzanine_back.jpg)](/images/osi/gw_osi_ram1/mezzanine_back.jpg)
+{% linked_images :files => ['mezzanine_front.jpg', 'mezzanine_back.jpg'], :alt_texts => ['Mezzanine front', 'Mezzanine back'] %}
 
 Wire colors follow the same general code as other builds:
 
@@ -74,15 +69,13 @@ Wire colors follow the same general code as other builds:
 
 The mezzanine board was first tested on the main OSI bus in my Challenger 3, under control of the 6502. The following images show `0x00` and `0x55` loaded into the lamp register. The high four bits are floating on the OSI bus and display random values.
 
-{:.center}
-[![Displaying 0x00](/images/osi/gw_osi_ram1/scaled/all_zero.jpg)](/images/osi/gw_osi_ram1/all_zero.jpg) [![Displaying 0x55](/images/osi/gw_osi_ram1/scaled/0x55.jpg)](/images/osi/gw_osi_ram1/0x55.jpg)
+{% linked_images :files => ['all_zero.jpg', '0x55.jpg'], :alt_texts => ['Displaying 0x00', 'Displaying 0x55'] %}
 
 ## Testing with the 560Z and IM6100
 
 A 12-bit RAM board isn't very useful if not tested to work with 12-bit systems, so it was time to test with my reproduction 560Z board. I loaded values into the lamp register from the OSI 560Z driver, which is [discussed in the 560Z writeup](/~glitch/2017/02/26/osi-560z-build). This worked fine:
 
-{:.center}
-[![560Z Lamp Register](/images/osi/gw_osi_ram1/scaled/560z_control.jpg)](/images/osi/gw_osi_ram1/560z_control.jpg)
+{% linked_image :file => '560z_control.jpg', :alt_text => '560Z lamp register control' %}
 
 The next test was to actually run some PDP-8 code in the RAM present on the GW-OSI-RAM1. I used the short program I'd written earlier that does an up-count and displays it on the lamp register. At full speed, activity is only visible on the higest bits of the lamp register. Issuing a `R0100` command in the OSI driver slow-clocks the IM6100, producing a slow, visible up-count. Here's a quick video of the up-count using the GW-OSI-RAM1 for both lamp register and 12-bit RAM:
 
