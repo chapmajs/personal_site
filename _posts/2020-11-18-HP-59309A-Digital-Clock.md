@@ -2,7 +2,7 @@
 layout: post
 title: Cleaning up a HP 59309A Digital Clock
 topic: Cleaning up a HP 59309A Digital Clock
-category: vintage-misc
+category: test_equipment
 description: HP produced a HP-IB connected digital clock, the 59309A, which was intended to serve as a clock/calendar for HP-IB (GPIB, IEEE-488) equipped computers or assemblies of test equipment. This one needed some cleanup and repair before being put into service.
 image: hp_59309a_digital_clock_icon.jpg
 ---
