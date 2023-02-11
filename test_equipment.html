@@ -1,0 +1,27 @@
+---
+layout: listing
+title: Test Equipment
+---
+
+<div class="content">
+  <div class="related">
+		<h1 align="center">Test Equipment</h1>
+
+		<p>This section documents test equipment used around the shop, including repairs. It is certainly not exhaustive, and contains just those items for which a writeup seemed interesting.</p>
+		
+	<table class="directory">
+		{% for post in site.categories.test_equipment %}
+			<tr height="128px">
+						<td width="50px"><img src="images/test_equipment/{{ post.image }}"/></td>
+						<td>
+							<div style="width: 95%; margin-left: auto;">
+								<a href="{{ post.url | relative_url }}">{{ post.title }}</a><br/><br/>
+								<span>{{ post.description }}</span>
+							</div>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+		<br/>
+  </div>
+</div>
