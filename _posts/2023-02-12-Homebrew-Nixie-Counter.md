@@ -41,7 +41,7 @@ The spacing on the five-way binding posts is correct for fixed-spacing banana pl
 
 {% linked_image :file => 'binding_posts.jpg', :alt_text => 'Binding posts with Pomona BNC adapter' %}
 
-The counter does work, sort of. I brought it up on the variac and connected the Krohn-Hite 5100B function generator to the input. Since the counter is direct TTL input, I used the 5100B's 5V square wave output. One of the many nice features of the 5100B is that it can generate very low frequency outputs. Here's a video of the counter running:
+The counter does work, sort of. I brought it up on the variac and connected the [Krohn-Hite 5100B]({% post_url 2023-02-13-Krohn-Hite-5100B %}) function generator to the input. Since the counter is direct TTL input, I used the 5100B's 5V square wave output. One of the many nice features of the 5100B is that it can generate very low frequency outputs. Here's a video of the counter running:
 
 <div class='center'><iframe width="560" height="315" src="https://www.youtube.com/embed/pPUAP9k6lxU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
 
