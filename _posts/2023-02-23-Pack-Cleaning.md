@@ -21,7 +21,7 @@ Not only can a crashed pack ruin a good drive, but a *dirty* pack also runs that
 
 {% linked_image :file => 'clean_counter.jpg', :alt_text => 'Kitchen counter wiped down for work' %}
 
-After that, we got our tools togther and wiped those down, too:
+After that, we got our tools together and wiped those down, too:
 
 {% linked_image :file => 'tools.jpg', :alt_text => 'Tools for pack cleaning' %}
 
@@ -34,7 +34,7 @@ The following items were used:
 * Screwdrivers
 * Bright flashlight (a [Hexbright](https://www.adafruit.com/product/1725))
 
-We also pretty quickly discovered that 99% isopropyl alcohol is *much drier* than 70% from the drugstore, and had to acquire gloves, as it was dessicating our hands! Nitrile gloves from the auto store worked well.
+We also pretty quickly discovered that 99% isopropyl alcohol is *much drier* than 70% from the drugstore, and had to acquire gloves, as it was desiccating our hands! Nitrile gloves from the auto store worked well.
 
 The cleaning procedure is, basically:
 
@@ -91,13 +91,13 @@ Sark's KDF11 came up with no issues:
 
 {% linked_image :file => 'startup.jpg', :alt_text => 'KDF11 sign-on' %}
 
-I brought my utility PC over, an old Lian Li full towner with an AMD Slot A Athlon motherboard. It triple-booted MS-DOS 6.22, Windows 2000, and Linux. Here it is booted into Windows 2000:
+I brought my utility PC over, an old Lian Li full tower with an AMD Slot A Athlon motherboard. It triple-booted MS-DOS 6.22, Windows 2000, and Linux. Here it is booted into Windows 2000:
 
 {% linked_image :file => 'utility_pc.jpg', :alt_text => 'Utility PC running Windows 2000' %}
 
 I'd already gotten a [TU58](http://gunkies.org/wiki/TU58_DECtape_II) emulator up and running, and had it talking to my PDP-11/03 setup at home. [VTserver](https://minnie.tuhs.org/Programs/Vtserver/) is running in the above picture. VTserver is the "**V**irtual **T**ape server" and allows transfer of media images to/from PDP-11 systems over serial. Despite the name mentioning tape, VTserver will in fact work with various kinds of disks. 
 
-### RL Drive Cleanup and Testing
+### RL02 Drive Cleanup and Testing
 
 Before testing packs, we cleaned Sark's RL02 drives. The outsides were cleaned with Windex and paper towels, then the pack wells and heads were cleaned. This involves powering them up to retract the solenoids that lock the door covering the pack well, powering them off, and cleaning the heads with a lint-free swab saturated with 99% isopropyl alcohol. The pack wells were wiped down with Kimwipes and alcohol. In the case of Sark's drives, we also had to rotate the head lock plate out of the way: the drives were still locked from their trip to Sark's house from Will Kranz's.
 
@@ -109,7 +109,7 @@ Finally, time to mount a pack:
 
 {% linked_images :files => ['first_pack_mounted.jpg', 'cover_in_drive.jpg'], :alt_texts => ['First cleaned pack mounted in drive', 'Cover placed over pack in drive'] %}
 
-I don't remember who pressed the `LOAD` switch on the first one, but there was much anticipation as the lights dimmed slightly, the drive spun up, and finally, the `READY` lamp came on! No error lamp, no weird noises, no excessive vibration. When Sark bought the PDP-11/23 Plus from Will, Will was kind enough to provide a known-good bootable RT-11 pack generated for the system. That was why we cleaned it first! It booted without issue:
+I don't remember who pressed the `LOAD` switch on the first one, but there was much anticipation as the lights dimmed slightly, the drive spun up, and finally, the `READY` lamp came on! No fault lamp, no weird noises, no excessive vibration. When Sark bought the PDP-11/23 Plus from Will, Will was kind enough to provide a known-good bootable RT-11 pack generated for the system. That was why we cleaned it first! It booted without issue:
 
 {% linked_image :file => 'rt11_running.jpg', :alt_text => 'RT-11 running from RL02 pack' %}
 
@@ -143,7 +143,7 @@ The "cat pack" was dumped (they go much faster, being half the capacity of a RL0
 
 Sark didn't have an XXDP pack, and we had to figure out how to generate one. We had an XXDP pack image, but none of the RL02 packs he had were `-EF` error-free suffix packs. This means that we couldn't just use VTserver to dump the image on, as it was extremely unlikely the image's defects would line up with the defects on a given RL02 pack.
 
-To solve this problem, we used a process I'd been using to run diagnostics on my PDP-11/03 and PDP-11/10 setups: we generated XXDP TU58 media by booting the XXDP pack image in [Ersatz-11](http://www.dbit.com/), a PDP-11 emulator (couldn't make SIMH do it back then) and mounting a "blank" TU58 image. Files were then copied from the mounted pack image to the TU58 image. Once a TU58 image was prepared, we booted it on the actual PDP-11 using [Will Kranz's TU58 emulator](http://www.willsworks.net/pdp-11/tu58-emu). Real TU58 tape drives connect to the PDP-11 over a SLU, so they're easy to emulate using a PC.
+To solve this problem, we used a process I'd been using to run diagnostics on my PDP-11/03 and PDP-11/10 setups: we generated XXDP TU58 images by booting the XXDP pack image in [Ersatz-11](http://www.dbit.com/), a PDP-11 emulator (couldn't make SIMH do it back then) and mounting a "blank" TU58 image. Files were then copied from the mounted pack image to the TU58 image. Once a TU58 image was prepared, we booted it on the actual PDP-11 using [Will Kranz's TU58 emulator](http://www.willsworks.net/pdp-11/tu58-emu). Real TU58 tape drives connect to the PDP-11 over a SLU, so they're easy to emulate using a PC.
 
 Once booted into XXDP on the emulated TU58, we were able to run `UPDAT` to `INIT` and `CREATE` a RL02 cartridge for XXDP. Files were then copied from the emulated TU58 tape to the RL02 pack. This was repeated many times in order to get everything we needed onto RL02. It took a long time, but doing it this way allowed for sparing out the bad blocks on the RL02 packs.
 
@@ -153,7 +153,7 @@ With XXDP running, we were now able to run additional hardware diagnostics on my
 
 ### Conclusion
 
-Well, that took a while! Only nearly 10 years to turn the pictures into a writeup, too! Now both Sark and I had known good packs and drives, though we couldn't directly interchange packs since I had only RL01 drives. and Sark had only RL02 drives. During the course of going through additional packs Sark retreived from storage, he did find two additional RL01 packs, both of which were good, which he traded to me.
+Well, that took a while! Only nearly 10 years to turn the pictures into a writeup, too! Now both Sark and I had known good packs and drives, though we couldn't directly interchange packs since I had only RL01 drives. and Sark had only RL02 drives. During the course of going through additional packs Sark retrieved from storage, he did find two additional RL01 packs, both of which were good, which he traded to me.
 
 During our PDP-11 hacking, we apparently tested some extra QBus hardware I had in my BA11-N chassis:
 
