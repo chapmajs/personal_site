@@ -137,7 +137,7 @@ This little board uses Mill-Max pins to help keep the height down, so that a S-1
 
 {% linked_image :file => '7405_installed.jpg', :alt_text => '7405 adapter installed on D4S' %}
 
-With the adapter installed, the system was now 100% operational!
+With the adapter installed, the system was now 100% operational! From the order date, it looks like this was fixed in June 2020.
 
 ### Backplane Repairs and Rewire
 
