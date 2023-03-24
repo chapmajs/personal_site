@@ -2,7 +2,7 @@
 source "https://rubygems.org"
 
 gem 'jekyll', '~> 4.2'
-gem 'rouge', '3.30.9999', :git => 'https://github.com/glitchwrks/rouge.git', :branch => 'cisco_ios_backport'
+gem 'rouge', '~> 4.1'
 
 # Required under ruby-3.0
 gem 'webrick'
