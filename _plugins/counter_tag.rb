@@ -14,7 +14,7 @@ class GlitchWorks::CounterTag < GlitchWorks::Tag
   def internal_render
     <<~COUNTER
     <p class="center">
-        <script language="javascript" src="https://services.glitchworks.net/counters/#{id}"></script> #{@text}
+        <script language="javascript" src="https://counters.glitchworks.net/#{id}"></script> #{@text}
     </p>
     COUNTER
   end
