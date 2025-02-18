@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="/~glitch/style.css">
     <link rel="stylesheet" href="/~glitch/pygments.css">
     <title>{{ page.title }}</title>
+    <meta name="description" content="{{ page.description }}">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="{{ page.url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ page.description }}">
+    <meta property="og:image" content="/~glitch/images/{{ page.category }}/{{ page.image }}">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="/~glitch/images/{{ page.category }}/{{ page.image }}">
+    <meta property="twitter:domain" content="users.glitchwrks.com">
+    <meta property="twitter:url" content="{{ page.url }}">
+    <meta name="twitter:title" content="{{ page.title }}">
+    <meta name="twitter:description" content="{{ page.description }}">
+    <meta name="twitter:image" content="/~glitch/images/{{ page.category }}/{{ page.image }}">
   </head>
   <body>
     <br>
