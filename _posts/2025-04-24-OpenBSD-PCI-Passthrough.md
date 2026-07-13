@@ -1,8 +1,3 @@
-Datto heatsink
-
-drilled out 5/32"
-deburred 13/64"
-
 ---
 layout: post
 title: Passing PCI Devices to OpenBSD VMs from Linux Virtualization Hosts
@@ -22,58 +17,173 @@ PCI passthrough uses the [IOMMU](https://en.wikipedia.org/wiki/Input%E2%80%93out
 
 Passthrough is often used with GPUs, to give VMs exclusive, full-speed access to GPU resources. This is perhaps the most common example found on the Internet, in various guides, etc. It can be configured to work with any PCI device, as long as you have enough IOMMU group granularity. We were interested in passing through entire Ethernet devices for both security separation (the virtualization host would have no interaction with packets on the passed-through interface) and performance.
 
-# Virtualization Platform
+### Virtualization Platform
 
 Experiments were conducted on our "medium virtualization host" platform, which at the time was the [Advantech FWA-3260](https://www.advantech.com/en-us/products/5f790122-c29e-4453-bb73-0da4c95b7eca/fwa-3260/mod_0d8b27c6-4283-4b90-abba-5aa5c5e068bd), which is a 1U router appliance featuring the Xeon D-1500 series processor. It supports Intel VT-d IOMMU functionality for PCI passthrough, and the included Ethernet interfaces have three distinct sets of PCI IDs:
 
-* Two 
+* `8086:1521` for the four i350 gigabit copper ports
+* `8086:15ac` for the Xeon D onboard X552 10 gigabit SFP+ ports
 
-With another mystery increase in the monthly pricing for the paid email service that had been used for glitchwrks.com, I decided to switch back to managing my own mail server. In addition to becoming increasingly expensive, the paid service wasn't providing SPF records I could delegate to, or DKIM signing. I had read about OpenBSD's [OpenSMTPd](https://www.opensmtpd.org/) project some time ago, but had never actually installed and configured OpenSMTPd myself, aside from forwarding system accounts via aliases on other OpenBSD projects.
+This allows for easy isolation of the Ethernet interfaces intended for VMs from the HVM management Ethernets, which are Intel i210 gigabit ports with PCI ID `8086:1533`. 
 
-This is not something new or particularly hard to do, but I did find a few areas in which I was left searching through others' documentation looking for answers. This writeup won't be a step-by-step guide, but references to other resources and explanations of snags I hit. I used the following resources, and recommend a read through them first:
+Most of our HVMs run [Alpine Linux](https://www.alpinelinux.org/), though the process for passing through PCI devices is largely the same on other Linux distributions. There are some differences mostly around Alpine's use of [OpenRC](https://wiki.gentoo.org/wiki/OpenRC) instead of `systemd`. Virtualization is achieved using [Linux KVM](https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine) and [libvirt](https://libvirt.org/).
 
-* [Official OpenSMTPd FAQ Example](https://www.opensmtpd.org/faq/example1.html)
-* [technoquarter's writeup on Dovecot configuration](http://technoquarter.blogspot.com/2015/02/openbsd-mail-server-part-6-dovecot-and.html)
-* [frozen-geek.net's writeup on Dovecot configuration](https://frozen-geek.net/openbsd-email-server-1/)
+### Configuring VFIO
 
-If you will be using Let's Encrypt for SSL/TLS certificates, read the following:
+We manage our HVMs through [Ansible](https://github.com/ansible/ansible) and configuring VFIO is no exception. The first step is kernel configuration: VFIO related modules must be configured into the `initrd` and `GRUB` must be told to enable VFIO in the kernel command line.
 
-* [acme-client Documentation, for SSL/TLS](http://man.openbsd.org/acme-client.1)
-* [httpd manpage](http://man.openbsd.org/httpd.conf.5)
-* [atomicobject.com's writeup on using acme-client](https://spin.atomicobject.com/2016/09/20/openbsd-acme-client-lets-encrypt/)
+Our VFIO role first checks to see if VT-d is enabled (the FWA-3260 is unconditionally an Intel platform):
 
-## Installing the Required Packages
+{% codeblock :language => 'yaml', :title => 'configure_grub.yml' %}
+{% raw %}
+- name: Check if Intel VT-d is already enabled
+  replace:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="(.*)( {{ grub_cmdline }})(.*)"$'
+    replace: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 \3"'
+  check_mode: true
+  register: vt_d_presence
+{% endraw %}
+{% endcodeblock %}
 
-My use case is pretty simple, incoming SMTP, authenticated outbound SMTP relaying, and IMAP for client access. I don't currently require virtuals or multiple domain support, but I followed the [Official OpenSMTPd FAQ Example](https://www.opensmtpd.org/faq/example1.html) and planned for it anyway. OpenSMTPd is part of the base OpenBSD distribution, so that's already present, but you'll need to install the following:
+If the `grub_cmdline` (defined in the vars for the role) is already present, we don't need to add it a second time. This replacement adds it in, preserving the rest of the `GRUB` command line:
 
-* `opensmtpd-extras` for passwd file authentication (not necessary if you're going to use system logins)
-* `dovecot` for IMAP access
-* `acme-client` if you are on OpenBSD < 6.1 and plan on using Let's Encrypt for SSL/TLS
+{% codeblock :language => 'yaml', :title => 'configure_grub.yml' %}
+{% raw %}
+- name: Enable Intel VT-d
+  replace:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="(.+)"$'
+    replace: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 {{ grub_cmdline }}"'
+  when: not vt_d_presence.changed
+  notify: Update Alpine GRUB configuration
+{% endraw %}
+{% endcodeblock %}
 
-## SSL/TLS, Let's Encrypt, and acme-client
+For the Advantech FWA-3260, or any other system using an Intel Xeon D processor, `grub_cmdline` is set to `intel_iommu=on iommu=pt intremap=no_x2apic_optout` in the role vars.
 
-[Let's Encrypt](https://letsencrypt.org/) is a free, open, and automated SSL/TLS certificate authority formed with the goal of making SSL/TLS certificates free and so easy to obtain that everyone can secure any connection they'd like. No wildcard certs required when they're free! In addition to being automated for certificate generation, certificates can be automatically renewed yearly with a simple `cron` job. There are many clients for handling creation and renewal of SSL/TLS certificates from Let's Encrypt, but `acme-client` now ships with OpenBSD 6.1 and later. If you're on an earlier version, follow the install instructions on the [project's site](https://kristaps.bsd.lv/acme-client/). Once installed, follow the examples in the [acme-client manpage](http://man.openbsd.org/acme-client.1) for configuring `httpd` to host the challenge files (don't forget to open port 80 in `pf` and any external firewalls!).
+The handler `Update Apline GRUB configuration` just runs the command `/usr/sbin/grub-mkconfig -o /boot/grub/grub.cfg`.
 
-`acme-client` will give two files, a `foo.com.fullchain.pem` file and `foo.com.key` in the directories you have configured in [acme-client.conf](http://man.openbsd.org/acme-client.conf.5). The PEM file is your public certificate with full chain, and the key file is your secret private key. When generating keys for OpenSMTPd and Dovecot, generate them for the address that your mail clients will be connecting to. For example, if clients connect to a `CNAME` of `mail.foo.com` which points to `realserver.foo.com`, generate the certificates for `mail.foo.com`.
+VFIO modules are then configured in the kernel:
 
-## Shared Passwd File Authentication
+{% codeblock :language => 'yaml', :title => 'configure_vfio.yml' %}
+{% raw %}
+- name: Configure VFIO modules for initrd
+  copy:
+    src: vfio.modules
+    dest: /etc/mkinitfs/features.d/vfio.modules
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Rebuild Alpine initrd
+{% endraw %}
+{% endcodeblock %}
 
-The [Official OpenSMTPd FAQ Example](https://www.opensmtpd.org/faq/example1.html) uses `passwd` file authentication, with a shared file between both OpenSMTPd and Dovecot. I found it unclear on how to generate entries for this file. They're done by hand, with the encrypted password hash being generated with `smtpctl encrypt` -- you can provide the string you wish to encrypt afterwards, but beware that this will be visible in the system process list! Invoking `smtpctl encrypt` with no other options will put you in an encryption shell where each line entered will be encrypted on hitting enter. Type `CTRL+C` to exit.
+This step simply tells `mkinitfs` which modules we'd like to be included:
 
-If you have accounts that will not ever receive email (an account for your site's contact form mailer, for example), you can provide a username in the `passwd` file that does not include the domain portion of an email. For instance, a contact mailer entry could use the username `contactmailer` rather than `contactmailer@foo.com`.
+{% codeblock :language => 'conf', :title => 'vfio.modules' %}
+# Managed by Ansible, DO NOT HAND-EDIT!
 
-## Dovecot Configuration
+kernel/drivers/vfio/vfio.ko.*
+kernel/drivers/vfio/vfio_virqfd.ko.*
+kernel/drivers/vfio/vfio_iommu_type1.ko.*
+kernel/drivers/vfio/pci/vfio-pci.ko.*
+{% endcodeblock %}
 
-Dovecot's configuration is complicated by the fact that it is spread across many files in a `conf.d` directory. In particular, I couldn't immediately figure out where to put the configuration for the shared `passwd` file. I ended up putting it in `10-auth.conf`, at the very end, and commenting out all of the other authentication options. At some point I will probably compact the Dovecot configuration directory down into a single file, since my configuration is rather simple.
+The next step is to see if `mkinitfs.conf` already contains the configuration we want:
 
-After starting Dovecot for the first time with SSL/TLS enabled, generation of the Diffie-Hellman parameters (dhparams) takes quite some time, especially if you've set it to a large value. This caused SSL/TLS connections to fail at first with no clear error message from the Dovecot logs. `tail` the log file and wait for a message indicating completion of dhparams generation before trying to connect over SSL/TLS.
+{% codeblock :language => 'yaml', :title => 'configure_vfio.yml' %}
+{% raw %}
+- name: Check if VFIO module features are already enabled for mkinitfs
+  replace:
+    path: /etc/mkinitfs/mkinitfs.conf
+    regexp: '^features="(.*)( vfio)(.*)"$'
+    replace: 'features="\1 \3"'
+  check_mode: true
+  register: vfio_presence
 
-When connecting with [Sylpheed email client](http://sylpheed.sraoss.jp/en/) I had to check the option to use non-blocking SSL. Apparently Dovecot doesn't support it. I didn't test with only sending through OpenSMTPd, though it's hardly relevant since you can't enable it for SMTP and not for IMAP. Of course, if you're connecting on SSL/TLS specific ports (`587` for SMTP, `993` for IMAP) then you want to connect with SSL, not STARTTLS.
+- name: Enable VFIO module features for mkinitfs
+  replace:
+    path: /etc/mkinitfs/mkinitfs.conf
+    regexp: '^features="(.+)"$'
+    replace: 'features="\1 vfio"'
+  when: not vfio_presence.changed
+  notify: Rebuild Alpine initrd
+{% endraw %}
+{% endcodeblock %}
 
-## Future Improvements
+As above, this test and replacement makes sure we don't already have `vfio` configured for `mkinitrd`. The handler `Rebuild Alpine initrd` has two parts:
 
-With basic configuration complete, I'm in the process of switching over to the new server and getting everything checked out before my next monthly bill! Future plans for this mail server include adding DKIM support with `dkimproxy`, automatic filtering of listserv traffic with `dovecot-pigeonhole`, and spammer annoyance with `spamd`.
+{% codeblock :language => 'yaml', :title => 'handlers.yml' %}
+{% raw %}
+- name: Rebuild Alpine initrd
+  shell: 
+    cmd: mkinitfs $(ls /lib/modules)
+  register: vfio_rebuild_initrd
+  failed_when: vfio_rebuild_initrd.rc != 0
+  notify:
+    - ALERT -- RESTART REQUIRED FOR IOMMU
 
-The overall experience with OpenSMTPd was very good, it will be replacing `postfix` as my MTA of choice for future projects.
+- name: ALERT -- RESTART REQUIRED FOR IOMMU
+  debug:
+    msg: "A restart is required to enable the IOMMU."
+  register: iommu_restart_required
+{% endraw %}
+{% endcodeblock %}
 
-{% counter :id => 'opensmtpd', :text => 'emails bounced' %}
+Finally, we configure `modprobe` for VFIO full passthrough based on PCI IDs:
+
+{% codeblock :language => 'yaml', :title => 'full_passthrough.yml' %}
+{% raw %}
+- name: Configure modprobe options for VFIO full passthrough
+  template:
+    src: "vfio_full_passthrough.conf.j2"
+    dest: /etc/modprobe.d/vfio.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Rebuild Alpine initrd
+{% endraw %}
+{% endcodeblock %}
+
+The `modprobe` configuration binds the PCI IDs specified in the host's vars to `vfio-pci` and sets `vfio-pci` as a softdep for the normal Ethernet kernel drivers for the PCI IDs, which in the case of the Advantech FWA-3260's interfaces, are `igb` and `ixgbe`. 
+
+{% codeblock :language => 'conf', :title => 'vfio_full_passthrough.conf.j2' %}
+{% raw %}
+# Managed by Ansible, DO NOT HAND-EDIT!
+# VFIO configuration for {{ inventory_hostname }}
+
+options vfio-pci ids={{ vfio.passthrough.pci_ids|join(',') }}
+{% if vfio.passthrough.options is defined %}
+options {{ vfio.passthrough.options }}
+{% endif %}
+{% for module in vfio.passthrough.softdeps %}
+softdep {{ module }} pre: vfio-pci
+{% endfor %}
+{% endraw %}
+{% endcodeblock %}
+
+This again registers changes with the `Rebuild Alpine initrd` handler.
+
+Note that the above *does not tell the kernel about PCI IDs to be passed through on the kernel command line* -- this is often specified in configuration guides, but is not required as long as your device drivers are modules and not statically built into the kernel.
+
+### Guest Configuration
+
+The guests for this experiment were all OpenBSD; at the time, OpenBSD 7.6. No special configuration was required at the operating system level.
+
+The `libvirt` configuration for the guests required some experimentation: at first, we were able to pass through PCI devices, but they behaved poorly, often passing traffic intermittently, causing lockups, etc. The problems caused such headache that [Proxmox VE](https://www.proxmox.com/en/products/proxmox-virtual-environment/overview) was installed on one of the FWA-3260 test platforms. After configuring the kernel for PCI passthrough, everything worked on the exact same hardware!
+
+We finally determined that it was a mix of `libvirt` configuration issues causing headaches:
+
+* Always use `UEFI` and `Q35` system configurations when passing through PCI
+* Set the CPU type to the family `model`, not host passthrough
+
+The second point, setting the CPU type, was the final bit required to achieve stability. You can find the CPU family for your platform by running `virsh capabilities` and looking for the `<model>` section of the XML it returns. For the Advantech FWA-3260, this is `Broadwell-v1`.
+
+### Performance and Stability
+
+The above configuration has been in continuous operation since early 2025, running the VMs that handle the routing, firewalling, etc. for the Glitch Works, LLC office's fiber connection. It also formed the basis for our newer Secure Access Gateway offerings deployed on customer sites. We have had no stability issues, and performance benchmarking shows that OpenBSD is slightly less performant than running bare-metal on the Advantech FWA-3260s.
+
+Using full PCI passthrough has provided the isolation we require for security critical devices like routers and firewalls, keeping the HVM operating system completely blind to public Internet traffic, traffic from networks considered potentially hostile (a Secure Access Gateway talks to tool control systems which cannot be patched, often running unsupported operating systems and software), but still allowing the advantages of router/firewall virtualization in management, HA, and backups.
+
+{% counter :text => 'Ethernet interfaces passed through' %}
