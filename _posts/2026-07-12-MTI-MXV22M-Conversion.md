@@ -76,7 +76,7 @@ I tested my MXV22M-to-MXV22 conversion in my PDP-11/23 Plus with a pair of Shuga
 
 {% linked_image :file => 'converted_mxv22m.jpg', :alt_text => 'MXV22M converted to MXV22' %}
 
-Steve Hirsch was interested in a converted MXV22M, and bought a set of blank fuse PROMs to try the conversion himself. His programmed turned out to not support the variants he had purchased, so he sent them to me for programming on the Data I/O. I went ahead and strapped up a MXV22M as a MXV22 for him, and the second conversion worked as well in my PDP-11/23 Plus as the first had! 
+Steve Hirsch was interested in a converted MXV22M, and bought a set of blank fuse PROMs to try the conversion himself. His programmer turned out to not support the variants he had purchased, so he sent them to me for programming on the Data I/O. I went ahead and strapped up a MXV22M as a MXV22 for him, and the second conversion worked as well in my PDP-11/23 Plus as the first had! 
 
 Steve tested the converted board in his "Frankenstein 11/83":
 
