@@ -23,7 +23,13 @@ The Powered JOLT 4K System ("the System") came in some vintage/original packing,
 
 {% linked_images :files => ['outer_box1.jpg', 'outer_box2.jpg'], :alt_texts => ['Outer box', 'Outer box label closeup'] %}
 
-The label on the outer box suggests it was shipped from [Bolt Beranek and Newman Inc.](https://en.wikipedia.org/wiki/RTX_BBN_Technologies), a fairly significant MIT-adjacent tech consulting company that has since been rolled into Raytheon (now called RTX Corporation). `R. Rubinstein` turns up a few results regarding technology papers written on behalf of BBN, but I haven't dug further. Too bad we don't have more of the addressee portion of the label! The outer box has some orange lettering that matches the font and color of one of the inner boxes, which is definitely from MAI directly:
+The label on the outer box suggests it was shipped from [Bolt Beranek and Newman Inc.](https://en.wikipedia.org/wiki/RTX_BBN_Technologies), a fairly significant MIT-adjacent tech consulting company that has since been rolled into Raytheon (now called RTX Corporation). `R. Rubinstein` turns up a few results regarding technology papers written on behalf of BBN, but I haven't dug further. Too bad we don't have more of the addressee portion of the label! 
+
+***UPDATE!*** 
+
+ats on #vc IRC (irc.slashnet.org) has turned up information on the recipient based on the partial address. a Bruce R. Meadows, callsign WB8LYK, at 1413 St Elmo NE, Canton, OH 44705 shows up in a listing of amateur radio stations in Stark County. Good sleuthing!
+
+The outer box has some orange lettering that matches the font and color of one of the inner boxes, which is definitely from MAI directly:
 
 {% linked_images :files => ['mai_box1.jpg', 'mai_box2.jpg'], :alt_texts => ['MAI shipping box label', 'MAI shipping box, inside foam'] %}
 
