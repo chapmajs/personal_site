@@ -1,0 +1,24 @@
+---
+layout: listing
+title: KIM-1 and Related Systems
+---
+
+<div class="content">
+    <div class="related">
+        <h1 align="center">KIM-1 and Related Systems</h1>
+        <table class="directory">
+            {% for post in site.categories.kim %}
+                <tr height="128px">
+                    <td width="50px"><img src="images/kim/{{ post.image }}"/></td>
+                    <td>
+                        <div style="width: 95%; margin-left: auto;">
+                            <a href="{{ post.url | relative_url }}">{{ post.title }}</a><br/><br/>
+                            <span>{{ post.description }}</span>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br/>
+    </div>
+</div>

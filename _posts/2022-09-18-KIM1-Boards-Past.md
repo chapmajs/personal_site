@@ -2,7 +2,7 @@
 layout: post
 title: KIM-1 Boards of the Past
 topic: A look at KIM-1 boards since sold
-category: vintage-misc
+category: kim
 description: In Summer 2008, I was working for a surplus components dealer while on break from college. I came across a number of KIM-1 systems, all which have been sold by this point. Here's a look at those systems.
 image: kim1_boards_past-icon.jpg
 ---

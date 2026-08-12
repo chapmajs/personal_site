@@ -2,7 +2,7 @@
 layout: post
 title: MTU Visable Memory Repair
 topic: Fixing and testing a KIM-1 video board
-category: vintage-misc
+category: kim
 description: The MTU Visable Memory is a bitmapped video board for KIM-1 and compatible computers. It uses an 8K x 8 bank of DRAM in a dual-ported configuration, displaying the actual bit-for-bit contents of memory on the screen, rather than converting to characters or using graphics elements. This one was repaired for a customer.
 image: mtu_visable_memory_repair-icon.jpg
 ---
